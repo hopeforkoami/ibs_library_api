@@ -540,19 +540,9 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
         return $this->validation;
     }
 
-    /**
-     * @return \Symfony\Config\Framework\AnnotationsConfig|$this
-     */
-    public function annotations($value = [])
+    public function annotations(array $value = []): \Symfony\Config\Framework\AnnotationsConfig
     {
-        if (!\is_array($value)) {
-            $this->_usedProperties['annotations'] = true;
-            $this->annotations = $value;
-
-            return $this;
-        }
-
-        if (!$this->annotations instanceof \Symfony\Config\Framework\AnnotationsConfig) {
+        if (null === $this->annotations) {
             $this->_usedProperties['annotations'] = true;
             $this->annotations = new \Symfony\Config\Framework\AnnotationsConfig($value);
         } elseif (0 < \func_num_args()) {
@@ -1041,7 +1031,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
 
         if (array_key_exists('annotations', $value)) {
             $this->_usedProperties['annotations'] = true;
-            $this->annotations = \is_array($value['annotations']) ? new \Symfony\Config\Framework\AnnotationsConfig($value['annotations']) : $value['annotations'];
+            $this->annotations = new \Symfony\Config\Framework\AnnotationsConfig($value['annotations']);
             unset($value['annotations']);
         }
 
@@ -1228,7 +1218,7 @@ class FrameworkConfig implements \Symfony\Component\Config\Builder\ConfigBuilder
             $output['validation'] = $this->validation instanceof \Symfony\Config\Framework\ValidationConfig ? $this->validation->toArray() : $this->validation;
         }
         if (isset($this->_usedProperties['annotations'])) {
-            $output['annotations'] = $this->annotations instanceof \Symfony\Config\Framework\AnnotationsConfig ? $this->annotations->toArray() : $this->annotations;
+            $output['annotations'] = $this->annotations->toArray();
         }
         if (isset($this->_usedProperties['serializer'])) {
             $output['serializer'] = $this->serializer instanceof \Symfony\Config\Framework\SerializerConfig ? $this->serializer->toArray() : $this->serializer;

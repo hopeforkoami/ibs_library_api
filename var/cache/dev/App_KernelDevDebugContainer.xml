@@ -10,11 +10,36 @@
     <parameter key="kernel.logs_dir">/Users/evandrake/Documents/GitHub/ibs_library_api/var/log</parameter>
     <parameter key="kernel.bundles" type="collection">
       <parameter key="FrameworkBundle">Symfony\Bundle\FrameworkBundle\FrameworkBundle</parameter>
+      <parameter key="FOSRestBundle">FOS\RestBundle\FOSRestBundle</parameter>
+      <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
+      <parameter key="JMSSerializerBundle">JMS\SerializerBundle\JMSSerializerBundle</parameter>
+      <parameter key="DoctrineBundle">Doctrine\Bundle\DoctrineBundle\DoctrineBundle</parameter>
+      <parameter key="DoctrineMigrationsBundle">Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
         <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/symfony/framework-bundle</parameter>
         <parameter key="namespace">Symfony\Bundle\FrameworkBundle</parameter>
+      </parameter>
+      <parameter key="FOSRestBundle" type="collection">
+        <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/friendsofsymfony/rest-bundle</parameter>
+        <parameter key="namespace">FOS\RestBundle</parameter>
+      </parameter>
+      <parameter key="SensioFrameworkExtraBundle" type="collection">
+        <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/sensio/framework-extra-bundle/src</parameter>
+        <parameter key="namespace">Sensio\Bundle\FrameworkExtraBundle</parameter>
+      </parameter>
+      <parameter key="JMSSerializerBundle" type="collection">
+        <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/jms/serializer-bundle</parameter>
+        <parameter key="namespace">JMS\SerializerBundle</parameter>
+      </parameter>
+      <parameter key="DoctrineBundle" type="collection">
+        <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/doctrine/doctrine-bundle</parameter>
+        <parameter key="namespace">Doctrine\Bundle\DoctrineBundle</parameter>
+      </parameter>
+      <parameter key="DoctrineMigrationsBundle" type="collection">
+        <parameter key="path">/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/doctrine/doctrine-migrations-bundle</parameter>
+        <parameter key="namespace">Doctrine\Bundle\MigrationsBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -24,6 +49,11 @@
       <parameter key="Symfony\Component\Console\Event\ConsoleErrorEvent">console.error</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleSignalEvent">console.signal</parameter>
       <parameter key="Symfony\Component\Console\Event\ConsoleTerminateEvent">console.terminate</parameter>
+      <parameter key="Symfony\Component\Form\Event\PreSubmitEvent">form.pre_submit</parameter>
+      <parameter key="Symfony\Component\Form\Event\SubmitEvent">form.submit</parameter>
+      <parameter key="Symfony\Component\Form\Event\PostSubmitEvent">form.post_submit</parameter>
+      <parameter key="Symfony\Component\Form\Event\PreSetDataEvent">form.pre_set_data</parameter>
+      <parameter key="Symfony\Component\Form\Event\PostSetDataEvent">form.post_set_data</parameter>
       <parameter key="Symfony\Component\HttpKernel\Event\ControllerArgumentsEvent">kernel.controller_arguments</parameter>
       <parameter key="Symfony\Component\HttpKernel\Event\ControllerEvent">kernel.controller</parameter>
       <parameter key="Symfony\Component\HttpKernel\Event\ResponseEvent">kernel.response</parameter>
@@ -61,7 +91,81 @@
     </parameter>
     <parameter key="session.save_path">null</parameter>
     <parameter key="session.metadata.update_threshold">0</parameter>
+    <parameter key="form.type_extension.csrf.enabled">false</parameter>
+    <parameter key="validator.mapping.cache.file">/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/validation.php</parameter>
+    <parameter key="validator.translation_domain">validators</parameter>
     <parameter key="data_collector.templates" type="collection"/>
+    <parameter key="jms_serializer.twig_enabled">default</parameter>
+    <parameter key="doctrine.dbal.logger.chain.class">Doctrine\DBAL\Logging\LoggerChain</parameter>
+    <parameter key="doctrine.dbal.logger.profiling.class">Doctrine\DBAL\Logging\DebugStack</parameter>
+    <parameter key="doctrine.dbal.logger.class">Symfony\Bridge\Doctrine\Logger\DbalLogger</parameter>
+    <parameter key="doctrine.dbal.configuration.class">Doctrine\DBAL\Configuration</parameter>
+    <parameter key="doctrine.data_collector.class">Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector</parameter>
+    <parameter key="doctrine.dbal.connection.event_manager.class">Symfony\Bridge\Doctrine\ContainerAwareEventManager</parameter>
+    <parameter key="doctrine.dbal.connection_factory.class">Doctrine\Bundle\DoctrineBundle\ConnectionFactory</parameter>
+    <parameter key="doctrine.dbal.events.mysql_session_init.class">Doctrine\DBAL\Event\Listeners\MysqlSessionInit</parameter>
+    <parameter key="doctrine.dbal.events.oracle_session_init.class">Doctrine\DBAL\Event\Listeners\OracleSessionInit</parameter>
+    <parameter key="doctrine.class">Doctrine\Bundle\DoctrineBundle\Registry</parameter>
+    <parameter key="doctrine.entity_managers" type="collection">
+      <parameter key="default">doctrine.orm.default_entity_manager</parameter>
+    </parameter>
+    <parameter key="doctrine.default_entity_manager">default</parameter>
+    <parameter key="doctrine.dbal.connection_factory.types" type="collection"/>
+    <parameter key="doctrine.connections" type="collection">
+      <parameter key="default">doctrine.dbal.default_connection</parameter>
+    </parameter>
+    <parameter key="doctrine.default_connection">default</parameter>
+    <parameter key="doctrine.orm.configuration.class">Doctrine\ORM\Configuration</parameter>
+    <parameter key="doctrine.orm.entity_manager.class">Doctrine\ORM\EntityManager</parameter>
+    <parameter key="doctrine.orm.manager_configurator.class">Doctrine\Bundle\DoctrineBundle\ManagerConfigurator</parameter>
+    <parameter key="doctrine.orm.cache.array.class">Doctrine\Common\Cache\ArrayCache</parameter>
+    <parameter key="doctrine.orm.cache.apc.class">Doctrine\Common\Cache\ApcCache</parameter>
+    <parameter key="doctrine.orm.cache.memcache.class">Doctrine\Common\Cache\MemcacheCache</parameter>
+    <parameter key="doctrine.orm.cache.memcache_host">localhost</parameter>
+    <parameter key="doctrine.orm.cache.memcache_port">11211</parameter>
+    <parameter key="doctrine.orm.cache.memcache_instance.class">Memcache</parameter>
+    <parameter key="doctrine.orm.cache.memcached.class">Doctrine\Common\Cache\MemcachedCache</parameter>
+    <parameter key="doctrine.orm.cache.memcached_host">localhost</parameter>
+    <parameter key="doctrine.orm.cache.memcached_port">11211</parameter>
+    <parameter key="doctrine.orm.cache.memcached_instance.class">Memcached</parameter>
+    <parameter key="doctrine.orm.cache.redis.class">Doctrine\Common\Cache\RedisCache</parameter>
+    <parameter key="doctrine.orm.cache.redis_host">localhost</parameter>
+    <parameter key="doctrine.orm.cache.redis_port">6379</parameter>
+    <parameter key="doctrine.orm.cache.redis_instance.class">Redis</parameter>
+    <parameter key="doctrine.orm.cache.xcache.class">Doctrine\Common\Cache\XcacheCache</parameter>
+    <parameter key="doctrine.orm.cache.wincache.class">Doctrine\Common\Cache\WinCacheCache</parameter>
+    <parameter key="doctrine.orm.cache.zenddata.class">Doctrine\Common\Cache\ZendDataCache</parameter>
+    <parameter key="doctrine.orm.metadata.driver_chain.class">Doctrine\Persistence\Mapping\Driver\MappingDriverChain</parameter>
+    <parameter key="doctrine.orm.metadata.annotation.class">Doctrine\ORM\Mapping\Driver\AnnotationDriver</parameter>
+    <parameter key="doctrine.orm.metadata.xml.class">Doctrine\ORM\Mapping\Driver\SimplifiedXmlDriver</parameter>
+    <parameter key="doctrine.orm.metadata.yml.class">Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver</parameter>
+    <parameter key="doctrine.orm.metadata.php.class">Doctrine\ORM\Mapping\Driver\PHPDriver</parameter>
+    <parameter key="doctrine.orm.metadata.staticphp.class">Doctrine\ORM\Mapping\Driver\StaticPHPDriver</parameter>
+    <parameter key="doctrine.orm.metadata.attribute.class">Doctrine\ORM\Mapping\Driver\AttributeDriver</parameter>
+    <parameter key="doctrine.orm.proxy_cache_warmer.class">Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer</parameter>
+    <parameter key="form.type_guesser.doctrine.class">Symfony\Bridge\Doctrine\Form\DoctrineOrmTypeGuesser</parameter>
+    <parameter key="doctrine.orm.validator.unique.class">Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator</parameter>
+    <parameter key="doctrine.orm.validator_initializer.class">Symfony\Bridge\Doctrine\Validator\DoctrineInitializer</parameter>
+    <parameter key="doctrine.orm.security.user.provider.class">Symfony\Bridge\Doctrine\Security\User\EntityUserProvider</parameter>
+    <parameter key="doctrine.orm.listeners.resolve_target_entity.class">Doctrine\ORM\Tools\ResolveTargetEntityListener</parameter>
+    <parameter key="doctrine.orm.listeners.attach_entity_listeners.class">Doctrine\ORM\Tools\AttachEntityListenersListener</parameter>
+    <parameter key="doctrine.orm.naming_strategy.default.class">Doctrine\ORM\Mapping\DefaultNamingStrategy</parameter>
+    <parameter key="doctrine.orm.naming_strategy.underscore.class">Doctrine\ORM\Mapping\UnderscoreNamingStrategy</parameter>
+    <parameter key="doctrine.orm.quote_strategy.default.class">Doctrine\ORM\Mapping\DefaultQuoteStrategy</parameter>
+    <parameter key="doctrine.orm.quote_strategy.ansi.class">Doctrine\ORM\Mapping\AnsiQuoteStrategy</parameter>
+    <parameter key="doctrine.orm.entity_listener_resolver.class">Doctrine\Bundle\DoctrineBundle\Mapping\ContainerEntityListenerResolver</parameter>
+    <parameter key="doctrine.orm.second_level_cache.default_cache_factory.class">Doctrine\ORM\Cache\DefaultCacheFactory</parameter>
+    <parameter key="doctrine.orm.second_level_cache.default_region.class">Doctrine\ORM\Cache\Region\DefaultRegion</parameter>
+    <parameter key="doctrine.orm.second_level_cache.filelock_region.class">Doctrine\ORM\Cache\Region\FileLockRegion</parameter>
+    <parameter key="doctrine.orm.second_level_cache.logger_chain.class">Doctrine\ORM\Cache\Logging\CacheLoggerChain</parameter>
+    <parameter key="doctrine.orm.second_level_cache.logger_statistics.class">Doctrine\ORM\Cache\Logging\StatisticsCacheLogger</parameter>
+    <parameter key="doctrine.orm.second_level_cache.cache_configuration.class">Doctrine\ORM\Cache\CacheConfiguration</parameter>
+    <parameter key="doctrine.orm.second_level_cache.regions_configuration.class">Doctrine\ORM\Cache\RegionsConfiguration</parameter>
+    <parameter key="doctrine.orm.auto_generate_proxy_classes">true</parameter>
+    <parameter key="doctrine.orm.proxy_dir">/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/doctrine/orm/Proxies</parameter>
+    <parameter key="doctrine.orm.proxy_namespace">Proxies</parameter>
+    <parameter key="doctrine.migrations.preferred_em">null</parameter>
+    <parameter key="doctrine.migrations.preferred_connection">null</parameter>
     <parameter key="console.command.ids" type="collection"/>
   </parameters>
   <services>
@@ -70,42 +174,7 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
-    <service id="controller_resolver" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver">
-      <tag name="monolog.logger" channel="request"/>
-      <argument type="service" id="service_container"/>
-      <argument type="service" id="logger" on-invalid="ignore"/>
-    </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
-    <service id="argument_resolver" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver">
-      <argument type="service" id="argument_metadata_factory"/>
-      <argument type="iterator">
-        <argument type="service" id="argument_resolver.request_attribute"/>
-        <argument type="service" id="argument_resolver.request"/>
-        <argument type="service" id="argument_resolver.session"/>
-        <argument type="service" id="argument_resolver.service"/>
-        <argument type="service" id="argument_resolver.default"/>
-        <argument type="service" id="argument_resolver.variadic"/>
-      </argument>
-    </service>
-    <service id="argument_resolver.request_attribute" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver">
-      <tag name="controller.argument_value_resolver" priority="100"/>
-    </service>
-    <service id="argument_resolver.request" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver">
-      <tag name="controller.argument_value_resolver" priority="50"/>
-    </service>
-    <service id="argument_resolver.session" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver">
-      <tag name="controller.argument_value_resolver" priority="50"/>
-    </service>
-    <service id="argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <tag name="controller.argument_value_resolver" priority="-50"/>
-      <argument type="service" id=".service_locator.mGHEj8d"/>
-    </service>
-    <service id="argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver">
-      <tag name="controller.argument_value_resolver" priority="-100"/>
-    </service>
-    <service id="argument_resolver.variadic" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver">
-      <tag name="controller.argument_value_resolver" priority="-150"/>
-    </service>
     <service id="response_listener" class="Symfony\Component\HttpKernel\EventListener\ResponseListener">
       <tag name="kernel.event_subscriber"/>
       <tag name="container.hot_path"/>
@@ -153,195 +222,15 @@
     <service id="parameter_bag" class="Symfony\Component\DependencyInjection\ParameterBag\ContainerBag">
       <argument type="service" id="service_container"/>
     </service>
-    <service id="event_dispatcher" class="Symfony\Component\EventDispatcher\EventDispatcher" public="true">
-      <tag name="container.hot_path"/>
-      <tag name="event_dispatcher">event_dispatcher.dispatcher</tag>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="response_listener"/>
-          <argument>onKernelResponse</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="streamed_response_listener"/>
-          <argument>onKernelResponse</argument>
-        </argument>
-        <argument>-1024</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="locale_listener"/>
-          <argument>setDefaultLocale</argument>
-        </argument>
-        <argument>100</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="locale_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>16</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.finish_request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="locale_listener"/>
-          <argument>onKernelFinishRequest</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="validate_request_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>256</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="disallow_search_engine_index_response_listener"/>
-          <argument>onResponse</argument>
-        </argument>
-        <argument>-255</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.controller_arguments</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="exception_listener"/>
-          <argument>onControllerArguments</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.exception</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="exception_listener"/>
-          <argument>logKernelException</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.exception</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="exception_listener"/>
-          <argument>onKernelException</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="exception_listener"/>
-          <argument>removeCspHeader</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.error</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="console.error_listener"/>
-          <argument>onConsoleError</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.terminate</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="console.error_listener"/>
-          <argument>onConsoleTerminate</argument>
-        </argument>
-        <argument>-128</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.error</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="console.suggest_missing_package_subscriber"/>
-          <argument>onConsoleError</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
-        <argument>console.command</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="debug.debug_handlers_listener"/>
-          <argument>configure</argument>
-        </argument>
-        <argument>2048</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="router_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>32</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.finish_request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="router_listener"/>
-          <argument>onKernelFinishRequest</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.exception</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="router_listener"/>
-          <argument>onKernelException</argument>
-        </argument>
-        <argument>-64</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="session_listener"/>
-          <argument>onKernelRequest</argument>
-        </argument>
-        <argument>128</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.response</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="session_listener"/>
-          <argument>onKernelResponse</argument>
-        </argument>
-        <argument>-1000</argument>
-      </call>
-      <call method="addListener">
-        <argument>kernel.finish_request</argument>
-        <argument type="collection">
-          <argument type="service_closure" id="session_listener"/>
-          <argument>onFinishRequest</argument>
-        </argument>
-        <argument>0</argument>
-      </call>
-    </service>
     <service id="http_kernel" class="Symfony\Component\HttpKernel\HttpKernel" public="true">
       <tag name="container.hot_path"/>
       <tag name="container.preload" class="Symfony\Component\Runtime\Runner\Symfony\HttpKernelRunner"/>
       <tag name="container.preload" class="Symfony\Component\Runtime\Runner\Symfony\ResponseRunner"/>
       <tag name="container.preload" class="Symfony\Component\Runtime\SymfonyRuntime"/>
-      <argument type="service" id="event_dispatcher"/>
-      <argument type="service" id="controller_resolver"/>
+      <argument type="service" id="debug.event_dispatcher"/>
+      <argument type="service" id="debug.controller_resolver"/>
       <argument type="service" id="request_stack"/>
-      <argument type="service" id="argument_resolver"/>
+      <argument type="service" id="debug.argument_resolver"/>
     </service>
     <service id="request_stack" class="Symfony\Component\HttpFoundation\RequestStack" public="true"/>
     <service id="http_cache" class="Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache">
@@ -397,7 +286,14 @@
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="debug.stopwatch" type="service" id="debug.stopwatch" on-invalid="ignore_uninitialized"/>
+        <argument key="debug.event_dispatcher" type="service" id="debug.event_dispatcher" on-invalid="ignore_uninitialized"/>
         <argument key="session_listener" type="service" id="session_listener" on-invalid="ignore_uninitialized"/>
+        <argument key="form.choice_list_factory.cached" type="service" id="form.choice_list_factory.cached" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
+        <argument key="fos_rest.view_handler.default" type="service" id="fos_rest.view_handler.default" on-invalid="ignore_uninitialized"/>
+        <argument key="doctrine" type="service" id="doctrine" on-invalid="ignore_uninitialized"/>
+        <argument key="form.type.entity" type="service" id="form.type.entity" on-invalid="ignore_uninitialized"/>
       </argument>
       <argument type="collection">
         <argument key="cache.app" type="collection">
@@ -418,7 +314,28 @@
         <argument key="cache.property_info" type="collection">
           <argument>reset</argument>
         </argument>
+        <argument key="debug.stopwatch" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="debug.event_dispatcher" type="collection">
+          <argument>reset</argument>
+        </argument>
         <argument key="session_listener" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="form.choice_list_factory.cached" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="cache.validator_expression_language" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="fos_rest.view_handler.default" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="doctrine" type="collection">
+          <argument>reset</argument>
+        </argument>
+        <argument key="form.type.entity" type="collection">
           <argument>reset</argument>
         </argument>
       </argument>
@@ -427,12 +344,24 @@
       <argument type="service" id="service_container"/>
       <argument type="service" id=".service_locator.XXv1IfR"/>
     </service>
+    <service id="locale_aware_listener" class="Symfony\Component\HttpKernel\EventListener\LocaleAwareListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <tag name="container.hot_path"/>
+      <argument type="iterator">
+        <argument type="service" id="slugger"/>
+      </argument>
+      <argument type="service" id="request_stack"/>
+    </service>
     <service id="container.env_var_processor" class="Symfony\Component\DependencyInjection\EnvVarProcessor">
       <tag name="container.env_var_processor"/>
       <argument type="service" id="service_container"/>
       <argument type="tagged_iterator" tag="container.env_var_loader"/>
     </service>
-    <service id="slugger" class="stdClass"/>
+    <service id="slugger" class="Symfony\Component\String\Slugger\AsciiSlugger">
+      <tag name="kernel.locale_aware"/>
+      <argument>en</argument>
+    </service>
     <service id="container.getenv" class="Closure">
       <tag name="routing.expression_language_function" function="env"/>
       <argument type="collection">
@@ -463,7 +392,7 @@
     <service id="fragment.renderer.inline" class="Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer">
       <tag name="kernel.fragment_renderer" alias="inline"/>
       <argument type="service" id="http_kernel"/>
-      <argument type="service" id="event_dispatcher"/>
+      <argument type="service" id="debug.event_dispatcher"/>
       <call method="setFragmentPath">
         <argument>/_fragment</argument>
       </call>
@@ -542,6 +471,9 @@
         <argument>cache.serializer</argument>
         <argument>cache.annotations</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.validator_expression_language</argument>
+        <argument>cache.doctrine.orm.default.result</argument>
+        <argument>cache.doctrine.orm.default.query</argument>
       </argument>
       <call method="setName">
         <argument>cache:pool:clear</argument>
@@ -572,6 +504,9 @@
         <argument>cache.serializer</argument>
         <argument>cache.annotations</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.validator_expression_language</argument>
+        <argument>cache.doctrine.orm.default.result</argument>
+        <argument>cache.doctrine.orm.default.query</argument>
       </argument>
       <call method="setName">
         <argument>cache:pool:delete</argument>
@@ -590,6 +525,9 @@
         <argument>cache.serializer</argument>
         <argument>cache.annotations</argument>
         <argument>cache.property_info</argument>
+        <argument>cache.validator_expression_language</argument>
+        <argument>cache.doctrine.orm.default.result</argument>
+        <argument>cache.doctrine.orm.default.query</argument>
       </argument>
       <call method="setName">
         <argument>cache:pool:list</argument>
@@ -708,6 +646,17 @@
         <argument>Help debug routes by simulating a path info match</argument>
       </call>
     </service>
+    <service id="console.command.validator_debug" class="Symfony\Component\Validator\Command\DebugCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="validator"/>
+      <call method="setName">
+        <argument>debug:validator</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Display validation constraints for classes</argument>
+      </call>
+    </service>
     <service id="console.command.yaml_lint" class="Symfony\Bundle\FrameworkBundle\Command\YamlLintCommand">
       <tag name="console.command"/>
       <tag name="container.no_preload"/>
@@ -716,6 +665,40 @@
       </call>
       <call method="setDescription">
         <argument>Lint a YAML file and outputs encountered errors</argument>
+      </call>
+    </service>
+    <service id="console.command.form_debug" class="Symfony\Component\Form\Command\DebugCommand">
+      <tag name="console.command"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="form.registry"/>
+      <argument type="collection">
+        <argument>Symfony\Component\Form\Extension\Core\Type</argument>
+        <argument>Symfony\Bridge\Doctrine\Form\Type</argument>
+      </argument>
+      <argument type="collection">
+        <argument>Symfony\Component\Form\Extension\Core\Type\FormType</argument>
+        <argument>Symfony\Component\Form\Extension\Core\Type\ChoiceType</argument>
+        <argument>Symfony\Component\Form\Extension\Core\Type\FileType</argument>
+        <argument>Symfony\Component\Form\Extension\Core\Type\ColorType</argument>
+        <argument>Symfony\Bridge\Doctrine\Form\Type\EntityType</argument>
+      </argument>
+      <argument type="collection">
+        <argument>Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension</argument>
+        <argument>Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension</argument>
+        <argument>Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension</argument>
+        <argument>Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension</argument>
+        <argument>Symfony\Component\Form\Extension\Validator\Type\SubmitTypeValidatorExtension</argument>
+      </argument>
+      <argument type="collection">
+        <argument>Symfony\Component\Form\Extension\Validator\ValidatorTypeGuesser</argument>
+        <argument>Symfony\Bridge\Doctrine\Form\DoctrineOrmTypeGuesser</argument>
+      </argument>
+      <argument type="service" id="debug.file_link_formatter" on-invalid="null"/>
+      <call method="setName">
+        <argument>debug:form</argument>
+      </call>
+      <call method="setDescription">
+        <argument>Display form type information</argument>
       </call>
     </service>
     <service id="console.command.secrets_set" class="Symfony\Bundle\FrameworkBundle\Command\SecretsSetCommand">
@@ -986,6 +969,7 @@
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
       </argument>
     </service>
     <service id="cache.global_clearer" class="Symfony\Component\HttpKernel\CacheClearer\Psr6CacheClearer" public="true">
@@ -997,6 +981,9 @@
         <argument key="cache.serializer" type="service" id="cache.serializer" on-invalid="ignore_uninitialized"/>
         <argument key="cache.annotations" type="service" id="cache.annotations" on-invalid="ignore_uninitialized"/>
         <argument key="cache.property_info" type="service" id="cache.property_info" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.validator_expression_language" type="service" id="cache.validator_expression_language" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.doctrine.orm.default.result" type="service" id="cache.doctrine.orm.default.result" on-invalid="ignore_uninitialized"/>
+        <argument key="cache.doctrine.orm.default.query" type="service" id="cache.doctrine.orm.default.query" on-invalid="ignore_uninitialized"/>
       </argument>
     </service>
     <service id="debug.debug_handlers_listener" class="Symfony\Component\HttpKernel\EventListener\DebugHandlersListener">
@@ -1013,6 +1000,264 @@
     </service>
     <service id="debug.file_link_formatter" class="Symfony\Component\HttpKernel\Debug\FileLinkFormatter">
       <argument>null</argument>
+    </service>
+    <service id="debug.stopwatch" class="Symfony\Component\Stopwatch\Stopwatch">
+      <tag name="kernel.reset" method="reset"/>
+      <argument>true</argument>
+    </service>
+    <service id="debug.event_dispatcher" class="Symfony\Component\HttpKernel\Debug\TraceableEventDispatcher">
+      <tag name="container.hot_path"/>
+      <tag name="event_dispatcher">event_dispatcher.dispatcher</tag>
+      <tag name="monolog.logger" channel="event"/>
+      <tag name="kernel.reset" method="reset"/>
+      <tag name="container.decorator" id="event_dispatcher"/>
+      <argument type="service" id="debug.event_dispatcher.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="request_stack" on-invalid="null"/>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="response_listener"/>
+          <argument>onKernelResponse</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="streamed_response_listener"/>
+          <argument>onKernelResponse</argument>
+        </argument>
+        <argument>-1024</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="locale_listener"/>
+          <argument>setDefaultLocale</argument>
+        </argument>
+        <argument>100</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="locale_listener"/>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>16</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.finish_request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="locale_listener"/>
+          <argument>onKernelFinishRequest</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="validate_request_listener"/>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>256</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="disallow_search_engine_index_response_listener"/>
+          <argument>onResponse</argument>
+        </argument>
+        <argument>-255</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller_arguments</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>onControllerArguments</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>logKernelException</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>onKernelException</argument>
+        </argument>
+        <argument>-128</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="exception_listener"/>
+          <argument>removeCspHeader</argument>
+        </argument>
+        <argument>-128</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="locale_aware_listener"/>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>15</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.finish_request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="locale_aware_listener"/>
+          <argument>onKernelFinishRequest</argument>
+        </argument>
+        <argument>-15</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.error</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="console.error_listener"/>
+          <argument>onConsoleError</argument>
+        </argument>
+        <argument>-128</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.terminate</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="console.error_listener"/>
+          <argument>onConsoleTerminate</argument>
+        </argument>
+        <argument>-128</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.error</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="console.suggest_missing_package_subscriber"/>
+          <argument>onConsoleError</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="router_listener"/>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>32</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.finish_request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="router_listener"/>
+          <argument>onKernelFinishRequest</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.exception</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="router_listener"/>
+          <argument>onKernelException</argument>
+        </argument>
+        <argument>-64</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="session_listener"/>
+          <argument>onKernelRequest</argument>
+        </argument>
+        <argument>128</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="session_listener"/>
+          <argument>onKernelResponse</argument>
+        </argument>
+        <argument>-1000</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.finish_request</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="session_listener"/>
+          <argument>onFinishRequest</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="sensio_framework_extra.controller.listener"/>
+          <argument>onKernelController</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="sensio_framework_extra.converter.listener"/>
+          <argument>onKernelController</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="sensio_framework_extra.cache.listener"/>
+          <argument>onKernelController</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.response</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="sensio_framework_extra.cache.listener"/>
+          <argument>onKernelResponse</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+      <call method="addListener">
+        <argument>kernel.controller_arguments</argument>
+        <argument type="collection">
+          <argument type="service_closure" id="framework_extra_bundle.event.is_granted"/>
+          <argument>onKernelControllerArguments</argument>
+        </argument>
+        <argument>0</argument>
+      </call>
+    </service>
+    <service id="debug.controller_resolver" class="Symfony\Component\HttpKernel\Controller\TraceableControllerResolver">
+      <tag name="monolog.logger" channel="request"/>
+      <tag name="container.decorator" id="controller_resolver"/>
+      <argument type="service" id="debug.controller_resolver.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver" class="Symfony\Component\HttpKernel\Controller\TraceableArgumentResolver">
+      <tag name="container.decorator" id="argument_resolver"/>
+      <argument type="service" id="debug.argument_resolver.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
     </service>
     <service id="routing.resolver" class="Symfony\Component\Config\Loader\LoaderResolver">
       <call method="addLoader">
@@ -1032,6 +1277,15 @@
       </call>
       <call method="addLoader">
         <argument type="service" id="routing.loader.container"/>
+      </call>
+      <call method="addLoader">
+        <argument type="service" id="routing.loader.annotation"/>
+      </call>
+      <call method="addLoader">
+        <argument type="service" id="routing.loader.annotation.directory"/>
+      </call>
+      <call method="addLoader">
+        <argument type="service" id="routing.loader.annotation.file"/>
       </call>
     </service>
     <service id="routing.loader.xml" class="Symfony\Component\Routing\Loader\XmlFileLoader">
@@ -1135,6 +1389,72 @@
     <service id="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" class="Symfony\Bundle\FrameworkBundle\Controller\TemplateController" public="true">
       <argument>null</argument>
     </service>
+    <service id="routing.loader.annotation" class="Symfony\Bundle\FrameworkBundle\Routing\AnnotatedRouteControllerLoader">
+      <tag name="routing.loader" priority="-10"/>
+      <argument type="service" id="annotations.cached_reader" on-invalid="null"/>
+      <argument>dev</argument>
+    </service>
+    <service id="routing.loader.annotation.directory" class="Symfony\Component\Routing\Loader\AnnotationDirectoryLoader">
+      <tag name="routing.loader" priority="-10"/>
+      <argument type="service" id="file_locator"/>
+      <argument type="service" id="routing.loader.annotation"/>
+    </service>
+    <service id="routing.loader.annotation.file" class="Symfony\Component\Routing\Loader\AnnotationFileLoader">
+      <tag name="routing.loader" priority="-10"/>
+      <argument type="service" id="file_locator"/>
+      <argument type="service" id="routing.loader.annotation"/>
+    </service>
+    <service id="annotations.reader" class="Doctrine\Common\Annotations\AnnotationReader">
+      <call method="addGlobalIgnoredName">
+        <argument>required</argument>
+        <argument>null</argument>
+      </call>
+    </service>
+    <service id="annotations.cached_reader" class="Doctrine\Common\Annotations\PsrCachedReader">
+      <tag name="annotations.cached_reader"/>
+      <tag name="container.do_not_inline"/>
+      <argument type="service" id="annotations.reader"/>
+      <argument type="service">
+        <service class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
+      </argument>
+      <argument>true</argument>
+      <argument type="service_closure" id="annotations.cache_adapter"/>
+    </service>
+    <service id="annotations.filesystem_cache_adapter" class="Symfony\Component\Cache\Adapter\FilesystemAdapter">
+      <argument></argument>
+      <argument>0</argument>
+      <argument type="abstract">Cache-Directory</argument>
+    </service>
+    <service id="annotations.filesystem_cache" class="Doctrine\Common\Cache\Psr6\DoctrineProvider">
+      <argument type="service" id="annotations.filesystem_cache_adapter"/>
+      <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
+      <deprecated package="symfony/framework-bundle" version="5.4">"%service_id% is deprecated"</deprecated>
+    </service>
+    <service id="annotations.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\AnnotationsCacheWarmer">
+      <tag name="kernel.cache_warmer"/>
+      <argument type="service" id="annotations.reader"/>
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/annotations.php</argument>
+      <argument>#^Symfony\\(?:Component\\HttpKernel\\|Bundle\\FrameworkBundle\\Controller\\(?!.*Controller$))#</argument>
+      <argument>true</argument>
+    </service>
+    <service id="annotations.cache_adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter">
+      <tag name="container.hot_path"/>
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/annotations.php</argument>
+      <argument type="service" id="cache.annotations"/>
+      <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
+    </service>
+    <service id="annotations.cache" class="Doctrine\Common\Cache\Psr6\DoctrineProvider">
+      <argument type="service" id="annotations.cache_adapter"/>
+      <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
+      <deprecated package="symfony/framework-bundle" version="5.4">"%service_id% is deprecated"</deprecated>
+    </service>
+    <service id="property_accessor" class="Symfony\Component\PropertyAccess\PropertyAccessor">
+      <argument>3</argument>
+      <argument>2</argument>
+      <argument type="service" id="cache.property_access" on-invalid="ignore"/>
+      <argument type="service" id="property_info.reflection_extractor" on-invalid="null"/>
+      <argument type="service" id="property_info.reflection_extractor" on-invalid="null"/>
+    </service>
     <service id="secrets.vault" class="Symfony\Bundle\FrameworkBundle\Secrets\SodiumVault">
       <tag name="container.env_var_loader"/>
       <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/config/secrets/%env(default:kernel.environment:APP_RUNTIME_ENV)%</argument>
@@ -1147,6 +1467,30 @@
     </service>
     <service id="secrets.local_vault" class="Symfony\Bundle\FrameworkBundle\Secrets\DotenvVault">
       <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/.env.dev.local</argument>
+    </service>
+    <service id="property_info" class="Symfony\Component\PropertyInfo\PropertyInfoExtractor">
+      <argument type="iterator">
+        <argument type="service" id="property_info.reflection_extractor"/>
+        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+      </argument>
+      <argument type="iterator">
+        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+        <argument type="service" id="property_info.reflection_extractor"/>
+      </argument>
+      <argument type="iterator"/>
+      <argument type="iterator">
+        <argument type="service" id="doctrine.orm.default_entity_manager.property_info_extractor"/>
+        <argument type="service" id="property_info.reflection_extractor"/>
+      </argument>
+      <argument type="iterator">
+        <argument type="service" id="property_info.reflection_extractor"/>
+      </argument>
+    </service>
+    <service id="property_info.reflection_extractor" class="Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor">
+      <tag name="property_info.list_extractor" priority="-1000"/>
+      <tag name="property_info.type_extractor" priority="-1002"/>
+      <tag name="property_info.access_extractor" priority="-1000"/>
+      <tag name="property_info.initializable_extractor" priority="-1000"/>
     </service>
     <service id=".cache_connection.GD_MSZC" class="Symfony\Component\Cache\Adapter\AbstractAdapter">
       <argument>redis://localhost</argument>
@@ -1161,6 +1505,10 @@
         <argument key="lazy">true</argument>
       </argument>
       <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createConnection"/>
+    </service>
+    <service id="cache.property_access" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
+      <argument>0</argument>
+      <argument>false</argument>
     </service>
     <service id=".session.do-not-use" class="Symfony\Component\HttpFoundation\Session\Session">
       <factory service="session.factory" method="createSession"/>
@@ -1251,6 +1599,1719 @@
       <argument>%session.storage.options%</argument>
     </service>
     <service id="session.marshaller" class="Symfony\Component\HttpFoundation\Session\Storage\Handler\IdentityMarshaller"/>
+    <service id="form.resolved_type_factory" class="Symfony\Component\Form\ResolvedFormTypeFactory"/>
+    <service id="form.registry" class="Symfony\Component\Form\FormRegistry">
+      <argument type="collection">
+        <argument type="service" id="form.extension"/>
+      </argument>
+      <argument type="service" id="form.resolved_type_factory"/>
+    </service>
+    <service id="form.factory" class="Symfony\Component\Form\FormFactory" public="true">
+      <tag name="container.private" package="symfony/framework-bundle" version="5.2"/>
+      <argument type="service" id="form.registry"/>
+    </service>
+    <service id="form.extension" class="Symfony\Component\Form\Extension\DependencyInjection\DependencyInjectionExtension">
+      <argument type="service" id=".service_locator.y4dplYt"/>
+      <argument type="collection">
+        <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="iterator">
+          <argument type="service" id="form.type_extension.form.transformation_failure_handling"/>
+          <argument type="service" id="form.type_extension.form.http_foundation"/>
+          <argument type="service" id="form.type_extension.form.validator"/>
+        </argument>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\RepeatedType" type="iterator">
+          <argument type="service" id="form.type_extension.repeated.validator"/>
+        </argument>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\SubmitType" type="iterator">
+          <argument type="service" id="form.type_extension.submit.validator"/>
+        </argument>
+      </argument>
+      <argument type="iterator">
+        <argument type="service" id="form.type_guesser.validator"/>
+        <argument type="service" id="form.type_guesser.doctrine"/>
+      </argument>
+    </service>
+    <service id="form.type_guesser.validator" class="Symfony\Component\Form\Extension\Validator\ValidatorTypeGuesser">
+      <tag name="form.type_guesser"/>
+      <argument type="service" id="validator"/>
+    </service>
+    <service id="form.choice_list_factory.default" class="Symfony\Component\Form\ChoiceList\Factory\DefaultChoiceListFactory"/>
+    <service id="form.choice_list_factory.property_access" class="Symfony\Component\Form\ChoiceList\Factory\PropertyAccessDecorator">
+      <argument type="service" id="form.choice_list_factory.default"/>
+      <argument type="service" id="property_accessor"/>
+    </service>
+    <service id="form.choice_list_factory.cached" class="Symfony\Component\Form\ChoiceList\Factory\CachingFactoryDecorator">
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="form.choice_list_factory.property_access"/>
+    </service>
+    <service id="form.type.form" class="Symfony\Component\Form\Extension\Core\Type\FormType">
+      <tag name="form.type"/>
+      <argument type="service" id="property_accessor"/>
+    </service>
+    <service id="form.type.choice" class="Symfony\Component\Form\Extension\Core\Type\ChoiceType">
+      <tag name="form.type"/>
+      <argument type="service" id="form.choice_list_factory.cached"/>
+      <argument>null</argument>
+    </service>
+    <service id="form.type.file" class="Symfony\Component\Form\Extension\Core\Type\FileType" public="true">
+      <tag name="form.type"/>
+      <tag name="container.private" package="symfony/framework-bundle" version="5.2"/>
+      <argument>null</argument>
+    </service>
+    <service id="form.type.color" class="Symfony\Component\Form\Extension\Core\Type\ColorType">
+      <tag name="form.type"/>
+      <argument>null</argument>
+    </service>
+    <service id="form.type_extension.form.transformation_failure_handling" class="Symfony\Component\Form\Extension\Core\Type\TransformationFailureExtension">
+      <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
+      <argument>null</argument>
+    </service>
+    <service id="form.type_extension.form.http_foundation" class="Symfony\Component\Form\Extension\HttpFoundation\Type\FormTypeHttpFoundationExtension">
+      <tag name="form.type_extension"/>
+      <argument type="service" id="form.type_extension.form.request_handler"/>
+    </service>
+    <service id="form.type_extension.form.request_handler" class="Symfony\Component\Form\Extension\HttpFoundation\HttpFoundationRequestHandler">
+      <argument type="service" id="form.server_params"/>
+    </service>
+    <service id="form.server_params" class="Symfony\Component\Form\Util\ServerParams">
+      <argument type="service" id="request_stack"/>
+    </service>
+    <service id="form.type_extension.form.validator" class="Symfony\Component\Form\Extension\Validator\Type\FormTypeValidatorExtension">
+      <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\FormType"/>
+      <argument type="service" id="validator"/>
+      <argument>true</argument>
+      <argument>null</argument>
+      <argument>null</argument>
+    </service>
+    <service id="form.type_extension.repeated.validator" class="Symfony\Component\Form\Extension\Validator\Type\RepeatedTypeValidatorExtension">
+      <tag name="form.type_extension"/>
+    </service>
+    <service id="form.type_extension.submit.validator" class="Symfony\Component\Form\Extension\Validator\Type\SubmitTypeValidatorExtension">
+      <tag name="form.type_extension" extended-type="Symfony\Component\Form\Extension\Core\Type\SubmitType"/>
+    </service>
+    <service id="validator" class="Symfony\Component\Validator\Validator\ValidatorInterface" public="true">
+      <tag name="container.private" package="symfony/framework-bundle" version="5.2"/>
+      <factory service="validator.builder" method="getValidator"/>
+    </service>
+    <service id="validator.builder" class="Symfony\Component\Validator\ValidatorBuilder">
+      <call method="setConstraintValidatorFactory">
+        <argument type="service" id="validator.validator_factory"/>
+      </call>
+      <call method="setTranslationDomain">
+        <argument>validators</argument>
+      </call>
+      <call method="addXmlMappings">
+        <argument type="collection">
+          <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/vendor/symfony/form/Resources/config/validation.xml</argument>
+        </argument>
+      </call>
+      <call method="enableAnnotationMapping">
+        <argument>true</argument>
+      </call>
+      <call method="setDoctrineAnnotationReader">
+        <argument type="service" id="annotations.cached_reader"/>
+      </call>
+      <call method="addMethodMapping">
+        <argument>loadValidatorMetadata</argument>
+      </call>
+      <call method="addObjectInitializers">
+        <argument type="collection">
+          <argument type="service" id="doctrine.orm.validator_initializer"/>
+        </argument>
+      </call>
+      <call method="addLoader">
+        <argument type="service" id="validator.property_info_loader"/>
+      </call>
+      <call method="addLoader">
+        <argument type="service" id="doctrine.orm.default_entity_manager.validator_loader"/>
+      </call>
+      <factory class="Symfony\Component\Validator\Validation" method="createValidatorBuilder"/>
+    </service>
+    <service id="validator.mapping.cache_warmer" class="Symfony\Bundle\FrameworkBundle\CacheWarmer\ValidatorCacheWarmer">
+      <tag name="kernel.cache_warmer"/>
+      <argument type="service" id="validator.builder"/>
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/validation.php</argument>
+    </service>
+    <service id="validator.mapping.cache.adapter" class="Symfony\Component\Cache\Adapter\PhpArrayAdapter">
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/validation.php</argument>
+      <argument type="service" id="cache.validator"/>
+      <factory class="Symfony\Component\Cache\Adapter\PhpArrayAdapter" method="create"/>
+    </service>
+    <service id="validator.validator_factory" class="Symfony\Component\Validator\ContainerConstraintValidatorFactory">
+      <argument type="service" id=".service_locator.AHPGEE6"/>
+    </service>
+    <service id="validator.expression" class="Symfony\Component\Validator\Constraints\ExpressionValidator">
+      <tag name="validator.constraint_validator" alias="validator.expression"/>
+      <argument>null</argument>
+    </service>
+    <service id="cache.validator_expression_language" class="Symfony\Component\Cache\Adapter\AdapterInterface" public="true">
+      <tag name="cache.pool"/>
+      <tag name="kernel.reset" method="reset"/>
+      <argument>RxhjT61rs4</argument>
+      <argument>0</argument>
+      <argument>%container.build_id%</argument>
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/pools/system</argument>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+      <factory class="Symfony\Component\Cache\Adapter\AbstractAdapter" method="createSystemCache"/>
+    </service>
+    <service id="validator.email" class="Symfony\Component\Validator\Constraints\EmailValidator">
+      <tag name="validator.constraint_validator" alias="Symfony\Component\Validator\Constraints\EmailValidator"/>
+      <argument>html5</argument>
+    </service>
+    <service id="validator.not_compromised_password" class="Symfony\Component\Validator\Constraints\NotCompromisedPasswordValidator">
+      <tag name="validator.constraint_validator" alias="Symfony\Component\Validator\Constraints\NotCompromisedPasswordValidator"/>
+      <argument>null</argument>
+      <argument>UTF-8</argument>
+      <argument>true</argument>
+      <argument>null</argument>
+    </service>
+    <service id="validator.property_info_loader" class="Symfony\Component\Validator\Mapping\Loader\PropertyInfoLoader">
+      <tag name="validator.auto_mapper"/>
+      <argument type="service" id="property_info"/>
+      <argument type="service" id="property_info"/>
+      <argument type="service" id="property_info"/>
+      <argument>null</argument>
+    </service>
+    <service id="fos_rest.view_handler.default" class="FOS\RestBundle\View\ViewHandler">
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="router.default"/>
+      <argument type="service" id="fos_rest.serializer.jms"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="collection">
+        <argument key="json">false</argument>
+        <argument key="xml">false</argument>
+      </argument>
+      <argument>400</argument>
+      <argument>204</argument>
+      <argument>false</argument>
+      <argument type="collection">
+        <argument key="serializeNullStrategy">false</argument>
+      </argument>
+      <factory class="FOS\RestBundle\View\ViewHandler" method="create"/>
+    </service>
+    <service id="fos_rest.view_handler.jsonp" class="FOS\RestBundle\View\JsonpHandler">
+      <argument></argument>
+    </service>
+    <service id="fos_rest.request.param_fetcher" class="FOS\RestBundle\Request\ParamFetcher">
+      <argument type="service" id="service_container"/>
+      <argument type="service" id="fos_rest.request.param_fetcher.reader"/>
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="validator" on-invalid="null"/>
+    </service>
+    <service id="fos_rest.request.param_fetcher.reader" class="FOS\RestBundle\Request\ParamReader">
+      <argument type="service" id="annotations.cached_reader" on-invalid="null"/>
+    </service>
+    <service id="fos_rest.serializer.jms" class="FOS\RestBundle\Serializer\JMSSerializerAdapter">
+      <argument type="service" id="jms_serializer.serializer"/>
+      <argument type="service" id="jms_serializer.configured_serialization_context_factory"/>
+      <argument type="service" id="jms_serializer.configured_deserialization_context_factory"/>
+    </service>
+    <service id="fos_rest.serializer.symfony" class="FOS\RestBundle\Serializer\SymfonySerializerAdapter">
+      <argument type="service" id="serializer"/>
+    </service>
+    <service id="fos_rest.serializer.form_error_normalizer" class="FOS\RestBundle\Serializer\Normalizer\FormErrorNormalizer">
+      <tag name="serializer.normalizer" priority="-10"/>
+    </service>
+    <service id="sensio_framework_extra.controller.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ControllerListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="annotations.cached_reader"/>
+    </service>
+    <service id="sensio_framework_extra.converter.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\ParamConverterListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="sensio_framework_extra.converter.manager"/>
+      <argument>true</argument>
+    </service>
+    <service id="sensio_framework_extra.converter.manager" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterManager">
+      <call method="add">
+        <argument type="service" id="sensio_framework_extra.converter.doctrine.orm"/>
+        <argument>0</argument>
+        <argument>doctrine.orm</argument>
+      </call>
+      <call method="add">
+        <argument type="service" id="framework_extra_bundle.date_time_param_converter"/>
+        <argument>0</argument>
+        <argument>datetime</argument>
+      </call>
+    </service>
+    <service id="sensio_framework_extra.converter.doctrine.orm" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DoctrineParamConverter">
+      <tag name="request.param_converter" converter="doctrine.orm"/>
+      <argument type="service" id="doctrine" on-invalid="ignore"/>
+      <argument>null</argument>
+    </service>
+    <service id="framework_extra_bundle.date_time_param_converter" class="Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\DateTimeParamConverter">
+      <tag name="request.param_converter" converter="datetime"/>
+    </service>
+    <service id="sensio_framework_extra.view.guesser" class="Sensio\Bundle\FrameworkExtraBundle\Templating\TemplateGuesser">
+      <argument type="service" id="kernel"/>
+    </service>
+    <service id="sensio_framework_extra.cache.listener" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\HttpCacheListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <tag name="container.hot_path"/>
+    </service>
+    <service id="framework_extra_bundle.event.is_granted" class="Sensio\Bundle\FrameworkExtraBundle\EventListener\IsGrantedListener">
+      <tag name="kernel.event_subscriber"/>
+      <tag name="container.hot_path"/>
+      <argument type="service" id="framework_extra_bundle.argument_name_convertor"/>
+      <argument>null</argument>
+    </service>
+    <service id="framework_extra_bundle.argument_name_convertor" class="Sensio\Bundle\FrameworkExtraBundle\Request\ArgumentNameConverter">
+      <argument type="service" id="argument_metadata_factory"/>
+    </service>
+    <service id="jms_serializer.event_dispatcher" class="JMS\SerializerBundle\Debug\TraceableEventDispatcher">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.event_dispatcher.service_locator"/>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.stopwatch_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>null</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.traceable_runs_listener</argument>
+          <argument>saveRunInfo</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>null</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerializeTypedProxy</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\Persistence\Proxy</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerializeTypedProxy</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\Common\Persistence\Proxy</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\ORM\PersistentCollection</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\ODM\MongoDB\PersistentCollection</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\ODM\PHPCR\PersistentCollection</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\Persistence\Proxy</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>Doctrine\Common\Persistence\Proxy</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.doctrine_proxy_subscriber</argument>
+          <argument>onPreSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>ProxyManager\Proxy\LazyLoadingInterface</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.pre_deserialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.traceable_runs_listener</argument>
+          <argument>saveRunInfo</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>null</argument>
+      </call>
+      <call method="addListener">
+        <argument>serializer.post_serialize</argument>
+        <argument type="collection">
+          <argument>jms_serializer.stopwatch_subscriber</argument>
+          <argument>onPostSerialize</argument>
+        </argument>
+        <argument>null</argument>
+        <argument>null</argument>
+        <argument>null</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.event_dispatcher.service_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="collection">
+        <argument key="jms_serializer.stopwatch_subscriber" type="service_closure" id="jms_serializer.stopwatch_subscriber"/>
+        <argument key="jms_serializer.traceable_runs_listener" type="service_closure" id="jms_serializer.traceable_runs_listener"/>
+        <argument key="jms_serializer.doctrine_proxy_subscriber" type="service_closure" id="jms_serializer.doctrine_proxy_subscriber"/>
+      </argument>
+    </service>
+    <service id="jms_serializer.doctrine_proxy_subscriber" class="JMS\Serializer\EventDispatcher\Subscriber\DoctrineProxySubscriber">
+      <tag name="jms_serializer.event_subscriber"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>true</argument>
+      <argument>false</argument>
+    </service>
+    <service id="jms_serializer.stopwatch_subscriber" class="JMS\SerializerBundle\Serializer\StopwatchEventSubscriber">
+      <tag name="jms_serializer.event_subscriber"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="debug.stopwatch"/>
+      <argument>jms_serializer.default</argument>
+    </service>
+    <service id="jms_serializer.handler_registry.service_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="collection">
+        <argument key="jms_serializer.array_collection_handler" type="service_closure" id="jms_serializer.array_collection_handler"/>
+        <argument key="jms_serializer.constraint_violation_handler" type="service_closure" id="jms_serializer.constraint_violation_handler"/>
+        <argument key="jms_serializer.datetime_handler" type="service_closure" id="jms_serializer.datetime_handler"/>
+        <argument key="jms_serializer.iterator_handler" type="service_closure" id="jms_serializer.iterator_handler"/>
+        <argument key="fos_rest.serializer.form_error_handler" type="service_closure" id="fos_rest.serializer.form_error_handler"/>
+      </argument>
+    </service>
+    <service id="jms_serializer.array_collection_handler" class="JMS\Serializer\Handler\ArrayCollectionHandler">
+      <tag name="jms_serializer.subscribing_handler"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>false</argument>
+    </service>
+    <service id="jms_serializer.constraint_violation_handler" class="JMS\Serializer\Handler\ConstraintViolationHandler">
+      <tag name="jms_serializer.subscribing_handler"/>
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.datetime_handler" class="JMS\Serializer\Handler\DateHandler">
+      <tag name="jms_serializer.subscribing_handler"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>Y-m-d\TH:i:sP</argument>
+      <argument>UTC</argument>
+      <argument>true</argument>
+    </service>
+    <service id="jms_serializer.iterator_handler" class="JMS\Serializer\Handler\IteratorHandler">
+      <tag name="jms_serializer.subscribing_handler"/>
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.type_parser" class="JMS\Serializer\Type\Parser">
+      <tag name="jms_serializer.instance_global"/>
+    </service>
+    <service id="jms_serializer.metadata.yaml_driver" class="JMS\Serializer\Metadata\Driver\YamlDriver">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.metadata.traceable_file_locator"/>
+      <argument type="service" id="jms_serializer.serialized_name_annotation_strategy"/>
+      <argument type="service" id="jms_serializer.type_parser" on-invalid="null"/>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.metadata.xml_driver" class="JMS\Serializer\Metadata\Driver\XmlDriver">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.metadata.traceable_file_locator"/>
+      <argument type="service" id="jms_serializer.serialized_name_annotation_strategy"/>
+      <argument type="service" id="jms_serializer.type_parser" on-invalid="null"/>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.metadata.annotation_driver" class="JMS\Serializer\Metadata\Driver\AnnotationDriver">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="annotations.cached_reader"/>
+      <argument type="service" id="jms_serializer.serialized_name_annotation_strategy"/>
+      <argument type="service" id="jms_serializer.type_parser" on-invalid="null"/>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.metadata.doctrine_type_driver" class="JMS\Serializer\Metadata\Driver\DoctrineTypeDriver">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="container.decorator" id="jms_serializer.metadata_driver"/>
+      <argument type="service" id="jms_serializer.metadata.doctrine_type_driver.inner"/>
+      <argument type="service" id="doctrine"/>
+      <argument type="service" id="jms_serializer.type_parser"/>
+    </service>
+    <service id="jms_serializer.metadata.service_locator" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="collection">
+        <argument key="metadata_driver" type="service_closure" id="jms_serializer.metadata.doctrine_type_driver"/>
+      </argument>
+    </service>
+    <service id="jms_serializer.metadata.lazy_loading_driver" class="Metadata\Driver\LazyLoadingDriver">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.metadata.service_locator"/>
+      <argument>metadata_driver</argument>
+    </service>
+    <service id="jms_serializer.metadata.cache.file_cache" class="Metadata\Cache\FileCache">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/jms_serializer_default</argument>
+    </service>
+    <service id="jms_serializer.version_exclusion_strategy" class="JMS\Serializer\Exclusion\VersionExclusionStrategy" abstract="true">
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.camel_case_naming_strategy" class="JMS\Serializer\Naming\CamelCaseNamingStrategy">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>_</argument>
+      <argument>true</argument>
+    </service>
+    <service id="jms_serializer.identical_property_naming_strategy" class="JMS\Serializer\Naming\IdenticalPropertyNamingStrategy">
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.serialized_name_annotation_strategy" class="JMS\Serializer\Naming\SerializedNameAnnotationStrategy">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.camel_case_naming_strategy"/>
+    </service>
+    <service id="jms_serializer.doctrine_object_constructor" class="JMS\Serializer\Construction\DoctrineObjectConstructor">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="container.decorator" id="jms_serializer.object_constructor"/>
+      <argument type="service" id="doctrine" on-invalid="ignore"/>
+      <argument type="service" id="jms_serializer.doctrine_object_constructor.inner"/>
+      <argument type="string">null</argument>
+    </service>
+    <service id="jms_serializer.doctrine_phpcr_object_constructor" class="JMS\Serializer\Construction\DoctrineObjectConstructor">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>null</argument>
+      <argument type="service" id="jms_serializer.doctrine_object_constructor"/>
+    </service>
+    <service id="jms_serializer.serializer" class="JMS\Serializer\Serializer">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="default">jms_serializer.serializer</tag>
+      <argument type="service" id="jms_serializer.traceable_metadata_factory"/>
+      <argument type="collection">
+        <argument key="2" type="service" id="jms_serializer.deserialization_graph_navigator_factory"/>
+        <argument key="1" type="service" id="jms_serializer.serialization_graph_navigator_factory"/>
+      </argument>
+      <argument type="collection">
+        <argument key="json" type="service" id="jms_serializer.json_serialization_visitor"/>
+        <argument key="xml" type="service" id="jms_serializer.xml_serialization_visitor"/>
+      </argument>
+      <argument type="collection">
+        <argument key="json" type="service" id="jms_serializer.json_deserialization_visitor"/>
+        <argument key="xml" type="service" id="jms_serializer.xml_deserialization_visitor"/>
+      </argument>
+      <argument type="service" id="jms_serializer.configured_serialization_context_factory"/>
+      <argument type="service" id="jms_serializer.configured_deserialization_context_factory"/>
+      <argument type="service" id="jms_serializer.type_parser" on-invalid="null"/>
+    </service>
+    <service id="jms_serializer.deserialization_graph_navigator_factory" class="JMS\Serializer\GraphNavigator\Factory\DeserializationGraphNavigatorFactory">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.traceable_metadata_factory"/>
+      <argument type="service" id="jms_serializer.traceable_handler_registry"/>
+      <argument type="service" id="jms_serializer.doctrine_object_constructor"/>
+      <argument type="service" id="jms_serializer.accessor_strategy.default"/>
+      <argument type="service" id="jms_serializer.event_dispatcher"/>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.serialization_graph_navigator_factory" class="JMS\Serializer\GraphNavigator\Factory\SerializationGraphNavigatorFactory">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.traceable_metadata_factory"/>
+      <argument type="service" id="jms_serializer.traceable_handler_registry"/>
+      <argument type="service" id="jms_serializer.accessor_strategy.default"/>
+      <argument type="service" id="jms_serializer.event_dispatcher"/>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.expression_language" class="Symfony\Component\ExpressionLanguage\ExpressionLanguage">
+      <tag name="jms_serializer.instance_global"/>
+      <call method="registerProvider">
+        <argument type="service" id="jms_serializer.expression_language.function_provider"/>
+      </call>
+    </service>
+    <service id="jms_serializer.expression_language.function_provider" class="JMS\SerializerBundle\ExpressionLanguage\BasicSerializerFunctionsProvider">
+      <tag name="jms.expression.function_provider"/>
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.accessor_strategy.default" class="JMS\Serializer\Accessor\DefaultAccessorStrategy">
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>null</argument>
+    </service>
+    <service id="jms_serializer.json_serialization_visitor" class="JMS\Serializer\Visitor\Factory\JsonSerializationVisitorFactory">
+      <tag name="jms_serializer.serialization_visitor" format="json"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <call method="setOptions">
+        <argument>1216</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.json_deserialization_visitor" class="JMS\Serializer\Visitor\Factory\JsonDeserializationVisitorFactory">
+      <tag name="jms_serializer.deserialization_visitor" format="json"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>false</argument>
+      <call method="setOptions">
+        <argument>0</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.xml_serialization_visitor" class="JMS\Serializer\Visitor\Factory\XmlSerializationVisitorFactory">
+      <tag name="jms_serializer.serialization_visitor" format="xml"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <call method="setFormatOutput">
+        <argument>true</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.xml_deserialization_visitor" class="JMS\Serializer\Visitor\Factory\XmlDeserializationVisitorFactory">
+      <tag name="jms_serializer.deserialization_visitor" format="xml"/>
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.cache.cache_clearer" class="JMS\SerializerBundle\Cache\CacheClearer">
+      <tag name="kernel.cache_clearer"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument type="service" id="jms_serializer.metadata.cache.file_cache"/>
+    </service>
+    <service id="jms_serializer.configured_serialization_context_factory" class="JMS\SerializerBundle\ContextFactory\ConfiguredContextFactory">
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.configured_deserialization_context_factory" class="JMS\SerializerBundle\ContextFactory\ConfiguredContextFactory">
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.data_collector" class="JMS\SerializerBundle\Debug\DataCollector">
+      <tag name="jms_serializer.profiler"/>
+      <tag name="data_collector" id="jms_serializer" template="@JMSSerializer/Collector/panel.html.twig"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <argument>default</argument>
+      <argument type="collection"/>
+      <argument type="service" id="jms_serializer.event_dispatcher"/>
+      <argument type="service" id="jms_serializer.traceable_handler_registry"/>
+      <argument type="service" id="jms_serializer.traceable_metadata_factory"/>
+      <argument type="service" id="jms_serializer.metadata.traceable_file_locator"/>
+      <argument type="service" id="jms_serializer.traceable_runs_listener"/>
+    </service>
+    <service id="jms_serializer.traceable_runs_listener" class="JMS\SerializerBundle\Debug\RunsListener">
+      <tag name="jms_serializer.event_listener" event="serializer.pre_serialize" method="saveRunInfo"/>
+      <tag name="jms_serializer.event_listener" event="serializer.pre_deserialize" method="saveRunInfo"/>
+      <tag name="jms_serializer.profiler"/>
+      <tag name="default">jms_serializer.instance</tag>
+    </service>
+    <service id="jms_serializer.traceable_metadata_factory" class="JMS\SerializerBundle\Debug\TraceableMetadataFactory">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="jms_serializer.profiler"/>
+      <tag name="container.decorator" id="jms_serializer.metadata_factory"/>
+      <argument type="service" id="jms_serializer.traceable_metadata_factory.inner"/>
+    </service>
+    <service id="jms_serializer.traceable_handler_registry" class="JMS\SerializerBundle\Debug\TraceableHandlerRegistry">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="jms_serializer.profiler"/>
+      <tag name="container.decorator" id="jms_serializer.handler_registry"/>
+      <argument type="service" id="jms_serializer.traceable_handler_registry.inner"/>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>ArrayCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>ArrayCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\Common\Collections\ArrayCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\Common\Collections\ArrayCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ORM\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ORM\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ODM\MongoDB\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ODM\MongoDB\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ODM\PHPCR\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Doctrine\ODM\PHPCR\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>serializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Validator\ConstraintViolationList</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.constraint_violation_handler</argument>
+          <argument>serializeListToxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Validator\ConstraintViolationList</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.constraint_violation_handler</argument>
+          <argument>serializeListTojson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Validator\ConstraintViolation</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.constraint_violation_handler</argument>
+          <argument>serializeViolationToxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Validator\ConstraintViolation</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.constraint_violation_handler</argument>
+          <argument>serializeViolationTojson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTime</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTime</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTime</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTime</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTimeImmutable</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTimeImmutable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTimeImmutable</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTimeImmutable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateInterval</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateInterval</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateInterval</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateInterval</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTimeInterface</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTimeInterface</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>DateTimeInterface</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>serializeDateTimeInterface</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Iterator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Iterator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>ArrayIterator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>ArrayIterator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Generator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Generator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>serializeIterable</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\Form</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormToxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\Form</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormTojson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\FormInterface</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormToXml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\FormInterface</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormToJson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\FormError</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormErrorToxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>1</argument>
+        <argument>Symfony\Component\Form\FormError</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>fos_rest.serializer.form_error_handler</argument>
+          <argument>serializeFormErrorTojson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>ArrayCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>ArrayCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\Common\Collections\ArrayCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\Common\Collections\ArrayCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ORM\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ORM\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ODM\MongoDB\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ODM\MongoDB\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ODM\PHPCR\PersistentCollection</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Doctrine\ODM\PHPCR\PersistentCollection</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.array_collection_handler</argument>
+          <argument>deserializeCollection</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTime</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeFromjson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTime</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeFromxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTimeImmutable</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeImmutableFromjson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTimeImmutable</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeImmutableFromxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateInterval</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateIntervalFromjson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateInterval</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateIntervalFromxml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTimeInterface</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeFromJson</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>DateTimeInterface</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.datetime_handler</argument>
+          <argument>deserializeDateTimeFromXml</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Iterator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeIterator</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Iterator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeIterator</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>ArrayIterator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeIterator</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>ArrayIterator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeIterator</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Generator</argument>
+        <argument>json</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeGenerator</argument>
+        </argument>
+      </call>
+      <call method="registerHandler">
+        <argument>2</argument>
+        <argument>Generator</argument>
+        <argument>xml</argument>
+        <argument type="collection">
+          <argument>jms_serializer.iterator_handler</argument>
+          <argument>deserializeGenerator</argument>
+        </argument>
+      </call>
+    </service>
+    <service id="jms_serializer.metadata.traceable_file_locator" class="JMS\SerializerBundle\Debug\TraceableFileLocator">
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="container.decorator" id="jms_serializer.metadata.file_locator"/>
+      <argument type="service" id="jms_serializer.metadata.traceable_file_locator.inner"/>
+    </service>
+    <service id="doctrine.dbal.logger.chain" class="Doctrine\DBAL\Logging\LoggerChain">
+      <argument type="collection">
+        <argument type="service" id="doctrine.dbal.logger"/>
+        <argument type="service" id="doctrine.dbal.logger.profiling.default"/>
+      </argument>
+    </service>
+    <service id="doctrine.dbal.logger.profiling" class="Doctrine\DBAL\Logging\DebugStack" abstract="true"/>
+    <service id="doctrine.dbal.logger.backtrace" class="Doctrine\Bundle\DoctrineBundle\Dbal\Logging\BacktraceLogger" abstract="true"/>
+    <service id="doctrine.dbal.logger" class="Symfony\Bridge\Doctrine\Logger\DbalLogger">
+      <tag name="monolog.logger" channel="doctrine"/>
+      <argument type="service" id="logger" on-invalid="null"/>
+      <argument type="service" id="debug.stopwatch" on-invalid="null"/>
+    </service>
+    <service id="data_collector.doctrine" class="Doctrine\Bundle\DoctrineBundle\DataCollector\DoctrineDataCollector">
+      <tag name="data_collector" template="@Doctrine/Collector/db.html.twig" id="db" priority="250"/>
+      <argument type="service" id="doctrine"/>
+      <argument>true</argument>
+      <call method="addLogger">
+        <argument>default</argument>
+        <argument type="service" id="doctrine.dbal.logger.profiling.default"/>
+      </call>
+    </service>
+    <service id="doctrine.dbal.connection_factory" class="Doctrine\Bundle\DoctrineBundle\ConnectionFactory">
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.dbal.connection" class="Doctrine\DBAL\Connection" abstract="true">
+      <factory service="doctrine.dbal.connection_factory" method="createConnection"/>
+    </service>
+    <service id="doctrine.dbal.connection.event_manager" class="Symfony\Bridge\Doctrine\ContainerAwareEventManager" abstract="true">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="doctrine.dbal.connection.configuration" class="Doctrine\DBAL\Configuration" abstract="true"/>
+    <service id="doctrine" class="Doctrine\Bundle\DoctrineBundle\Registry" public="true">
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="service_container"/>
+      <argument>%doctrine.connections%</argument>
+      <argument>%doctrine.entity_managers%</argument>
+      <argument>default</argument>
+      <argument>default</argument>
+    </service>
+    <service id="doctrine.twig.doctrine_extension" class="Doctrine\Bundle\DoctrineBundle\Twig\DoctrineExtension">
+      <tag name="twig.extension"/>
+    </service>
+    <service id="doctrine.dbal.schema_asset_filter_manager" class="Doctrine\Bundle\DoctrineBundle\Dbal\SchemaAssetsFilterManager" abstract="true"/>
+    <service id="doctrine.dbal.well_known_schema_asset_filter" class="Doctrine\Bundle\DoctrineBundle\Dbal\BlacklistSchemaAssetFilter">
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.database_create_command" class="Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand">
+      <tag name="console.command" command="doctrine:database:create"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine"/>
+      <call method="setName">
+        <argument>doctrine:database:create</argument>
+      </call>
+    </service>
+    <service id="doctrine.database_drop_command" class="Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand">
+      <tag name="console.command" command="doctrine:database:drop"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine"/>
+      <call method="setName">
+        <argument>doctrine:database:drop</argument>
+      </call>
+    </service>
+    <service id="doctrine.query_sql_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\RunSqlDoctrineCommand">
+      <tag name="console.command" command="doctrine:query:sql"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="Doctrine\Bundle\DoctrineBundle\Dbal\ManagerRegistryAwareConnectionProvider" on-invalid="null"/>
+      <call method="setName">
+        <argument>doctrine:query:sql</argument>
+      </call>
+    </service>
+    <service id="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand" class="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand">
+      <tag name="console.command" command="dbal:run-sql"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="Doctrine\Bundle\DoctrineBundle\Dbal\ManagerRegistryAwareConnectionProvider" on-invalid="null"/>
+      <call method="setName">
+        <argument>dbal:run-sql</argument>
+      </call>
+    </service>
+    <service id="doctrine.dbal.default_connection.configuration" class="Doctrine\DBAL\Configuration">
+      <call method="setSQLLogger">
+        <argument type="service" id="doctrine.dbal.logger.chain.default"/>
+      </call>
+    </service>
+    <service id="doctrine.dbal.logger.profiling.default" class="Doctrine\DBAL\Logging\DebugStack"/>
+    <service id="doctrine.dbal.logger.chain.default" class="Doctrine\DBAL\Logging\LoggerChain">
+      <argument type="collection">
+        <argument type="service" id="doctrine.dbal.logger"/>
+        <argument type="service" id="doctrine.dbal.logger.profiling.default"/>
+      </argument>
+    </service>
+    <service id="doctrine.dbal.default_connection.event_manager" class="Symfony\Bridge\Doctrine\ContainerAwareEventManager">
+      <argument type="service" id=".service_locator..9a.imQ"/>
+      <argument type="collection">
+        <argument>doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber</argument>
+        <argument>doctrine.orm.listeners.doctrine_token_provider_schema_subscriber</argument>
+        <argument type="collection">
+          <argument type="collection">
+            <argument>loadClassMetadata</argument>
+          </argument>
+          <argument>doctrine.orm.default_listeners.attach_entity_listeners</argument>
+        </argument>
+      </argument>
+    </service>
+    <service id="doctrine.dbal.default_connection" class="Doctrine\DBAL\Connection" public="true">
+      <argument type="collection">
+        <argument key="url">%env(resolve:DATABASE_URL)%</argument>
+        <argument key="use_savepoints">true</argument>
+        <argument key="driver">pdo_mysql</argument>
+        <argument key="host">localhost</argument>
+        <argument key="port">null</argument>
+        <argument key="user">root</argument>
+        <argument key="password">null</argument>
+        <argument key="driverOptions" type="collection"/>
+        <argument key="defaultTableOptions" type="collection"/>
+      </argument>
+      <argument type="service" id="doctrine.dbal.default_connection.configuration"/>
+      <argument type="service" id="doctrine.dbal.default_connection.event_manager"/>
+      <argument type="collection"/>
+      <call method="setNestTransactionsWithSavepoints">
+        <argument>true</argument>
+      </call>
+      <factory service="doctrine.dbal.connection_factory" method="createConnection"/>
+    </service>
+    <service id="Doctrine\Bundle\DoctrineBundle\Dbal\ManagerRegistryAwareConnectionProvider" class="Doctrine\Bundle\DoctrineBundle\Dbal\ManagerRegistryAwareConnectionProvider">
+      <argument type="service">
+        <service class="Doctrine\Bundle\DoctrineBundle\Registry" public="true">
+          <tag name="kernel.reset" method="reset"/>
+          <argument type="service" id="service_container"/>
+          <argument>%doctrine.connections%</argument>
+          <argument>%doctrine.entity_managers%</argument>
+          <argument>default</argument>
+          <argument>default</argument>
+        </service>
+      </argument>
+    </service>
+    <service id=".1_ServiceLocator~dokxUrz" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.orm.proxy_cache_warmer" class="Symfony\Bridge\Doctrine\CacheWarmer\ProxyCacheWarmer">
+      <tag name="kernel.cache_warmer"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="form.type_guesser.doctrine" class="Symfony\Bridge\Doctrine\Form\DoctrineOrmTypeGuesser">
+      <tag name="form.type_guesser"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="form.type.entity" class="Symfony\Bridge\Doctrine\Form\Type\EntityType">
+      <tag name="form.type" alias="entity"/>
+      <tag name="kernel.reset" method="reset"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
+    <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true">
+      <factory class="Doctrine\ORM\EntityManager" method="create"/>
+    </service>
+    <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
+      <argument type="service" id=".service_locator.Xbsa8iG"/>
+    </service>
+    <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
+      <argument type="collection"/>
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.orm.validator.unique" class="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator">
+      <tag name="validator.constraint_validator" alias="doctrine.orm.validator.unique"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="doctrine.orm.validator_initializer" class="Symfony\Bridge\Doctrine\Validator\DoctrineInitializer">
+      <tag name="validator.initializer"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="doctrine.orm.security.user.provider" class="Symfony\Bridge\Doctrine\Security\User\EntityUserProvider" abstract="true">
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="doctrine.orm.listeners.resolve_target_entity" class="Doctrine\ORM\Tools\ResolveTargetEntityListener"/>
+    <service id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" class="Symfony\Bridge\Doctrine\SchemaListener\PdoCacheAdapterDoctrineSchemaSubscriber">
+      <tag name="doctrine.event_subscriber"/>
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber" class="Symfony\Bridge\Doctrine\SchemaListener\RememberMeTokenProviderDoctrineSchemaSubscriber">
+      <tag name="doctrine.event_subscriber"/>
+      <argument type="tagged_iterator" tag="security.remember_me_handler"/>
+    </service>
+    <service id="doctrine.orm.naming_strategy.default" class="Doctrine\ORM\Mapping\DefaultNamingStrategy"/>
+    <service id="doctrine.orm.naming_strategy.underscore" class="Doctrine\ORM\Mapping\UnderscoreNamingStrategy"/>
+    <service id="doctrine.orm.naming_strategy.underscore_number_aware" class="Doctrine\ORM\Mapping\UnderscoreNamingStrategy">
+      <argument>0</argument>
+      <argument>true</argument>
+    </service>
+    <service id="doctrine.orm.quote_strategy.default" class="Doctrine\ORM\Mapping\DefaultQuoteStrategy"/>
+    <service id="doctrine.orm.quote_strategy.ansi" class="Doctrine\ORM\Mapping\AnsiQuoteStrategy"/>
+    <service id="doctrine.ulid_generator" class="Symfony\Bridge\Doctrine\IdGenerator\UlidGenerator">
+      <tag name="doctrine.id_generator"/>
+      <argument>null</argument>
+    </service>
+    <service id="doctrine.uuid_generator" class="Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator">
+      <tag name="doctrine.id_generator"/>
+      <argument>null</argument>
+    </service>
+    <service id="doctrine.cache_clear_metadata_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\ClearMetadataCacheDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-metadata"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-metadata</argument>
+      </call>
+    </service>
+    <service id="doctrine.cache_clear_query_cache_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\ClearQueryCacheDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-query"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-query</argument>
+      </call>
+    </service>
+    <service id="doctrine.cache_clear_result_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\ClearResultCacheDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-result"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-result</argument>
+      </call>
+    </service>
+    <service id="doctrine.cache_collection_region_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\CollectionRegionDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-collection-region"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-collection-region</argument>
+      </call>
+    </service>
+    <service id="doctrine.mapping_convert_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\ConvertMappingDoctrineCommand">
+      <tag name="console.command" command="doctrine:mapping:convert"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:mapping:convert</argument>
+      </call>
+    </service>
+    <service id="doctrine.schema_create_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\CreateSchemaDoctrineCommand">
+      <tag name="console.command" command="doctrine:schema:create"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:schema:create</argument>
+      </call>
+    </service>
+    <service id="doctrine.schema_drop_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\DropSchemaDoctrineCommand">
+      <tag name="console.command" command="doctrine:schema:drop"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:schema:drop</argument>
+      </call>
+    </service>
+    <service id="doctrine.ensure_production_settings_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\EnsureProductionSettingsDoctrineCommand">
+      <tag name="console.command" command="doctrine:ensure-production-settings"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:ensure-production-settings</argument>
+      </call>
+    </service>
+    <service id="doctrine.clear_entity_region_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\EntityRegionCacheDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-entity-region"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-entity-region</argument>
+      </call>
+    </service>
+    <service id="doctrine.mapping_info_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\InfoDoctrineCommand">
+      <tag name="console.command" command="doctrine:mapping:info"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:mapping:info</argument>
+      </call>
+    </service>
+    <service id="doctrine.clear_query_region_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\QueryRegionCacheDoctrineCommand">
+      <tag name="console.command" command="doctrine:cache:clear-query-region"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:cache:clear-query-region</argument>
+      </call>
+    </service>
+    <service id="doctrine.query_dql_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\RunDqlDoctrineCommand">
+      <tag name="console.command" command="doctrine:query:dql"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:query:dql</argument>
+      </call>
+    </service>
+    <service id="doctrine.schema_update_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\UpdateSchemaDoctrineCommand">
+      <tag name="console.command" command="doctrine:schema:update"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:schema:update</argument>
+      </call>
+    </service>
+    <service id="doctrine.schema_validate_command" class="Doctrine\Bundle\DoctrineBundle\Command\Proxy\ValidateSchemaCommand">
+      <tag name="console.command" command="doctrine:schema:validate"/>
+      <tag name="container.no_preload"/>
+      <call method="setName">
+        <argument>doctrine:schema:validate</argument>
+      </call>
+    </service>
+    <service id="doctrine.mapping_import_command" class="Doctrine\Bundle\DoctrineBundle\Command\ImportMappingDoctrineCommand">
+      <tag name="console.command" command="doctrine:mapping:import"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine"/>
+      <argument>%kernel.bundles%</argument>
+      <call method="setName">
+        <argument>doctrine:mapping:import</argument>
+      </call>
+    </service>
+    <service id="doctrine.orm.default_configuration" class="Doctrine\ORM\Configuration">
+      <tag name="doctrine.orm.configuration"/>
+      <call method="setEntityNamespaces">
+        <argument type="collection">
+          <argument key="App">App\Entity</argument>
+        </argument>
+      </call>
+      <call method="setMetadataCache">
+        <argument type="service" id="cache.doctrine.orm.default.metadata"/>
+      </call>
+      <call method="setQueryCacheImpl">
+        <argument type="service" id="cache.doctrine.orm.default.query.compatibility_layer"/>
+      </call>
+      <call method="setResultCacheImpl">
+        <argument type="service" id="cache.doctrine.orm.default.result.compatibility_layer"/>
+      </call>
+      <call method="setMetadataDriverImpl">
+        <argument type="service" id=".doctrine.orm.default_metadata_driver"/>
+      </call>
+      <call method="setProxyDir">
+        <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/var/cache/dev/doctrine/orm/Proxies</argument>
+      </call>
+      <call method="setProxyNamespace">
+        <argument>Proxies</argument>
+      </call>
+      <call method="setAutoGenerateProxyClasses">
+        <argument>true</argument>
+      </call>
+      <call method="setClassMetadataFactoryName">
+        <argument>Doctrine\Bundle\DoctrineBundle\Mapping\ClassMetadataFactory</argument>
+      </call>
+      <call method="setDefaultRepositoryClassName">
+        <argument>Doctrine\ORM\EntityRepository</argument>
+      </call>
+      <call method="setNamingStrategy">
+        <argument type="service" id="doctrine.orm.naming_strategy.underscore_number_aware"/>
+      </call>
+      <call method="setQuoteStrategy">
+        <argument type="service" id="doctrine.orm.quote_strategy.default"/>
+      </call>
+      <call method="setEntityListenerResolver">
+        <argument type="service" id="doctrine.orm.default_entity_listener_resolver"/>
+      </call>
+      <call method="setRepositoryFactory">
+        <argument type="service" id="doctrine.orm.container_repository_factory"/>
+      </call>
+    </service>
+    <service id="doctrine.orm.default_annotation_metadata_driver" class="Doctrine\ORM\Mapping\Driver\AnnotationDriver">
+      <argument type="service" id="annotations.cached_reader"/>
+      <argument type="collection">
+        <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/src/Entity</argument>
+      </argument>
+    </service>
+    <service id="cache.doctrine.orm.default.metadata" class="Symfony\Component\Cache\Adapter\ArrayAdapter"/>
+    <service id="cache.doctrine.orm.default.result" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
+      <tag name="cache.pool"/>
+    </service>
+    <service id="cache.doctrine.orm.default.query" class="Symfony\Component\Cache\Adapter\ArrayAdapter">
+      <tag name="cache.pool"/>
+    </service>
+    <service id="doctrine.orm.default_entity_listener_resolver" class="Doctrine\Bundle\DoctrineBundle\Mapping\ContainerEntityListenerResolver">
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="doctrine.orm.default_listeners.attach_entity_listeners" class="Doctrine\ORM\Tools\AttachEntityListenersListener">
+      <tag name="doctrine.event_listener" event="loadClassMetadata"/>
+    </service>
+    <service id="doctrine.orm.default_manager_configurator" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator">
+      <argument type="collection"/>
+      <argument type="collection"/>
+    </service>
+    <service id="doctrine.orm.default_entity_manager" class="Doctrine\ORM\EntityManager" public="true" lazy="true">
+      <tag name="container.preload" class="Doctrine\ORM\Proxy\Autoloader"/>
+      <argument type="service" id="doctrine.dbal.default_connection"/>
+      <argument type="service" id="doctrine.orm.default_configuration"/>
+      <factory class="Doctrine\ORM\EntityManager" method="create"/>
+      <configurator service="doctrine.orm.default_manager_configurator" method="configure"/>
+    </service>
+    <service id="doctrine.orm.default_entity_manager.property_info_extractor" class="Symfony\Bridge\Doctrine\PropertyInfo\DoctrineExtractor">
+      <tag name="property_info.list_extractor" priority="-1001"/>
+      <tag name="property_info.type_extractor" priority="-999"/>
+      <tag name="property_info.access_extractor" priority="-999"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+    </service>
+    <service id="doctrine.orm.default_entity_manager.validator_loader" class="Symfony\Bridge\Doctrine\Validator\DoctrineLoader">
+      <tag name="validator.auto_mapper" priority="-100"/>
+      <argument type="service" id="doctrine.orm.default_entity_manager"/>
+      <argument>null</argument>
+    </service>
+    <service id="doctrine.migrations.dependency_factory" class="Doctrine\Migrations\DependencyFactory">
+      <argument type="service" id="doctrine.migrations.configuration_loader"/>
+      <argument type="service" id="doctrine.migrations.entity_manager_registry_loader"/>
+      <argument type="service" id="logger" on-invalid="null"/>
+      <call method="setDefinition">
+        <argument>Doctrine\Migrations\Version\MigrationFactory</argument>
+        <argument type="service_closure" id="doctrine.migrations.container_aware_migrations_factory"/>
+      </call>
+      <factory class="Doctrine\Migrations\DependencyFactory" method="fromEntityManager"/>
+    </service>
+    <service id="doctrine.migrations.configuration_loader" class="Doctrine\Migrations\Configuration\Migration\ExistingConfiguration">
+      <argument type="service" id="doctrine.migrations.configuration"/>
+    </service>
+    <service id="doctrine.migrations.connection_loader" class="Doctrine\Migrations\Configuration\Connection\ExistingConnection"/>
+    <service id="doctrine.migrations.em_loader" class="Doctrine\Migrations\Configuration\EntityManager\ExistingEntityManager"/>
+    <service id="doctrine.migrations.entity_manager_registry_loader" class="Doctrine\Migrations\Configuration\EntityManager\ManagerRegistryEntityManager">
+      <argument type="service" id="doctrine"/>
+      <factory class="Doctrine\Migrations\Configuration\EntityManager\ManagerRegistryEntityManager" method="withSimpleDefault"/>
+    </service>
+    <service id="doctrine.migrations.connection_registry_loader" class="Doctrine\Migrations\Configuration\Connection\ConnectionRegistryConnection">
+      <argument type="service" id="doctrine"/>
+      <factory class="Doctrine\Migrations\Configuration\Connection\ConnectionRegistryConnection" method="withSimpleDefault"/>
+    </service>
+    <service id="doctrine.migrations.configuration" class="Doctrine\Migrations\Configuration\Configuration">
+      <call method="addMigrationsDirectory">
+        <argument>DoctrineMigrations</argument>
+        <argument>/Users/evandrake/Documents/GitHub/ibs_library_api/migrations</argument>
+      </call>
+      <call method="setAllOrNothing">
+        <argument>false</argument>
+      </call>
+      <call method="setCheckDatabasePlatform">
+        <argument>true</argument>
+      </call>
+      <call method="setTransactional">
+        <argument>true</argument>
+      </call>
+      <call method="setMetadataStorageConfiguration">
+        <argument type="service" id="doctrine.migrations.storage.table_storage"/>
+      </call>
+    </service>
+    <service id="doctrine.migrations.container_aware_migrations_factory" class="Doctrine\Bundle\MigrationsBundle\MigrationsFactory\ContainerAwareMigrationFactory">
+      <tag name="container.decorator" id="doctrine.migrations.migrations_factory"/>
+      <argument type="service" id="doctrine.migrations.container_aware_migrations_factory.inner"/>
+      <argument type="service" id="service_container"/>
+    </service>
+    <service id="doctrine_migrations.diff_command" class="Doctrine\Migrations\Tools\Console\Command\DiffCommand">
+      <tag name="console.command" command="doctrine:migrations:diff"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:diff</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:diff</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.sync_metadata_command" class="Doctrine\Migrations\Tools\Console\Command\SyncMetadataCommand">
+      <tag name="console.command" command="doctrine:migrations:sync-metadata-storage"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:sync-metadata-storage</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:sync-metadata-storage</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.versions_command" class="Doctrine\Migrations\Tools\Console\Command\ListCommand">
+      <tag name="console.command" command="doctrine:migrations:list"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:versions</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:list</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.current_command" class="Doctrine\Migrations\Tools\Console\Command\CurrentCommand">
+      <tag name="console.command" command="doctrine:migrations:current"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:current</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:current</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.dump_schema_command" class="Doctrine\Migrations\Tools\Console\Command\DumpSchemaCommand">
+      <tag name="console.command" command="doctrine:migrations:dump-schema"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:dump-schema</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:dump-schema</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.execute_command" class="Doctrine\Migrations\Tools\Console\Command\ExecuteCommand">
+      <tag name="console.command" command="doctrine:migrations:execute"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:execute</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:execute</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.generate_command" class="Doctrine\Migrations\Tools\Console\Command\GenerateCommand">
+      <tag name="console.command" command="doctrine:migrations:generate"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:generate</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:generate</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.latest_command" class="Doctrine\Migrations\Tools\Console\Command\LatestCommand">
+      <tag name="console.command" command="doctrine:migrations:latest"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:latest</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:latest</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.migrate_command" class="Doctrine\Migrations\Tools\Console\Command\MigrateCommand">
+      <tag name="console.command" command="doctrine:migrations:migrate"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:migrate</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:migrate</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.rollup_command" class="Doctrine\Migrations\Tools\Console\Command\RollupCommand">
+      <tag name="console.command" command="doctrine:migrations:rollup"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:rollup</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:rollup</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.status_command" class="Doctrine\Migrations\Tools\Console\Command\StatusCommand">
+      <tag name="console.command" command="doctrine:migrations:status"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:status</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:status</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.up_to_date_command" class="Doctrine\Migrations\Tools\Console\Command\UpToDateCommand">
+      <tag name="console.command" command="doctrine:migrations:up-to-date"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:up-to-date</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:up-to-date</argument>
+      </call>
+    </service>
+    <service id="doctrine_migrations.version_command" class="Doctrine\Migrations\Tools\Console\Command\VersionCommand">
+      <tag name="console.command" command="doctrine:migrations:version"/>
+      <tag name="container.no_preload"/>
+      <argument type="service" id="doctrine.migrations.dependency_factory"/>
+      <argument>doctrine:migrations:version</argument>
+      <call method="setName">
+        <argument>doctrine:migrations:version</argument>
+      </call>
+    </service>
+    <service id="doctrine.migrations.storage.table_storage" class="Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration"/>
     <service id=".service_locator.gSv9zYw" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -1290,11 +3351,112 @@
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.KfbR3DY"/>
       </argument>
     </service>
+    <service id=".service_locator.AHPGEE6" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntityValidator" type="service_closure" id="doctrine.orm.validator.unique"/>
+        <argument key="Symfony\Component\Validator\Constraints\EmailValidator" type="service_closure" id="validator.email"/>
+        <argument key="Symfony\Component\Validator\Constraints\ExpressionValidator" type="service_closure" id="validator.expression"/>
+        <argument key="Symfony\Component\Validator\Constraints\NotCompromisedPasswordValidator" type="service_closure" id="validator.not_compromised_password"/>
+        <argument key="doctrine.orm.validator.unique" type="service_closure" id="doctrine.orm.validator.unique"/>
+        <argument key="validator.expression" type="service_closure" id="validator.expression"/>
+      </argument>
+    </service>
     <service id=".service_locator.lLv4pWF" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="inline" type="service_closure" id="fragment.renderer.inline"/>
       </argument>
+    </service>
+    <service id="debug.argument_resolver.request_attribute" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="100"/>
+      <tag name="container.decorator" id="argument_resolver.request_attribute"/>
+      <argument type="service" id="debug.argument_resolver.request_attribute.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.request" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="50"/>
+      <tag name="container.decorator" id="argument_resolver.request"/>
+      <argument type="service" id="debug.argument_resolver.request.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.session" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="50"/>
+      <tag name="container.decorator" id="argument_resolver.session"/>
+      <argument type="service" id="debug.argument_resolver.session.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.service" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="-50"/>
+      <tag name="container.decorator" id="argument_resolver.service"/>
+      <argument type="service" id="debug.argument_resolver.service.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.default" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="-100"/>
+      <tag name="container.decorator" id="argument_resolver.default"/>
+      <argument type="service" id="debug.argument_resolver.default.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.variadic" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="-150"/>
+      <tag name="container.decorator" id="argument_resolver.variadic"/>
+      <argument type="service" id="debug.argument_resolver.variadic.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id="debug.argument_resolver.not_tagged_controller" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver">
+      <tag name="controller.argument_value_resolver" priority="-200"/>
+      <tag name="container.decorator" id="argument_resolver.not_tagged_controller"/>
+      <argument type="service" id="debug.argument_resolver.not_tagged_controller.inner"/>
+      <argument type="service" id="debug.stopwatch"/>
+    </service>
+    <service id=".service_locator.y4dplYt" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="Symfony\Bridge\Doctrine\Form\Type\EntityType" type="service_closure" id="form.type.entity"/>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\ChoiceType" type="service_closure" id="form.type.choice"/>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\ColorType" type="service_closure" id="form.type.color"/>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\FileType" type="service_closure" id="form.type.file"/>
+        <argument key="Symfony\Component\Form\Extension\Core\Type\FormType" type="service_closure" id="form.type.form"/>
+      </argument>
+    </service>
+    <service id="fos_rest.serializer.form_error_handler" class="FOS\RestBundle\Serializer\Normalizer\FormErrorHandler">
+      <tag name="jms_serializer.subscribing_handler"/>
+      <tag name="default">jms_serializer.instance</tag>
+      <tag name="container.decorator" id="jms_serializer.form_error_handler"/>
+      <argument type="service" id="fos_rest.serializer.form_error_handler.inner"/>
+    </service>
+    <service id=".service_locator..9a.imQ" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service_closure" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
+        <argument key="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.doctrine_token_provider_schema_subscriber"/>
+        <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
+      </argument>
+    </service>
+    <service id="cache.doctrine.orm.default.query.compatibility_layer" class="Doctrine\Common\Cache\CacheProvider">
+      <argument type="service" id="cache.doctrine.orm.default.query"/>
+      <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
+    </service>
+    <service id="cache.doctrine.orm.default.result.compatibility_layer" class="Doctrine\Common\Cache\CacheProvider">
+      <argument type="service" id="cache.doctrine.orm.default.result"/>
+      <factory class="Doctrine\Common\Cache\Psr6\DoctrineProvider" method="wrap"/>
+    </service>
+    <service id=".service_locator.Xbsa8iG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection"/>
+    </service>
+    <service id=".service_locator.KLVvNIq" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="doctrine.ulid_generator" type="service_closure" id="doctrine.ulid_generator"/>
+        <argument key="doctrine.uuid_generator" type="service_closure" id="doctrine.uuid_generator"/>
+      </argument>
+    </service>
+    <service id=".doctrine.orm.default_metadata_driver" class="Doctrine\Bundle\DoctrineBundle\Mapping\MappingDriver">
+      <tag name="container.decorator" id="doctrine.orm.default_metadata_driver"/>
+      <argument type="service" id=".doctrine.orm.default_metadata_driver.inner"/>
+      <argument type="service" id=".service_locator.KLVvNIq"/>
     </service>
     <service id="logger" class="Symfony\Component\HttpKernel\Log\Logger"/>
     <service id=".service_locator.WOytlHA" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -1330,7 +3492,7 @@
     <service id=".service_locator.Xobvezw" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="event_dispatcher" type="service_closure" id="event_dispatcher"/>
+        <argument key="event_dispatcher" type="service_closure" id="debug.event_dispatcher"/>
       </argument>
     </service>
     <service id=".service_locator.kODoftA" class="Symfony\Component\DependencyInjection\ServiceLocator">
@@ -1348,6 +3510,72 @@
         <argument key="session" type="service_closure" id=".session.do-not-use" on-invalid="ignore"/>
         <argument key="session_factory" type="service_closure" id="session.factory" on-invalid="ignore"/>
       </argument>
+    </service>
+    <service id="debug.event_dispatcher.inner" class="Symfony\Component\EventDispatcher\EventDispatcher"/>
+    <service id="debug.controller_resolver.inner" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerResolver">
+      <argument type="service" id="service_container"/>
+      <argument type="service" id="logger" on-invalid="ignore"/>
+    </service>
+    <service id="debug.argument_resolver.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver">
+      <argument type="service" id="argument_metadata_factory"/>
+      <argument type="iterator">
+        <argument type="service" id="debug.argument_resolver.request_attribute"/>
+        <argument type="service" id="debug.argument_resolver.request"/>
+        <argument type="service" id="debug.argument_resolver.session"/>
+        <argument type="service" id="debug.argument_resolver.service"/>
+        <argument type="service" id="debug.argument_resolver.default"/>
+        <argument type="service" id="debug.argument_resolver.variadic"/>
+        <argument type="service" id="debug.argument_resolver.not_tagged_controller"/>
+      </argument>
+    </service>
+    <service id="jms_serializer.metadata.doctrine_type_driver.inner" class="Metadata\Driver\DriverChain">
+      <argument type="collection">
+        <argument type="service" id="jms_serializer.metadata.yaml_driver"/>
+        <argument type="service" id="jms_serializer.metadata.xml_driver"/>
+        <argument type="service" id="jms_serializer.metadata.annotation_driver"/>
+      </argument>
+    </service>
+    <service id="jms_serializer.doctrine_object_constructor.inner" class="JMS\Serializer\Construction\UnserializeObjectConstructor"/>
+    <service id="doctrine.migrations.container_aware_migrations_factory.inner" class="Doctrine\Migrations\Version\MigrationFactory">
+      <factory service="doctrine.migrations.dependency_factory" method="getMigrationFactory"/>
+    </service>
+    <service id="debug.argument_resolver.request_attribute.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver"/>
+    <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
+    <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
+    <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
+      <argument type="service" id=".service_locator.mGHEj8d"/>
+    </service>
+    <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
+    <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
+    <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
+      <argument type="service" id=".service_locator.mGHEj8d"/>
+    </service>
+    <service id="fos_rest.serializer.form_error_handler.inner" class="JMS\Serializer\Handler\FormErrorHandler">
+      <argument>null</argument>
+      <argument>validators</argument>
+    </service>
+    <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
+      <call method="addDriver">
+        <argument type="service" id="doctrine.orm.default_annotation_metadata_driver"/>
+        <argument>App\Entity</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.traceable_metadata_factory.inner" class="Metadata\MetadataFactory">
+      <argument type="service" id="jms_serializer.metadata.lazy_loading_driver"/>
+      <argument>Metadata\ClassHierarchyMetadata</argument>
+      <argument>true</argument>
+      <call method="setCache">
+        <argument type="service" id="jms_serializer.metadata.cache.file_cache" on-invalid="ignore"/>
+      </call>
+      <call method="setIncludeInterfaces">
+        <argument>false</argument>
+      </call>
+    </service>
+    <service id="jms_serializer.traceable_handler_registry.inner" class="JMS\Serializer\Handler\LazyHandlerRegistry">
+      <argument type="service" id="jms_serializer.handler_registry.service_locator"/>
+    </service>
+    <service id="jms_serializer.metadata.traceable_file_locator.inner" class="Metadata\Driver\FileLocator">
+      <argument type="collection"/>
     </service>
     <service id=".errored..service_locator.KfbR3DY.Symfony\Component\Config\Loader\LoaderInterface" class="Symfony\Component\Config\Loader\LoaderInterface"/>
     <service id=".console.command.about.lazy" class="Symfony\Component\Console\Command\LazyCommand">
@@ -1469,12 +3697,26 @@
       <argument>false</argument>
       <argument type="service_closure" id="console.command.router_match"/>
     </service>
+    <service id=".console.command.validator_debug.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>debug:validator</argument>
+      <argument type="collection"/>
+      <argument>Display validation constraints for classes</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.validator_debug"/>
+    </service>
     <service id=".console.command.yaml_lint.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>lint:yaml</argument>
       <argument type="collection"/>
       <argument>Lint a YAML file and outputs encountered errors</argument>
       <argument>false</argument>
       <argument type="service_closure" id="console.command.yaml_lint"/>
+    </service>
+    <service id=".console.command.form_debug.lazy" class="Symfony\Component\Console\Command\LazyCommand">
+      <argument>debug:form</argument>
+      <argument type="collection"/>
+      <argument>Display form type information</argument>
+      <argument>false</argument>
+      <argument type="service_closure" id="console.command.form_debug"/>
     </service>
     <service id=".console.command.secrets_set.lazy" class="Symfony\Component\Console\Command\LazyCommand">
       <argument>secrets:set</argument>
@@ -1520,7 +3762,7 @@
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
       <tag name="container.no_preload"/>
-      <argument type="service" id=".service_locator.lxrdX0Y"/>
+      <argument type="service" id=".service_locator.2gDU2at"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -1539,16 +3781,50 @@
         <argument key="debug:event-dispatcher">console.command.event_dispatcher_debug</argument>
         <argument key="debug:router">console.command.router_debug</argument>
         <argument key="router:match">console.command.router_match</argument>
+        <argument key="debug:validator">console.command.validator_debug</argument>
         <argument key="lint:yaml">console.command.yaml_lint</argument>
+        <argument key="debug:form">console.command.form_debug</argument>
         <argument key="secrets:set">console.command.secrets_set</argument>
         <argument key="secrets:remove">console.command.secrets_remove</argument>
         <argument key="secrets:generate-keys">console.command.secrets_generate_key</argument>
         <argument key="secrets:list">console.command.secrets_list</argument>
         <argument key="secrets:decrypt-to-local">console.command.secrets_decrypt_to_local</argument>
         <argument key="secrets:encrypt-from-local">console.command.secrets_encrypt_from_local</argument>
+        <argument key="doctrine:database:create">doctrine.database_create_command</argument>
+        <argument key="doctrine:database:drop">doctrine.database_drop_command</argument>
+        <argument key="doctrine:query:sql">doctrine.query_sql_command</argument>
+        <argument key="dbal:run-sql">Doctrine\DBAL\Tools\Console\Command\RunSqlCommand</argument>
+        <argument key="doctrine:cache:clear-metadata">doctrine.cache_clear_metadata_command</argument>
+        <argument key="doctrine:cache:clear-query">doctrine.cache_clear_query_cache_command</argument>
+        <argument key="doctrine:cache:clear-result">doctrine.cache_clear_result_command</argument>
+        <argument key="doctrine:cache:clear-collection-region">doctrine.cache_collection_region_command</argument>
+        <argument key="doctrine:mapping:convert">doctrine.mapping_convert_command</argument>
+        <argument key="doctrine:schema:create">doctrine.schema_create_command</argument>
+        <argument key="doctrine:schema:drop">doctrine.schema_drop_command</argument>
+        <argument key="doctrine:ensure-production-settings">doctrine.ensure_production_settings_command</argument>
+        <argument key="doctrine:cache:clear-entity-region">doctrine.clear_entity_region_command</argument>
+        <argument key="doctrine:mapping:info">doctrine.mapping_info_command</argument>
+        <argument key="doctrine:cache:clear-query-region">doctrine.clear_query_region_command</argument>
+        <argument key="doctrine:query:dql">doctrine.query_dql_command</argument>
+        <argument key="doctrine:schema:update">doctrine.schema_update_command</argument>
+        <argument key="doctrine:schema:validate">doctrine.schema_validate_command</argument>
+        <argument key="doctrine:mapping:import">doctrine.mapping_import_command</argument>
+        <argument key="doctrine:migrations:diff">doctrine_migrations.diff_command</argument>
+        <argument key="doctrine:migrations:sync-metadata-storage">doctrine_migrations.sync_metadata_command</argument>
+        <argument key="doctrine:migrations:list">doctrine_migrations.versions_command</argument>
+        <argument key="doctrine:migrations:current">doctrine_migrations.current_command</argument>
+        <argument key="doctrine:migrations:dump-schema">doctrine_migrations.dump_schema_command</argument>
+        <argument key="doctrine:migrations:execute">doctrine_migrations.execute_command</argument>
+        <argument key="doctrine:migrations:generate">doctrine_migrations.generate_command</argument>
+        <argument key="doctrine:migrations:latest">doctrine_migrations.latest_command</argument>
+        <argument key="doctrine:migrations:migrate">doctrine_migrations.migrate_command</argument>
+        <argument key="doctrine:migrations:rollup">doctrine_migrations.rollup_command</argument>
+        <argument key="doctrine:migrations:status">doctrine_migrations.status_command</argument>
+        <argument key="doctrine:migrations:up-to-date">doctrine_migrations.up_to_date_command</argument>
+        <argument key="doctrine:migrations:version">doctrine_migrations.version_command</argument>
       </argument>
     </service>
-    <service id=".service_locator.lxrdX0Y" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.2gDU2at" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service_closure" id=".console.command.about.lazy"/>
@@ -1568,13 +3844,47 @@
         <argument key="console.command.event_dispatcher_debug" type="service_closure" id=".console.command.event_dispatcher_debug.lazy"/>
         <argument key="console.command.router_debug" type="service_closure" id=".console.command.router_debug.lazy"/>
         <argument key="console.command.router_match" type="service_closure" id=".console.command.router_match.lazy"/>
+        <argument key="console.command.validator_debug" type="service_closure" id=".console.command.validator_debug.lazy"/>
         <argument key="console.command.yaml_lint" type="service_closure" id=".console.command.yaml_lint.lazy"/>
+        <argument key="console.command.form_debug" type="service_closure" id=".console.command.form_debug.lazy"/>
         <argument key="console.command.secrets_set" type="service_closure" id=".console.command.secrets_set.lazy"/>
         <argument key="console.command.secrets_remove" type="service_closure" id=".console.command.secrets_remove.lazy"/>
         <argument key="console.command.secrets_generate_key" type="service_closure" id=".console.command.secrets_generate_key.lazy"/>
         <argument key="console.command.secrets_list" type="service_closure" id=".console.command.secrets_list.lazy"/>
         <argument key="console.command.secrets_decrypt_to_local" type="service_closure" id=".console.command.secrets_decrypt_to_local.lazy"/>
         <argument key="console.command.secrets_encrypt_from_local" type="service_closure" id=".console.command.secrets_encrypt_from_local.lazy"/>
+        <argument key="doctrine.database_create_command" type="service_closure" id="doctrine.database_create_command"/>
+        <argument key="doctrine.database_drop_command" type="service_closure" id="doctrine.database_drop_command"/>
+        <argument key="doctrine.query_sql_command" type="service_closure" id="doctrine.query_sql_command"/>
+        <argument key="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand" type="service_closure" id="Doctrine\DBAL\Tools\Console\Command\RunSqlCommand"/>
+        <argument key="doctrine.cache_clear_metadata_command" type="service_closure" id="doctrine.cache_clear_metadata_command"/>
+        <argument key="doctrine.cache_clear_query_cache_command" type="service_closure" id="doctrine.cache_clear_query_cache_command"/>
+        <argument key="doctrine.cache_clear_result_command" type="service_closure" id="doctrine.cache_clear_result_command"/>
+        <argument key="doctrine.cache_collection_region_command" type="service_closure" id="doctrine.cache_collection_region_command"/>
+        <argument key="doctrine.mapping_convert_command" type="service_closure" id="doctrine.mapping_convert_command"/>
+        <argument key="doctrine.schema_create_command" type="service_closure" id="doctrine.schema_create_command"/>
+        <argument key="doctrine.schema_drop_command" type="service_closure" id="doctrine.schema_drop_command"/>
+        <argument key="doctrine.ensure_production_settings_command" type="service_closure" id="doctrine.ensure_production_settings_command"/>
+        <argument key="doctrine.clear_entity_region_command" type="service_closure" id="doctrine.clear_entity_region_command"/>
+        <argument key="doctrine.mapping_info_command" type="service_closure" id="doctrine.mapping_info_command"/>
+        <argument key="doctrine.clear_query_region_command" type="service_closure" id="doctrine.clear_query_region_command"/>
+        <argument key="doctrine.query_dql_command" type="service_closure" id="doctrine.query_dql_command"/>
+        <argument key="doctrine.schema_update_command" type="service_closure" id="doctrine.schema_update_command"/>
+        <argument key="doctrine.schema_validate_command" type="service_closure" id="doctrine.schema_validate_command"/>
+        <argument key="doctrine.mapping_import_command" type="service_closure" id="doctrine.mapping_import_command"/>
+        <argument key="doctrine_migrations.diff_command" type="service_closure" id="doctrine_migrations.diff_command"/>
+        <argument key="doctrine_migrations.sync_metadata_command" type="service_closure" id="doctrine_migrations.sync_metadata_command"/>
+        <argument key="doctrine_migrations.versions_command" type="service_closure" id="doctrine_migrations.versions_command"/>
+        <argument key="doctrine_migrations.current_command" type="service_closure" id="doctrine_migrations.current_command"/>
+        <argument key="doctrine_migrations.dump_schema_command" type="service_closure" id="doctrine_migrations.dump_schema_command"/>
+        <argument key="doctrine_migrations.execute_command" type="service_closure" id="doctrine_migrations.execute_command"/>
+        <argument key="doctrine_migrations.generate_command" type="service_closure" id="doctrine_migrations.generate_command"/>
+        <argument key="doctrine_migrations.latest_command" type="service_closure" id="doctrine_migrations.latest_command"/>
+        <argument key="doctrine_migrations.migrate_command" type="service_closure" id="doctrine_migrations.migrate_command"/>
+        <argument key="doctrine_migrations.rollup_command" type="service_closure" id="doctrine_migrations.rollup_command"/>
+        <argument key="doctrine_migrations.status_command" type="service_closure" id="doctrine_migrations.status_command"/>
+        <argument key="doctrine_migrations.up_to_date_command" type="service_closure" id="doctrine_migrations.up_to_date_command"/>
+        <argument key="doctrine_migrations.version_command" type="service_closure" id="doctrine_migrations.version_command"/>
       </argument>
     </service>
     <service id="Psr\Container\ContainerInterface" alias="service_container">
@@ -1586,8 +3896,8 @@
     <service id="App\Kernel" alias="kernel" public="true"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface" alias="parameter_bag"/>
     <service id="Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface" alias="parameter_bag"/>
-    <service id="Symfony\Component\EventDispatcher\EventDispatcherInterface" alias="event_dispatcher"/>
-    <service id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" alias="event_dispatcher"/>
+    <service id="Symfony\Component\EventDispatcher\EventDispatcherInterface" alias="debug.event_dispatcher"/>
+    <service id="Symfony\Contracts\EventDispatcher\EventDispatcherInterface" alias="debug.event_dispatcher"/>
     <service id="Symfony\Component\HttpKernel\HttpKernelInterface" alias="http_kernel"/>
     <service id="Symfony\Component\HttpFoundation\RequestStack" alias="request_stack"/>
     <service id="Symfony\Component\HttpKernel\HttpCache\StoreInterface" alias="http_cache.store"/>
@@ -1601,7 +3911,7 @@
     <service id="Symfony\Component\HttpKernel\Fragment\FragmentUriGeneratorInterface" alias="fragment.uri_generator"/>
     <service id="error_renderer.html" alias="error_handler.error_renderer.html"/>
     <service id="error_renderer" alias="error_handler.error_renderer.html"/>
-    <service id="Psr\EventDispatcher\EventDispatcherInterface" alias="event_dispatcher"/>
+    <service id="Psr\EventDispatcher\EventDispatcherInterface" alias="debug.event_dispatcher"/>
     <service id="Psr\Container\ContainerInterface $parameterBag" alias="parameter_bag"/>
     <service id="cache.app_clearer" alias="cache.default_clearer" public="true"/>
     <service id="Psr\Cache\CacheItemPoolInterface" alias="cache.app"/>
@@ -1611,15 +3921,28 @@
     <service id="Symfony\Contracts\Cache\CacheInterface" alias="cache.app"/>
     <service id="Symfony\Contracts\Cache\TagAwareCacheInterface" alias="cache.app.taggable"/>
     <service id="Symfony\Component\HttpKernel\Debug\FileLinkFormatter" alias="debug.file_link_formatter"/>
+    <service id="Symfony\Component\Stopwatch\Stopwatch" alias="debug.stopwatch"/>
     <service id="router" alias="router.default" public="true"/>
     <service id="Symfony\Component\Routing\RouterInterface" alias="router.default"/>
     <service id="Symfony\Component\Routing\Generator\UrlGeneratorInterface" alias="router.default"/>
     <service id="Symfony\Component\Routing\Matcher\UrlMatcherInterface" alias="router.default"/>
     <service id="Symfony\Component\Routing\RequestContextAwareInterface" alias="router.default"/>
     <service id="Symfony\Component\Routing\RequestContext" alias="router.request_context"/>
+    <service id="annotation_reader" alias="annotations.cached_reader"/>
+    <service id="Doctrine\Common\Annotations\Reader" alias="annotations.cached_reader"/>
+    <service id="Symfony\Component\PropertyAccess\PropertyAccessorInterface" alias="property_accessor"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyAccessExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyDescriptionExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyListExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyInitializableExtractorInterface" alias="property_info"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyReadInfoExtractorInterface" alias="property_info.reflection_extractor"/>
+    <service id="Symfony\Component\PropertyInfo\PropertyWriteInfoExtractorInterface" alias="property_info.reflection_extractor"/>
     <service id="cache.default_redis_provider" alias=".cache_connection.GD_MSZC"/>
     <service id="cache.default_memcached_provider" alias=".cache_connection.JKE6keX"/>
-    <service id="cache.default_doctrine_dbal_provider" alias="database_connection"/>
+    <service id="cache.default_doctrine_dbal_provider" alias="doctrine.dbal.default_connection"/>
+    <service id="cache.default_pdo_provider" alias="doctrine.dbal.default_connection"/>
     <service id="Symfony\Component\HttpFoundation\Session\SessionInterface" alias=".session.do-not-use">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" and "SessionInterface" aliases are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -1627,14 +3950,137 @@
     <service id="Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface" alias="session.flash_bag"/>
     <service id="session.storage.factory" alias="session.storage.factory.native"/>
     <service id="session.handler" alias="session.handler.native"/>
+    <service id="Symfony\Component\Form\ResolvedFormTypeFactoryInterface" alias="form.resolved_type_factory"/>
+    <service id="Symfony\Component\Form\FormRegistryInterface" alias="form.registry"/>
+    <service id="Symfony\Component\Form\FormFactoryInterface" alias="form.factory"/>
+    <service id="form.property_accessor" alias="property_accessor"/>
+    <service id="form.choice_list_factory" alias="form.choice_list_factory.cached"/>
+    <service id="Symfony\Component\Validator\Validator\ValidatorInterface" alias="validator"/>
+    <service id="validator.mapping.class_metadata_factory" alias="validator"/>
+    <service id="FOS\RestBundle\View\ViewHandlerInterface" alias="fos_rest.view_handler.default"/>
+    <service id="FOS\RestBundle\Request\ParamFetcherInterface" alias="fos_rest.request.param_fetcher"/>
+    <service id="fos_rest.view_handler" alias="fos_rest.view_handler.default" public="true"/>
+    <service id="jms_serializer.metadata.cache" alias="jms_serializer.metadata.cache.file_cache"/>
+    <service id="jms_serializer.naming_strategy" alias="jms_serializer.serialized_name_annotation_strategy"/>
+    <service id="jms_serializer.deserialization_context_factory" alias="jms_serializer.configured_deserialization_context_factory" public="true"/>
+    <service id="jms_serializer.serialization_context_factory" alias="jms_serializer.configured_serialization_context_factory" public="true"/>
+    <service id="jms_serializer" alias="jms_serializer.serializer" public="true"/>
+    <service id="JMS\Serializer\SerializerInterface" alias="jms_serializer.serializer"/>
+    <service id="JMS\Serializer\ArrayTransformerInterface" alias="jms_serializer.serializer"/>
+    <service id="jms_serializer.accessor_strategy" alias="jms_serializer.accessor_strategy.default"/>
+    <service id="JMS\Serializer\ContextFactory\SerializationContextFactoryInterface" alias="jms_serializer.configured_serialization_context_factory"/>
+    <service id="JMS\Serializer\ContextFactory\DeserializationContextFactoryInterface" alias="jms_serializer.configured_deserialization_context_factory"/>
+    <service id="jms_serializer.instance.default.event_dispatcher" alias="jms_serializer.event_dispatcher"/>
+    <service id="jms_serializer.instance.default.event_dispatcher.service_locator" alias="jms_serializer.event_dispatcher.service_locator"/>
+    <service id="jms_serializer.instance.default.doctrine_proxy_subscriber" alias="jms_serializer.doctrine_proxy_subscriber"/>
+    <service id="jms_serializer.instance.default.stopwatch_subscriber" alias="jms_serializer.stopwatch_subscriber"/>
+    <service id="jms_serializer.instance.default.enum_subscriber" alias="jms_serializer.enum_subscriber"/>
+    <service id="jms_serializer.instance.default.handler_registry" alias="jms_serializer.traceable_handler_registry"/>
+    <service id="jms_serializer.instance.default.handler_registry.service_locator" alias="jms_serializer.handler_registry.service_locator"/>
+    <service id="jms_serializer.instance.default.enum_handler" alias="jms_serializer.enum_handler"/>
+    <service id="jms_serializer.instance.default.array_collection_handler" alias="jms_serializer.array_collection_handler"/>
+    <service id="jms_serializer.instance.default.constraint_violation_handler" alias="jms_serializer.constraint_violation_handler"/>
+    <service id="jms_serializer.instance.default.datetime_handler" alias="jms_serializer.datetime_handler"/>
+    <service id="jms_serializer.instance.default.form_error_handler" alias="fos_rest.serializer.form_error_handler"/>
+    <service id="jms_serializer.instance.default.iterator_handler" alias="jms_serializer.iterator_handler"/>
+    <service id="jms_serializer.instance.default.symfony_uid_handler" alias="jms_serializer.symfony_uid_handler"/>
+    <service id="jms_serializer.instance.default.type_parser" alias="jms_serializer.type_parser"/>
+    <service id="jms_serializer.instance.default.metadata.file_locator" alias="jms_serializer.metadata.traceable_file_locator"/>
+    <service id="jms_serializer.instance.default.metadata.yaml_driver" alias="jms_serializer.metadata.yaml_driver"/>
+    <service id="jms_serializer.instance.default.metadata.xml_driver" alias="jms_serializer.metadata.xml_driver"/>
+    <service id="jms_serializer.instance.default.metadata.annotation_driver" alias="jms_serializer.metadata.annotation_driver"/>
+    <service id="jms_serializer.instance.default.metadata_driver" alias="jms_serializer.metadata.doctrine_type_driver"/>
+    <service id="jms_serializer.instance.default.metadata.doctrine_type_driver" alias="jms_serializer.metadata.doctrine_type_driver"/>
+    <service id="jms_serializer.instance.default.metadata.doctrine_phpcr_type_driver" alias="jms_serializer.metadata.doctrine_phpcr_type_driver"/>
+    <service id="jms_serializer.instance.default.metadata.typed_properties_driver" alias="jms_serializer.metadata.typed_properties_driver"/>
+    <service id="jms_serializer.instance.default.metadata.enum_driver" alias="jms_serializer.metadata.enum_driver"/>
+    <service id="jms_serializer.instance.default.metadata.doc_block_driver" alias="jms_serializer.metadata.doc_block_driver"/>
+    <service id="jms_serializer.instance.default.metadata.service_locator" alias="jms_serializer.metadata.service_locator"/>
+    <service id="jms_serializer.instance.default.metadata.lazy_loading_driver" alias="jms_serializer.metadata.lazy_loading_driver"/>
+    <service id="jms_serializer.instance.default.metadata.cache.file_cache" alias="jms_serializer.metadata.cache.file_cache"/>
+    <service id="jms_serializer.instance.default.metadata_factory" alias="jms_serializer.traceable_metadata_factory"/>
+    <service id="jms_serializer.instance.default.version_exclusion_strategy" alias="jms_serializer.version_exclusion_strategy"/>
+    <service id="jms_serializer.instance.default.camel_case_naming_strategy" alias="jms_serializer.camel_case_naming_strategy"/>
+    <service id="jms_serializer.instance.default.identical_property_naming_strategy" alias="jms_serializer.identical_property_naming_strategy"/>
+    <service id="jms_serializer.instance.default.serialized_name_annotation_strategy" alias="jms_serializer.serialized_name_annotation_strategy"/>
+    <service id="jms_serializer.instance.default.doctrine_object_constructor" alias="jms_serializer.doctrine_object_constructor"/>
+    <service id="jms_serializer.instance.default.doctrine_phpcr_object_constructor" alias="jms_serializer.doctrine_phpcr_object_constructor"/>
+    <service id="jms_serializer.instance.default.object_constructor" alias="jms_serializer.doctrine_object_constructor"/>
+    <service id="jms_serializer.instance.default.serializer" alias="jms_serializer.serializer"/>
+    <service id="jms_serializer.instance.default.deserialization_graph_navigator_factory" alias="jms_serializer.deserialization_graph_navigator_factory"/>
+    <service id="jms_serializer.instance.default.serialization_graph_navigator_factory" alias="jms_serializer.serialization_graph_navigator_factory"/>
+    <service id="jms_serializer.instance.default.expression_evaluator" alias="jms_serializer.expression_evaluator"/>
+    <service id="jms_serializer.instance.default.expression_language" alias="jms_serializer.expression_language"/>
+    <service id="jms_serializer.instance.default.expression_language.function_provider" alias="jms_serializer.expression_language.function_provider"/>
+    <service id="jms_serializer.instance.default.twig_extension.serializer" alias="jms_serializer.twig_extension.serializer"/>
+    <service id="jms_serializer.instance.default.twig_extension.runtime_serializer" alias="jms_serializer.twig_extension.runtime_serializer"/>
+    <service id="jms_serializer.instance.default.twig_extension.serializer_runtime_helper" alias="jms_serializer.twig_extension.serializer_runtime_helper"/>
+    <service id="jms_serializer.instance.default.templating.helper.serializer" alias="jms_serializer.templating.helper.serializer"/>
+    <service id="jms_serializer.instance.default.accessor_strategy.default" alias="jms_serializer.accessor_strategy.default"/>
+    <service id="jms_serializer.instance.default.json_serialization_visitor" alias="jms_serializer.json_serialization_visitor"/>
+    <service id="jms_serializer.instance.default.json_deserialization_visitor" alias="jms_serializer.json_deserialization_visitor"/>
+    <service id="jms_serializer.instance.default.xml_serialization_visitor" alias="jms_serializer.xml_serialization_visitor"/>
+    <service id="jms_serializer.instance.default.xml_deserialization_visitor" alias="jms_serializer.xml_deserialization_visitor"/>
+    <service id="jms_serializer.instance.default.cache.cache_clearer" alias="jms_serializer.cache.cache_clearer"/>
+    <service id="jms_serializer.instance.default.cache.cache_warmer" alias="jms_serializer.cache.cache_warmer"/>
+    <service id="jms_serializer.instance.default.configured_serialization_context_factory" alias="jms_serializer.configured_serialization_context_factory"/>
+    <service id="jms_serializer.instance.default.configured_deserialization_context_factory" alias="jms_serializer.configured_deserialization_context_factory"/>
+    <service id="jms_serializer.instance.default.data_collector" alias="jms_serializer.data_collector"/>
+    <service id="jms_serializer.instance.default.traceable_runs_listener" alias="jms_serializer.traceable_runs_listener"/>
+    <service id="jms_serializer.instance.default.traceable_metadata_factory" alias="jms_serializer.traceable_metadata_factory"/>
+    <service id="jms_serializer.instance.default.traceable_handler_registry" alias="jms_serializer.traceable_handler_registry"/>
+    <service id="jms_serializer.instance.default.metadata.traceable_file_locator" alias="jms_serializer.metadata.traceable_file_locator"/>
+    <service id="jms_serializer.instances.default" alias="jms_serializer.serializer" public="true"/>
+    <service id="Doctrine\DBAL\Driver\Connection" alias="doctrine.dbal.default_connection"/>
+    <service id="Doctrine\DBAL\Connection" alias="doctrine.dbal.default_connection"/>
+    <service id="Doctrine\Persistence\ManagerRegistry" alias="doctrine"/>
+    <service id="Doctrine\Common\Persistence\ManagerRegistry" alias="doctrine"/>
+    <service id="database_connection" alias="doctrine.dbal.default_connection" public="true"/>
+    <service id="doctrine.dbal.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
+    <service id="Doctrine\DBAL\Connection $defaultConnection" alias="doctrine.dbal.default_connection"/>
+    <service id="Doctrine\ORM\EntityManagerInterface" alias="doctrine.orm.default_entity_manager"/>
+    <service id="doctrine.orm.metadata.annotation_reader" alias="annotations.cached_reader"/>
+    <service id="doctrine.orm.entity_manager" alias="doctrine.orm.default_entity_manager" public="true"/>
+    <service id="doctrine.orm.default_metadata_cache" alias="cache.doctrine.orm.default.metadata"/>
+    <service id="doctrine.orm.default_result_cache" alias="cache.doctrine.orm.default.result.compatibility_layer"/>
+    <service id="doctrine.orm.default_query_cache" alias="cache.doctrine.orm.default.query.compatibility_layer"/>
+    <service id="Doctrine\ORM\EntityManagerInterface $defaultEntityManager" alias="doctrine.orm.default_entity_manager"/>
+    <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
+    <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
     <service id="argument_resolver.controller_locator" alias=".service_locator.mGHEj8d"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
+    <service id="fos_rest.serializer" alias="fos_rest.serializer.jms"/>
+    <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
+    <service id=".service_locator.dvfUIQY" alias="jms_serializer.event_dispatcher.service_locator"/>
+    <service id=".service_locator.kU_9bh." alias="jms_serializer.handler_registry.service_locator"/>
+    <service id=".service_locator.13qzyLC" alias="jms_serializer.metadata.service_locator"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.74LyejU" alias=".service_locator.mGHEj8d"/>
+    <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
+    <service id=".service_locator.Za9MpXe" alias=".service_locator.y4dplYt"/>
+    <service id=".service_locator.VPhYdBw" alias=".service_locator..9a.imQ"/>
+    <service id="event_dispatcher" alias="debug.event_dispatcher" public="true"/>
+    <service id="controller_resolver" alias="debug.controller_resolver"/>
+    <service id="argument_resolver" alias="debug.argument_resolver"/>
+    <service id="jms_serializer.metadata_driver" alias="jms_serializer.metadata.doctrine_type_driver"/>
+    <service id="jms_serializer.object_constructor" alias="jms_serializer.doctrine_object_constructor"/>
+    <service id="doctrine.migrations.migrations_factory" alias="doctrine.migrations.container_aware_migrations_factory"/>
+    <service id="argument_resolver.request_attribute" alias="debug.argument_resolver.request_attribute"/>
+    <service id="argument_resolver.request" alias="debug.argument_resolver.request"/>
+    <service id="argument_resolver.session" alias="debug.argument_resolver.session"/>
+    <service id="argument_resolver.service" alias="debug.argument_resolver.service"/>
+    <service id="argument_resolver.default" alias="debug.argument_resolver.default"/>
+    <service id="argument_resolver.variadic" alias="debug.argument_resolver.variadic"/>
+    <service id="argument_resolver.not_tagged_controller" alias="debug.argument_resolver.not_tagged_controller"/>
+    <service id="jms_serializer.form_error_handler" alias="fos_rest.serializer.form_error_handler"/>
+    <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
+    <service id="jms_serializer.metadata_factory" alias="jms_serializer.traceable_metadata_factory"/>
+    <service id="jms_serializer.handler_registry" alias="jms_serializer.traceable_handler_registry"/>
+    <service id="jms_serializer.metadata.file_locator" alias="jms_serializer.metadata.traceable_file_locator"/>
     <service id=".service_locator.JBAFp66" alias=".service_locator.KfbR3DY"/>
     <service id=".service_locator.sf85gDo" alias=".service_locator.XmPJruK"/>
   </services>
