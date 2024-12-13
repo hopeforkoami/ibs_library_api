@@ -269,7 +269,6 @@ class Configuration extends \Doctrine\DBAL\Configuration
         );
 
         if (! isset($this->_attributes['entityNamespaces'][$entityNamespaceAlias])) {
-            // @phpstan-ignore staticMethod.deprecatedClass
             throw UnknownEntityNamespace::fromNamespaceAlias($entityNamespaceAlias);
         }
 
@@ -315,7 +314,6 @@ class Configuration extends \Doctrine\DBAL\Configuration
     {
         // Compatibility with DBAL 2
         if (! method_exists(parent::class, 'getResultCache')) {
-            // @phpstan-ignore method.deprecated
             $cacheImpl = $this->getResultCacheImpl();
 
             return $cacheImpl ? CacheAdapter::wrap($cacheImpl) : null;
@@ -331,7 +329,6 @@ class Configuration extends \Doctrine\DBAL\Configuration
     {
         // Compatibility with DBAL 2
         if (! method_exists(parent::class, 'setResultCache')) {
-            // @phpstan-ignore method.deprecated
             $this->setResultCacheImpl(DoctrineProvider::wrap($cache));
 
             return;
@@ -687,7 +684,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name
      *
-     * @return class-string|callable|null
+     * @return string|callable|null
+     * @psalm-return class-string|callable|null
      */
     public function getCustomNumericFunction($name)
     {
@@ -704,7 +702,7 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * Any previously added numeric functions are discarded.
      *
-     * @param array<string, class-string> $functions The map of custom
+     * @psalm-param array<string, class-string> $functions The map of custom
      *                                                     DQL numeric functions.
      *
      * @return void
@@ -739,7 +737,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name
      *
-     * @return class-string|callable|null
+     * @return string|callable|null
+     * @psalm-return class-string|callable|null
      */
     public function getCustomDatetimeFunction($name)
     {
@@ -805,7 +804,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $modeName The hydration mode name.
      *
-     * @return class-string<AbstractHydrator>|null The hydrator class name.
+     * @return string|null The hydrator class name.
+     * @psalm-return class-string<AbstractHydrator>|null
      */
     public function getCustomHydrationMode($modeName)
     {
@@ -815,8 +815,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Adds a custom hydration mode.
      *
-     * @param string                         $modeName The hydration mode name.
-     * @param class-string<AbstractHydrator> $hydrator The hydrator class name.
+     * @param string $modeName The hydration mode name.
+     * @param string $hydrator The hydrator class name.
+     * @psalm-param class-string<AbstractHydrator> $hydrator
      *
      * @return void
      */
@@ -828,7 +829,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Sets a class metadata factory.
      *
-     * @param class-string $cmfName
+     * @param string $cmfName
+     * @psalm-param class-string $cmfName
      *
      * @return void
      */
@@ -837,7 +839,10 @@ class Configuration extends \Doctrine\DBAL\Configuration
         $this->_attributes['classMetadataFactoryName'] = $cmfName;
     }
 
-    /** @return class-string */
+    /**
+     * @return string
+     * @psalm-return class-string
+     */
     public function getClassMetadataFactoryName()
     {
         if (! isset($this->_attributes['classMetadataFactoryName'])) {
@@ -850,8 +855,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Adds a filter to the list of possible filters.
      *
-     * @param string                  $name      The name of the filter.
-     * @param class-string<SQLFilter> $className The class name of the filter.
+     * @param string $name      The name of the filter.
+     * @param string $className The class name of the filter.
+     * @psalm-param class-string<SQLFilter> $className
      *
      * @return void
      */
@@ -865,8 +871,9 @@ class Configuration extends \Doctrine\DBAL\Configuration
      *
      * @param string $name The name of the filter.
      *
-     * @return class-string<SQLFilter>|null The class name of the filter,
-     *                                      or null if it is not defined.
+     * @return string|null The class name of the filter, or null if it is not
+     *  defined.
+     * @psalm-return class-string<SQLFilter>|null
      */
     public function getFilterClassName($name)
     {
@@ -876,7 +883,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Sets default repository class.
      *
-     * @param class-string<EntityRepository> $className
+     * @param string $className
+     * @psalm-param class-string<EntityRepository> $className
      *
      * @return void
      *
@@ -904,7 +912,8 @@ class Configuration extends \Doctrine\DBAL\Configuration
     /**
      * Get default repository class.
      *
-     * @return class-string<EntityRepository>
+     * @return string
+     * @psalm-return class-string<EntityRepository>
      */
     public function getDefaultRepositoryClassName()
     {

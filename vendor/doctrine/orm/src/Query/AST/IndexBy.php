@@ -23,7 +23,6 @@ class IndexBy extends Node
 
     public function __construct(PathExpression $singleValuedPathExpression)
     {
-        // @phpstan-ignore property.deprecated
         $this->singleValuedPathExpression = $this->simpleStateFieldPathExpression = $singleValuedPathExpression;
     }
 

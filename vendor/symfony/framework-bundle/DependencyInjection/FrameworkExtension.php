@@ -1167,6 +1167,7 @@ class FrameworkExtension extends Extension
                 $locator = $container->getDefinition('session_listener')->getArgument(0);
                 $locator->setValues($locator->getValues() + [
                     'session_storage' => new Reference('session.storage', ContainerInterface::IGNORE_ON_INVALID_REFERENCE),
+                    'request_stack' => new Reference('request_stack'),
                 ]);
             } else {
                 $container->getDefinition('session.storage.factory.native')->replaceArgument(3, true);
@@ -1341,7 +1342,7 @@ class FrameworkExtension extends Extension
         $defaultDir = $container->getParameterBag()->resolveValue($config['default_path']);
         foreach ($container->getParameter('kernel.bundles_metadata') as $name => $bundle) {
             if ($container->fileExists($dir = $bundle['path'].'/Resources/translations') || $container->fileExists($dir = $bundle['path'].'/translations')) {
-                $dirs[] = $transPaths[] = $dir;
+                $dirs[] = $dir;
             } else {
                 $nonExistingDirs[] = $dir;
             }
@@ -1853,25 +1854,18 @@ class FrameworkExtension extends Extension
             $container->setParameter('serializer.default_context', $defaultContext);
         }
 
-        if (!$container->hasDefinition('serializer.normalizer.object')) {
-            return;
-        }
-
-        $arguments = $container->getDefinition('serializer.normalizer.object')->getArguments();
-        $context = $arguments[6] ?? $defaultContext;
-
         if (isset($config['circular_reference_handler']) && $config['circular_reference_handler']) {
-            $context += ['circular_reference_handler' => new Reference($config['circular_reference_handler'])];
+            $arguments = $container->getDefinition('serializer.normalizer.object')->getArguments();
+            $context = ($arguments[6] ?? $defaultContext) + ['circular_reference_handler' => new Reference($config['circular_reference_handler'])];
             $container->getDefinition('serializer.normalizer.object')->setArgument(5, null);
+            $container->getDefinition('serializer.normalizer.object')->setArgument(6, $context);
         }
 
         if ($config['max_depth_handler'] ?? false) {
-            $context += ['max_depth_handler' => new Reference($config['max_depth_handler'])];
+            $arguments = $container->getDefinition('serializer.normalizer.object')->getArguments();
+            $context = ($arguments[6] ?? $defaultContext) + ['max_depth_handler' => new Reference($config['max_depth_handler'])];
+            $container->getDefinition('serializer.normalizer.object')->setArgument(6, $context);
         }
-
-        $container->getDefinition('serializer.normalizer.object')->setArgument(6, $context);
-
-        $container->getDefinition('serializer.normalizer.property')->setArgument(5, $defaultContext);
     }
 
     private function registerPropertyInfoConfiguration(ContainerBuilder $container, PhpFileLoader $loader)
@@ -2086,9 +2080,10 @@ class FrameworkExtension extends Extension
                 ->setFactory([new Reference('messenger.transport_factory'), 'createTransport'])
                 ->setArguments([$transport['dsn'], $transport['options'] + ['transport_name' => $name], new Reference($serializerId)])
                 ->addTag('messenger.receiver', [
-                    'alias' => $name,
-                    'is_failure_transport' => \in_array($name, $failureTransports),
-                ])
+                        'alias' => $name,
+                        'is_failure_transport' => \in_array($name, $failureTransports),
+                    ]
+                )
             ;
             $container->setDefinition($transportId = 'messenger.transport.'.$name, $transportDefinition);
             $senderAliases[$name] = $transportId;

@@ -39,7 +39,6 @@ abstract class AbstractSqlExecutor
 
     public function __construct()
     {
-        // @phpstan-ignore property.deprecated
         $this->_sqlStatements = &$this->sqlStatements;
     }
 
@@ -94,13 +93,10 @@ abstract class AbstractSqlExecutor
 
     public function __wakeup(): void
     {
-        // @phpstan-ignore property.deprecated
         if ($this->_sqlStatements !== null && $this->sqlStatements === null) {
-            // @phpstan-ignore property.deprecated
             $this->sqlStatements = $this->_sqlStatements;
         }
 
-        // @phpstan-ignore property.deprecated
         $this->_sqlStatements = &$this->sqlStatements;
     }
 }

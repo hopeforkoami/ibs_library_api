@@ -1,16 +1,12 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Reflection;
 
 use ReflectionFunction;
+use ReflectionParameter;
+use ReturnTypeWillChange;
 
-use function array_shift;
+use function array_map;
 use function array_slice;
 use function count;
 use function file;
@@ -24,17 +20,19 @@ use function strrpos;
 use function substr;
 use function var_export;
 
+use const FILE_IGNORE_NEW_LINES;
+
 class FunctionReflection extends ReflectionFunction implements ReflectionInterface
 {
     /**
      * Constant use in @MethodReflection to display prototype as an array
      */
-    const PROTOTYPE_AS_ARRAY = 'prototype_as_array';
+    public const PROTOTYPE_AS_ARRAY = 'prototype_as_array';
 
     /**
      * Constant use in @MethodReflection to display prototype as a string
      */
-    const PROTOTYPE_AS_STRING = 'prototype_as_string';
+    public const PROTOTYPE_AS_STRING = 'prototype_as_string';
 
     /**
      * Get function DocBlock
@@ -51,9 +49,7 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
             ));
         }
 
-        $instance = new DocBlockReflection($comment);
-
-        return $instance;
+        return new DocBlockReflection($comment);
     }
 
     /**
@@ -62,6 +58,7 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
      * @param  bool $includeDocComment
      * @return int
      */
+    #[ReturnTypeWillChange]
     public function getStartLine($includeDocComment = false)
     {
         if ($includeDocComment) {
@@ -87,11 +84,11 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
         }
 
         $startLine = $this->getStartLine();
-        $endLine = $this->getEndLine();
+        $endLine   = $this->getEndLine();
 
         // eval'd protect
         if (preg_match('#\((\d+)\) : eval\(\)\'d code$#', $fileName, $matches)) {
-            $fileName = preg_replace('#\(\d+\) : eval\(\)\'d code$#', '', $fileName);
+            $fileName  = preg_replace('#\(\d+\) : eval\(\)\'d code$#', '', $fileName);
             $startLine = $endLine = $matches[1];
         }
 
@@ -130,18 +127,19 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
     /**
      * Get method prototype
      *
+     * @deprecated this method is unreliable, and should not be used: it will be removed in the next major release.
+     *             It may crash on parameters with union types, and will return relative types, instead of
+     *             FQN references
+     *
      * @param string $format
      * @return array|string
      */
-    public function getPrototype($format = FunctionReflection::PROTOTYPE_AS_ARRAY)
+    public function getPrototype($format = self::PROTOTYPE_AS_ARRAY)
     {
-        $returnType = 'mixed';
-        $docBlock = $this->getDocBlock();
-        if ($docBlock) {
-            $return = $docBlock->getTag('return');
-            $returnTypes = $return->getTypes();
-            $returnType = count($returnTypes) > 1 ? implode('|', $returnTypes) : $returnTypes[0];
-        }
+        $docBlock    = $this->getDocBlock();
+        $return      = $docBlock->getTag('return');
+        $returnTypes = $return->getTypes();
+        $returnType  = count($returnTypes) > 1 ? implode('|', $returnTypes) : $returnTypes[0];
 
         $prototype = [
             'namespace' => $this->getNamespaceName(),
@@ -160,7 +158,7 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
             ];
         }
 
-        if ($format == FunctionReflection::PROTOTYPE_AS_STRING) {
+        if ($format == self::PROTOTYPE_AS_STRING) {
             $line = $prototype['return'] . ' ' . $prototype['name'] . '(';
             $args = [];
             foreach ($prototype['arguments'] as $name => $argument) {
@@ -184,24 +182,26 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
     /**
      * Get function parameters
      *
-     * @return ParameterReflection[]
+     * @return list<ParameterReflection>
      */
+    #[ReturnTypeWillChange]
     public function getParameters()
     {
-        $phpReflections  = parent::getParameters();
-        $laminasReflections = [];
-        while ($phpReflections && ($phpReflection = array_shift($phpReflections))) {
-            $instance          = new ParameterReflection($this->getName(), $phpReflection->getName());
-            $laminasReflections[] = $instance;
-            unset($phpReflection);
-        }
-        unset($phpReflections);
+        $name = $this->getName();
 
-        return $laminasReflections;
+        return array_map(
+            static fn (ReflectionParameter $parameter): ParameterReflection
+                => new ParameterReflection($name, $parameter->getName()),
+            parent::getParameters()
+        );
     }
 
     /**
      * Get return type tag
+     *
+     * @deprecated this method is unreliable, and will be dropped in the next major release.
+     *             If you are attempting to inspect the return type of an expression, please
+     *             use more reliable tools, such as `vimeo/psalm` or `phpstan/phpstan` instead.
      *
      * @throws Exception\InvalidArgumentException
      * @return DocBlockReflection
@@ -215,7 +215,7 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
             );
         }
 
-        $tag    = $docBlock->getTag('return');
+        $tag = $docBlock->getTag('return');
 
         return new DocBlockReflection('@return ' . $tag->getDescription());
     }
@@ -235,11 +235,11 @@ class FunctionReflection extends ReflectionFunction implements ReflectionInterfa
         }
 
         $startLine = $this->getStartLine();
-        $endLine = $this->getEndLine();
+        $endLine   = $this->getEndLine();
 
         // eval'd protect
         if (preg_match('#\((\d+)\) : eval\(\)\'d code$#', $fileName, $matches)) {
-            $fileName = preg_replace('#\(\d+\) : eval\(\)\'d code$#', '', $fileName);
+            $fileName  = preg_replace('#\(\d+\) : eval\(\)\'d code$#', '', $fileName);
             $startLine = $endLine = $matches[1];
         }
 

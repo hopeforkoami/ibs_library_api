@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Doctrine\ORM\Query\AST;
 
-/** @phpstan-ignore class.extendsDeprecatedClass */
 class InListExpression extends InExpression
 {
     /** @var non-empty-list<mixed> */
@@ -16,7 +15,6 @@ class InListExpression extends InExpression
         $this->literals = $literals;
         $this->not      = $not;
 
-        // @phpstan-ignore staticMethod.deprecatedClass
         parent::__construct($expression);
     }
 }

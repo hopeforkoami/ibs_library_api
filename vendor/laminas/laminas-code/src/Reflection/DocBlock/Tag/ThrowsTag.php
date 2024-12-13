@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Reflection\DocBlock\Tag;
 
 use function explode;
@@ -15,13 +9,12 @@ use function preg_match;
 class ThrowsTag implements TagInterface, PhpDocTypedTagInterface
 {
     /**
-     * @var array
+     * @var string[]
+     * @psalm-var list<string>
      */
     protected $types = [];
 
-    /**
-     * @var string
-     */
+    /** @var string|null */
     protected $description;
 
     /**
@@ -32,14 +25,11 @@ class ThrowsTag implements TagInterface, PhpDocTypedTagInterface
         return 'throws';
     }
 
-    /**
-     * @param  string $tagDocBlockLine
-     * @return void
-     */
-    public function initialize($tagDocBlockLine)
+    /** @inheritDoc */
+    public function initialize($content)
     {
         $matches = [];
-        preg_match('#([\w|\\\]+)(?:\s+(.*))?#', $tagDocBlockLine, $matches);
+        preg_match('#([\w|\\\]+)(?:\s+(.*))?#', $content, $matches);
 
         $this->types = explode('|', $matches[1]);
 
@@ -51,24 +41,23 @@ class ThrowsTag implements TagInterface, PhpDocTypedTagInterface
     /**
      * Get return variable type
      *
-     * @return string
      * @deprecated 2.0.4 use getTypes instead
+     *
+     * @return string
      */
     public function getType()
     {
         return implode('|', $this->getTypes());
     }
 
-    /**
-     * @return array
-     */
+    /** @inheritDoc */
     public function getTypes()
     {
         return $this->types;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription()
     {

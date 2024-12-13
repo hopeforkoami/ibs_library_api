@@ -72,7 +72,6 @@ class DefaultRegion implements Region
                 CacheItemPoolInterface::class
             );
 
-            // @phpstan-ignore property.deprecated
             $this->cache         = $cacheItemPool;
             $this->cacheItemPool = CacheAdapter::wrap($cacheItemPool);
         } elseif (! $cacheItemPool instanceof CacheItemPoolInterface) {
@@ -83,7 +82,6 @@ class DefaultRegion implements Region
                 get_debug_type($cacheItemPool)
             ));
         } else {
-            // @phpstan-ignore property.deprecated
             $this->cache         = DoctrineProvider::wrap($cacheItemPool);
             $this->cacheItemPool = $cacheItemPool;
         }

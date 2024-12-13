@@ -131,7 +131,8 @@ EOT
     /**
      * Return all mapped entity class names
      *
-     * @return class-string[]
+     * @return string[]
+     * @psalm-return class-string[]
      */
     private function getMappedEntities(EntityManagerInterface $entityManager): array
     {

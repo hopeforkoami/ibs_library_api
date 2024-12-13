@@ -495,7 +495,7 @@ final class Dotenv
             (?!\()                             # no opening parenthesis
             (?P<opening_brace>\{)?             # optional brace
             (?P<name>'.self::VARNAME_REGEX.')? # var name
-            (?P<default_value>:[-=][^\}]*+)?   # optional default value
+            (?P<default_value>:[-=][^\}]++)?   # optional default value
             (?P<closing_brace>\})?             # optional closing brace
         /x';
 
@@ -568,13 +568,7 @@ final class Dotenv
                 throw new PathException($path);
             }
 
-            $data = file_get_contents($path);
-
-            if ("\xEF\xBB\xBF" === substr($data, 0, 3)) {
-                throw new FormatException('Loading files starting with a byte-order-mark (BOM) is not supported.', new FormatExceptionContext($data, $path, 1, 0));
-            }
-
-            $this->populate($this->parse($data, $path), $overrideExistingVars);
+            $this->populate($this->parse(file_get_contents($path), $path), $overrideExistingVars);
         }
     }
 }

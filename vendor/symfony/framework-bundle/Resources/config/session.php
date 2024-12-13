@@ -156,7 +156,6 @@ return static function (ContainerConfigurator $container) {
                     'initialized_session' => service('.session.do-not-use')->ignoreOnUninitialized(),
                     'logger' => service('logger')->ignoreOnInvalid(),
                     'session_collector' => service('data_collector.request.session_collector')->ignoreOnInvalid(),
-                    'request_stack' => service('request_stack')->ignoreOnInvalid(),
                 ]),
                 param('kernel.debug'),
                 param('session.storage.options'),

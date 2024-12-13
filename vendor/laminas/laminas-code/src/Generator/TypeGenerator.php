@@ -1,168 +1,157 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
+declare(strict_types=1);
 
 namespace Laminas\Code\Generator;
 
 use Laminas\Code\Generator\Exception\InvalidArgumentException;
+use Laminas\Code\Generator\TypeGenerator\AtomicType;
+use Laminas\Code\Generator\TypeGenerator\CompositeType;
+use Laminas\Code\Generator\TypeGenerator\IntersectionType;
+use Laminas\Code\Generator\TypeGenerator\UnionType;
+use ReflectionClass;
+use ReflectionIntersectionType;
+use ReflectionNamedType;
+use ReflectionUnionType;
 
-use function in_array;
-use function ltrim;
-use function preg_match;
+use function array_map;
 use function sprintf;
-use function strpos;
-use function strtolower;
+use function str_contains;
+use function str_starts_with;
 use function substr;
 
+/** @psalm-immutable */
 final class TypeGenerator implements GeneratorInterface
 {
-    /**
-     * @var bool
-     */
-    private $isInternalPhpType;
+    private const NULL_MARKER = '?';
+
+    private function __construct(
+        private readonly UnionType|IntersectionType|AtomicType $type,
+        private readonly bool $nullable = false
+    ) {
+        if ($nullable && $type instanceof AtomicType) {
+            $type->assertCanBeStandaloneNullable();
+        }
+    }
 
     /**
-     * @var string
-     */
-    private $type;
-
-    /**
-     * @var bool
-     */
-    private $nullable;
-
-    /**
-     * @var string[]
+     * @internal
      *
-     * @link http://php.net/manual/en/functions.arguments.php#functions.arguments.type-declaration
+     * @psalm-pure
      */
-    private static $internalPhpTypes = [
-        'void',
-        'int',
-        'float',
-        'string',
-        'bool',
-        'array',
-        'callable',
-        'iterable',
-        'object'
-    ];
-
-    /**
-     * @var string a regex pattern to match valid class names or types
-     */
-    private static $validIdentifierMatcher = '/^[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*'
-        . '(\\\\[a-zA-Z_\x80-\xff][a-zA-Z0-9_\x80-\xff]*)*$/';
-
-    /**
-     * @param string $type
-     *
-     * @return TypeGenerator
-     *
-     * @throws InvalidArgumentException
-     */
-    public static function fromTypeString($type)
-    {
-        list($nullable, $trimmedNullable) = self::trimNullable($type);
-        list($wasTrimmed, $trimmedType) = self::trimType($trimmedNullable);
-
-        if (! preg_match(self::$validIdentifierMatcher, $trimmedType)) {
-            throw new InvalidArgumentException(sprintf(
-                'Provided type "%s" is invalid: must conform "%s"',
-                $type,
-                self::$validIdentifierMatcher
-            ));
+    public static function fromReflectionType(
+        ReflectionNamedType|ReflectionUnionType|ReflectionIntersectionType|null $type,
+        ?ReflectionClass $currentClass
+    ): ?self {
+        if (null === $type) {
+            return null;
         }
 
-        $isInternalPhpType = self::isInternalPhpType($trimmedType);
+        if ($type instanceof ReflectionUnionType) {
+            return new self(
+                new UnionType(array_map(
+                    static fn(
+                        ReflectionIntersectionType|ReflectionNamedType $type
+                    ): IntersectionType|AtomicType => $type instanceof ReflectionNamedType
+                        ? AtomicType::fromReflectionNamedTypeAndClass($type, $currentClass)
+                        : self::fromIntersectionType($type, $currentClass),
+                    $type->getTypes()
+                )),
+                false
+            );
+        }
 
-        if ($wasTrimmed && $isInternalPhpType) {
+        if ($type instanceof ReflectionIntersectionType) {
+            return new self(self::fromIntersectionType($type, $currentClass), false);
+        }
+
+        $atomicType = AtomicType::fromReflectionNamedTypeAndClass($type, $currentClass);
+
+        return new self(
+            $atomicType,
+            $atomicType->type !== 'mixed' && $atomicType !== 'null' && $type->allowsNull()
+        );
+    }
+
+    /** @psalm-pure */
+    private static function fromIntersectionType(
+        ReflectionIntersectionType $intersectionType,
+        ?ReflectionClass $currentClass
+    ): IntersectionType {
+        return new IntersectionType(array_map(
+            static fn(
+                ReflectionNamedType $type
+            ): AtomicType => AtomicType::fromReflectionNamedTypeAndClass($type, $currentClass),
+            $intersectionType->getTypes()
+        ));
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     * @psalm-pure
+     */
+    public static function fromTypeString(string $type): self
+    {
+        [$nullable, $trimmedNullable] = self::trimNullable($type);
+
+        if (
+            ! str_contains($trimmedNullable, CompositeType::INTERSECTION_SEPARATOR)
+            && ! str_contains($trimmedNullable, CompositeType::UNION_SEPARATOR)
+        ) {
+            return new self(CompositeType::fromString($trimmedNullable), $nullable);
+        }
+
+        if ($nullable) {
             throw new InvalidArgumentException(sprintf(
-                'Provided type "%s" is an internal PHP type, but was provided with a namespace separator prefix',
+                'Type "%s" is a union type, and therefore cannot be also marked nullable with the "?" prefix',
                 $type
             ));
         }
 
-        if ($nullable && $isInternalPhpType && 'void' === strtolower($trimmedType)) {
-            throw new InvalidArgumentException(sprintf('Provided type "%s" cannot be nullable', $type));
-        }
-
-        $instance = new self();
-
-        $instance->type              = $trimmedType;
-        $instance->nullable          = $nullable;
-        $instance->isInternalPhpType = $isInternalPhpType;
-
-        return $instance;
-    }
-
-    private function __construct()
-    {
+        return new self(CompositeType::fromString($trimmedNullable));
     }
 
     /**
      * {@inheritDoc}
-     */
-    public function generate()
-    {
-        $nullable = $this->nullable ? '?' : '';
-
-        if ($this->isInternalPhpType) {
-            return $nullable . strtolower($this->type);
-        }
-
-        return $nullable . '\\' . $this->type;
-    }
-
-    /**
-     * @return string the cleaned type string
-     */
-    public function __toString()
-    {
-        return ltrim($this->generate(), '?\\');
-    }
-
-    /**
-     * @param string $type
      *
+     * Generates the type string, including FQCN "\\" prefix, so that
+     * it can directly be used within any code snippet, regardless of
+     * imports.
+     *
+     * @psalm-return non-empty-string
+     */
+    public function generate(): string
+    {
+        return ($this->nullable ? self::NULL_MARKER : '') . $this->type->fullyQualifiedName();
+    }
+
+    public function equals(TypeGenerator $otherType): bool
+    {
+        return $this->generate() === $otherType->generate();
+    }
+
+    /**
+     * @return non-empty-string the cleaned type string. Note that this value is not suitable for code generation,
+     *                          since the returned value does not include any root namespace prefixes, when applicable,
+     *                          and therefore the values cannot be used as FQCN in generated code.
+     */
+    public function __toString(): string
+    {
+        return $this->type->toString();
+    }
+
+    /**
      * @return bool[]|string[] ordered tuple, first key represents whether the type is nullable, second is the
      *                         trimmed string
+     * @psalm-return array{bool, string}
+     * @psalm-pure
      */
-    private static function trimNullable($type)
+    private static function trimNullable(string $type): array
     {
-        if (0 === strpos($type, '?')) {
+        if (str_starts_with($type, self::NULL_MARKER)) {
             return [true, substr($type, 1)];
         }
 
         return [false, $type];
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return bool[]|string[] ordered tuple, first key represents whether the values was trimmed, second is the
-     *                         trimmed string
-     */
-    private static function trimType($type)
-    {
-        if (0 === strpos($type, '\\')) {
-            return [true, substr($type, 1)];
-        }
-
-        return [false, $type];
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return bool
-     */
-    private static function isInternalPhpType($type)
-    {
-        return in_array(strtolower($type), self::$internalPhpTypes, true);
     }
 }

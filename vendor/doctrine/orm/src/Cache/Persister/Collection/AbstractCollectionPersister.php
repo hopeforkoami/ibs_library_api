@@ -254,8 +254,9 @@ abstract class AbstractCollectionPersister implements CachedCollectionPersister
     /**
      * @deprecated This method is not used anymore.
      *
-     * @param class-string $targetEntity
-     * @param object       $element
+     * @param string $targetEntity
+     * @param object $element
+     * @psalm-param class-string $targetEntity
      *
      * @return void
      */

@@ -8,12 +8,10 @@ use BackedEnum;
 use DateInterval;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Types\Types;
 
-use function class_exists;
 use function current;
 use function is_array;
 use function is_bool;
@@ -69,17 +67,9 @@ class ParameterTypeInferer
                 $firstValue = $firstValue->value;
             }
 
-            if (! class_exists(ArrayParameterType::class)) {
-                return is_int($firstValue)
-                    // @phpstan-ignore classConstant.deprecated
-                    ? Connection::PARAM_INT_ARRAY
-                    // @phpstan-ignore classConstant.deprecated
-                    : Connection::PARAM_STR_ARRAY;
-            }
-
             return is_int($firstValue)
-                ? ArrayParameterType::INTEGER
-                : ArrayParameterType::STRING;
+                ? Connection::PARAM_INT_ARRAY
+                : Connection::PARAM_STR_ARRAY;
         }
 
         return ParameterType::STRING;

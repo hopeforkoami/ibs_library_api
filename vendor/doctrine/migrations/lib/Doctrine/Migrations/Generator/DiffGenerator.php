@@ -12,7 +12,6 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\Generator\Exception\NoChangesDetected;
 use Doctrine\Migrations\Provider\SchemaProvider;
 
-use function method_exists;
 use function preg_match;
 use function strpos;
 use function substr;
@@ -25,26 +24,20 @@ use function substr;
  */
 class DiffGenerator
 {
-    /** @var DBALConfiguration */
-    private $dbalConfiguration;
+    private DBALConfiguration $dbalConfiguration;
 
     /** @var AbstractSchemaManager<AbstractPlatform> */
-    private $schemaManager;
+    private AbstractSchemaManager $schemaManager;
 
-    /** @var SchemaProvider */
-    private $schemaProvider;
+    private SchemaProvider $schemaProvider;
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var Generator */
-    private $migrationGenerator;
+    private Generator $migrationGenerator;
 
-    /** @var SqlGenerator */
-    private $migrationSqlGenerator;
+    private SqlGenerator $migrationSqlGenerator;
 
-    /** @var SchemaProvider */
-    private $emptySchemaProvider;
+    private SchemaProvider $emptySchemaProvider;
 
     /**
      * @param AbstractSchemaManager<AbstractPlatform> $schemaManager
@@ -96,13 +89,9 @@ class DiffGenerator
 
         $toSchema = $this->createToSchema();
 
-        if (method_exists($this->schemaManager, 'createComparator')) {
-            $comparator = $this->schemaManager->createComparator();
-        }
+        $comparator = $this->schemaManager->createComparator();
 
-        $upSql = isset($comparator) ?
-            $comparator->compareSchemas($fromSchema, $toSchema)->toSql($this->platform) :
-            $fromSchema->getMigrateToSql($toSchema, $this->platform);
+        $upSql = $this->platform->getAlterSchemaSQL($comparator->compareSchemas($fromSchema, $toSchema));
 
         $up = $this->migrationSqlGenerator->generate(
             $upSql,
@@ -111,9 +100,7 @@ class DiffGenerator
             $checkDbPlatform
         );
 
-        $downSql = isset($comparator) ?
-            $comparator->compareSchemas($toSchema, $fromSchema)->toSql($this->platform) :
-            $fromSchema->getMigrateFromSql($toSchema, $this->platform);
+        $downSql = $this->platform->getAlterSchemaSQL($comparator->compareSchemas($toSchema, $fromSchema));
 
         $down = $this->migrationSqlGenerator->generate(
             $downSql,
@@ -140,7 +127,7 @@ class DiffGenerator
 
     private function createFromSchema(): Schema
     {
-        return $this->schemaManager->createSchema();
+        return $this->schemaManager->introspectSchema();
     }
 
     private function createToSchema(): Schema

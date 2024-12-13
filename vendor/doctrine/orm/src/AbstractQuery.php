@@ -558,11 +558,9 @@ abstract class AbstractQuery
 
         // DBAL 2
         if (! method_exists(QueryCacheProfile::class, 'setResultCache')) {
-            // @phpstan-ignore method.deprecated
             if (! $profile->getResultCacheDriver()) {
                 $defaultHydrationCacheImpl = $this->_em->getConfiguration()->getHydrationCache();
                 if ($defaultHydrationCacheImpl) {
-                    // @phpstan-ignore method.deprecated
                     $profile = $profile->setResultCacheDriver(DoctrineProvider::wrap($defaultHydrationCacheImpl));
                 }
             }
@@ -611,11 +609,9 @@ abstract class AbstractQuery
 
         // DBAL 2
         if (! method_exists(QueryCacheProfile::class, 'setResultCache')) {
-            // @phpstan-ignore method.deprecated
             if (! $profile->getResultCacheDriver()) {
                 $defaultResultCacheDriver = $this->_em->getConfiguration()->getResultCache();
                 if ($defaultResultCacheDriver) {
-                    // @phpstan-ignore method.deprecated
                     $profile = $profile->setResultCacheDriver(DoctrineProvider::wrap($defaultResultCacheDriver));
                 }
             }
@@ -681,7 +677,6 @@ abstract class AbstractQuery
             $resultCacheDriver = DoctrineProvider::wrap($resultCache);
 
             $this->_queryCacheProfile = $this->_queryCacheProfile
-                // @phpstan-ignore method.deprecated
                 ? $this->_queryCacheProfile->setResultCacheDriver($resultCacheDriver)
                 : new QueryCacheProfile(0, null, $resultCacheDriver);
 
@@ -785,7 +780,6 @@ abstract class AbstractQuery
 
         // Compatibility for DBAL 2
         if (! method_exists($this->_queryCacheProfile, 'setResultCache')) {
-            // @phpstan-ignore method.deprecated
             $this->_queryCacheProfile = $this->_queryCacheProfile->setResultCacheDriver(DoctrineProvider::wrap($cache));
 
             return $this;
@@ -1241,7 +1235,6 @@ abstract class AbstractQuery
 
         // Support for DBAL 2
         if (! method_exists($this->_hydrationCacheProfile, 'getResultCache')) {
-            // @phpstan-ignore method.deprecated
             $cacheDriver = $this->_hydrationCacheProfile->getResultCacheDriver();
             assert($cacheDriver !== null);
 

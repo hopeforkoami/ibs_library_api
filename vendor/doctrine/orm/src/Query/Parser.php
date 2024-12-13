@@ -10,7 +10,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\AST\Functions;
-use Doctrine\ORM\Query\Exec\SqlFinalizer;
 use LogicException;
 use ReflectionClass;
 
@@ -52,7 +51,7 @@ class Parser
 {
     /**
      * @readonly Maps BUILT-IN string function names to AST class names.
-     * @var array<string, class-string<Functions\FunctionNode>>
+     * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $stringFunctions = [
         'concat'    => Functions\ConcatFunction::class,
@@ -65,7 +64,7 @@ class Parser
 
     /**
      * @readonly Maps BUILT-IN numeric function names to AST class names.
-     * @var array<string, class-string<Functions\FunctionNode>>
+     * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $numericFunctions = [
         'length'    => Functions\LengthFunction::class,
@@ -88,7 +87,7 @@ class Parser
 
     /**
      * @readonly Maps BUILT-IN datetime function names to AST class names.
-     * @var array<string, class-string<Functions\FunctionNode>>
+     * @psalm-var array<string, class-string<Functions\FunctionNode>>
      */
     private static $datetimeFunctions = [
         'current_date'      => Functions\CurrentDateFunction::class,
@@ -163,7 +162,7 @@ class Parser
     /**
      * Any additional custom tree walkers that modify the AST.
      *
-     * @var list<class-string<TreeWalker>>
+     * @psalm-var list<class-string<TreeWalker>>
      */
     private $customTreeWalkers = [];
 
@@ -194,26 +193,21 @@ class Parser
      * Sets a custom tree walker that produces output.
      * This tree walker will be run last over the AST, after any other walkers.
      *
-     * @param class-string<SqlWalker> $className
+     * @param string $className
+     * @psalm-param class-string<SqlWalker> $className
      *
      * @return void
      */
     public function setCustomOutputTreeWalker($className)
     {
-        Deprecation::trigger(
-            'doctrine/orm',
-            'https://github.com/doctrine/orm/pull/11641',
-            '%s is deprecated, set the output walker class with the \Doctrine\ORM\Query::HINT_CUSTOM_OUTPUT_WALKER query hint instead',
-            __METHOD__
-        );
-
         $this->customOutputWalker = $className;
     }
 
     /**
      * Adds a custom tree walker for modifying the AST.
      *
-     * @param class-string<TreeWalker> $className
+     * @param string $className
+     * @psalm-param class-string<TreeWalker> $className
      *
      * @return void
      */
@@ -397,26 +391,11 @@ class Parser
             $this->queryComponents = $treeWalkerChain->getQueryComponents();
         }
 
-        $outputWalkerClass = $this->customOutputWalker ?: SqlOutputWalker::class;
+        $outputWalkerClass = $this->customOutputWalker ?: SqlWalker::class;
         $outputWalker      = new $outputWalkerClass($this->query, $this->parserResult, $this->queryComponents);
 
-        if ($outputWalker instanceof OutputWalker) {
-            $finalizer = $outputWalker->getFinalizer($AST);
-            $this->parserResult->setSqlFinalizer($finalizer);
-        } else {
-            Deprecation::trigger(
-                'doctrine/orm',
-                'https://github.com/doctrine/orm/pull/11188/',
-                'Your output walker class %s should implement %s in order to provide a %s. This also means the output walker should not use the query firstResult/maxResult values, which should be read from the query by the SqlFinalizer only.',
-                $outputWalkerClass,
-                OutputWalker::class,
-                SqlFinalizer::class
-            );
-            // @phpstan-ignore method.deprecated
-            $executor = $outputWalker->getExecutor($AST);
-            // @phpstan-ignore method.deprecated
-            $this->parserResult->setSqlExecutor($executor);
-        }
+        // Assign an SQL executor to the parser result
+        $this->parserResult->setSqlExecutor($outputWalker->getExecutor($AST));
 
         return $this->parserResult;
     }
@@ -1002,7 +981,6 @@ class Parser
             return $this->lexer->token->value;
         }
 
-        // @phpstan-ignore classConstant.deprecated
         $this->match(TokenType::T_ALIASED_NAME);
 
         assert($this->lexer->token !== null);
@@ -1866,6 +1844,12 @@ class Parser
      */
     public function PartialObjectExpression()
     {
+        Deprecation::trigger(
+            'doctrine/orm',
+            'https://github.com/doctrine/orm/issues/8471',
+            'PARTIAL syntax in DQL is deprecated.'
+        );
+
         $this->match(TokenType::T_PARTIAL);
 
         $partialFieldSet = [];
@@ -2591,8 +2575,6 @@ class Parser
      *         AST\InstanceOfExpression|
      *         AST\LikeExpression|
      *         AST\NullComparisonExpression)
-     *
-     * @phpstan-ignore return.deprecatedClass
      */
     public function SimpleConditionalExpression()
     {
@@ -2942,10 +2924,7 @@ class Parser
             return new AST\ParenthesisExpression($expr);
         }
 
-        if ($this->lexer->lookahead === null) {
-            $this->syntaxError('ArithmeticPrimary');
-        }
-
+        assert($this->lexer->lookahead !== null);
         switch ($this->lexer->lookahead->type) {
             case TokenType::T_COALESCE:
             case TokenType::T_NULLIF:

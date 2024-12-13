@@ -52,7 +52,7 @@ class Downloader
     private $enabled = true;
     private $composer;
 
-    public function __construct(Composer $composer, IOInterface $io, $rfs)
+    public function __construct(Composer $composer, IoInterface $io, $rfs)
     {
         if (getenv('SYMFONY_CAFILE')) {
             $this->caFile = getenv('SYMFONY_CAFILE');
@@ -101,7 +101,7 @@ class Downloader
         return $this->sess;
     }
 
-    public function setFlexId(?string $id = null)
+    public function setFlexId(string $id = null)
     {
         // No-op to support downgrading to v1.12.x
     }

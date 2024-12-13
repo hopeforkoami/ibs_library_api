@@ -1,20 +1,13 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Reflection;
 
-use Laminas\Code\Annotation\AnnotationCollection;
-use Laminas\Code\Annotation\AnnotationManager;
-use Laminas\Code\Scanner\AnnotationScanner;
-use Laminas\Code\Scanner\FileScanner;
 use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
+use ReturnTypeWillChange;
 
-use function array_shift;
+use function array_map;
 use function array_slice;
 use function array_unshift;
 use function file;
@@ -22,35 +15,20 @@ use function file_exists;
 use function implode;
 use function strstr;
 
+/**
+ * @template TReflected of object
+ * @template-extends ReflectionClass<TReflected>
+ */
 class ClassReflection extends ReflectionClass implements ReflectionInterface
 {
-    /**
-     * @var AnnotationScanner
-     */
-    protected $annotations;
-
-    /**
-     * @var DocBlockReflection
-     */
+    /** @var DocBlockReflection|null */
     protected $docBlock;
-
-    /**
-     * Return the reflection file of the declaring file.
-     *
-     * @return FileReflection
-     */
-    public function getDeclaringFile()
-    {
-        $instance = new FileReflection($this->getFileName());
-
-        return $instance;
-    }
 
     /**
      * Return the classes DocBlock reflection object
      *
      * @return DocBlockReflection|false
-     * @throws Exception\ExceptionInterface for missing DocBock or invalid reflection class
+     * @throws Exception\ExceptionInterface When missing DocBock or invalid reflection class.
      */
     public function getDocBlock()
     {
@@ -68,39 +46,12 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
     }
 
     /**
-     * @param  AnnotationManager $annotationManager
-     * @return AnnotationCollection|false
-     */
-    public function getAnnotations(AnnotationManager $annotationManager)
-    {
-        $docComment = $this->getDocComment();
-
-        if ($docComment == '') {
-            return false;
-        }
-
-        if ($this->annotations) {
-            return $this->annotations;
-        }
-
-        $fileScanner       = $this->createFileScanner($this->getFileName());
-        $nameInformation   = $fileScanner->getClassNameInformation($this->getName());
-
-        if (! $nameInformation) {
-            return false;
-        }
-
-        $this->annotations = new AnnotationScanner($annotationManager, $docComment, $nameInformation);
-
-        return $this->annotations;
-    }
-
-    /**
-     * Return the start line of the class
+     * {@inheritDoc}
      *
      * @param  bool $includeDocComment
-     * @return int
+     * @return int|false
      */
+    #[ReturnTypeWillChange]
     public function getStartLine($includeDocComment = false)
     {
         if ($includeDocComment && $this->getDocComment() != '') {
@@ -138,20 +89,15 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
     /**
      * Get all reflection objects of implemented interfaces
      *
-     * @return ClassReflection[]
+     * @return array<class-string, ClassReflection>
      */
+    #[ReturnTypeWillChange]
     public function getInterfaces()
     {
-        $phpReflections  = parent::getInterfaces();
-        $laminasReflections = [];
-        while ($phpReflections && ($phpReflection = array_shift($phpReflections))) {
-            $instance          = new ClassReflection($phpReflection->getName());
-            $laminasReflections[] = $instance;
-            unset($phpReflection);
-        }
-        unset($phpReflections);
-
-        return $laminasReflections;
+        return array_map(
+            static fn (ReflectionClass $interface): ClassReflection => new ClassReflection($interface->getName()),
+            parent::getInterfaces()
+        );
     }
 
     /**
@@ -160,77 +106,70 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
      * @param  string $name
      * @return MethodReflection
      */
+    #[ReturnTypeWillChange]
     public function getMethod($name)
     {
-        $method = new MethodReflection($this->getName(), parent::getMethod($name)->getName());
-
-        return $method;
+        return new MethodReflection($this->getName(), parent::getMethod($name)->getName());
     }
 
     /**
-     * Get reflection objects of all methods
+     * {@inheritDoc}
      *
      * @param  int $filter
-     * @return MethodReflection[]
+     * @return list<MethodReflection>
      */
+    #[ReturnTypeWillChange]
     public function getMethods($filter = -1)
     {
-        $methods = [];
-        foreach (parent::getMethods($filter) as $method) {
-            $instance  = new MethodReflection($this->getName(), $method->getName());
-            $methods[] = $instance;
-        }
+        $name = $this->getName();
 
-        return $methods;
+        return array_map(
+            static fn (ReflectionMethod $method): MethodReflection => new MethodReflection($name, $method->getName()),
+            parent::getMethods($filter)
+        );
     }
 
     /**
-     * Returns an array of reflection classes of traits used by this class.
+     * {@inheritDoc}
      *
-     * @return null|array
+     * @return array<trait-string, ClassReflection>
      */
+    #[ReturnTypeWillChange]
     public function getTraits()
     {
-        $vals = [];
-        $traits = parent::getTraits();
-        if ($traits === null) {
-            return;
-        }
-
-        foreach ($traits as $trait) {
-            $vals[] = new ClassReflection($trait->getName());
-        }
-
-        return $vals;
+        return array_map(
+            static fn (ReflectionClass $trait): ClassReflection => new ClassReflection($trait->getName()),
+            parent::getTraits()
+        );
     }
 
     /**
-     * Get parent reflection class of reflected class
+     * {@inheritDoc}
      *
-     * @return ClassReflection|bool
+     * @return ClassReflection|false
      */
+    #[ReturnTypeWillChange]
     public function getParentClass()
     {
-        $phpReflection = parent::getParentClass();
-        if ($phpReflection) {
-            $laminasReflection = new ClassReflection($phpReflection->getName());
-            unset($phpReflection);
+        $reflection = parent::getParentClass();
 
-            return $laminasReflection;
+        if (! $reflection) {
+            return false;
         }
 
-        return false;
+        return new ClassReflection($reflection->getName());
     }
 
     /**
-     * Return reflection property of this class by name
+     * {@inheritDoc}
      *
      * @param  string $name
      * @return PropertyReflection
      */
+    #[ReturnTypeWillChange]
     public function getProperty($name)
     {
-        $phpReflection  = parent::getProperty($name);
+        $phpReflection     = parent::getProperty($name);
         $laminasReflection = new PropertyReflection($this->getName(), $phpReflection->getName());
         unset($phpReflection);
 
@@ -238,23 +177,21 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
     }
 
     /**
-     * Return reflection properties of this class
+     * {@inheritDoc}
      *
-     * @param  int $filter
-     * @return PropertyReflection[]
+     * @param int $filter
+     * @return list<PropertyReflection>
      */
+    #[ReturnTypeWillChange]
     public function getProperties($filter = -1)
     {
-        $phpReflections  = parent::getProperties($filter);
-        $laminasReflections = [];
-        while ($phpReflections && ($phpReflection = array_shift($phpReflections))) {
-            $instance          = new PropertyReflection($this->getName(), $phpReflection->getName());
-            $laminasReflections[] = $instance;
-            unset($phpReflection);
-        }
-        unset($phpReflections);
+        $name = $this->getName();
 
-        return $laminasReflections;
+        return array_map(
+            static fn (ReflectionProperty $property): PropertyReflection
+                => new PropertyReflection($name, $property->getName()),
+            parent::getProperties($filter)
+        );
     }
 
     /**
@@ -271,20 +208,5 @@ class ClassReflection extends ReflectionClass implements ReflectionInterface
     public function __toString()
     {
         return parent::__toString();
-    }
-
-    /**
-     * Creates a new FileScanner instance.
-     *
-     * By having this as a separate method it allows the method to be overridden
-     * if a different FileScanner is needed.
-     *
-     * @param  string $filename
-     *
-     * @return FileScanner
-     */
-    protected function createFileScanner($filename)
-    {
-        return new FileScanner($filename);
     }
 }

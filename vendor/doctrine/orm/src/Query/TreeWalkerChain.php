@@ -23,7 +23,8 @@ class TreeWalkerChain implements TreeWalker
     /**
      * The tree walkers.
      *
-     * @var list<class-string<TreeWalker>>
+     * @var string[]
+     * @psalm-var list<class-string<TreeWalker>>
      */
     private $walkers = [];
 
@@ -80,7 +81,8 @@ class TreeWalkerChain implements TreeWalker
     /**
      * Adds a tree walker to the chain.
      *
-     * @param class-string<TreeWalker> $walkerClass The class of the walker to instantiate.
+     * @param string $walkerClass The class of the walker to instantiate.
+     * @psalm-param class-string<TreeWalker> $walkerClass
      *
      * @return void
      */

@@ -86,7 +86,6 @@ class QueryBuilder
      *
      * @var int
      * @psalm-var self::SELECT|self::DELETE|self::UPDATE
-     * @phpstan-ignore classConstant.deprecated
      */
     private $type = self::SELECT;
 
@@ -95,7 +94,6 @@ class QueryBuilder
      *
      * @var int
      * @psalm-var self::STATE_*
-     * @phpstan-ignore classConstant.deprecated
      */
     private $state = self::STATE_CLEAN;
 
@@ -344,30 +342,25 @@ class QueryBuilder
      */
     public function getDQL()
     {
-        // @phpstan-ignore classConstant.deprecated
         if ($this->dql !== null && $this->state === self::STATE_CLEAN) {
             return $this->dql;
         }
 
         switch ($this->type) {
-            // @phpstan-ignore classConstant.deprecated
             case self::DELETE:
                 $dql = $this->getDQLForDelete();
                 break;
 
-            // @phpstan-ignore classConstant.deprecated
             case self::UPDATE:
                 $dql = $this->getDQLForUpdate();
                 break;
 
-            // @phpstan-ignore classConstant.deprecated
             case self::SELECT:
             default:
                 $dql = $this->getDQLForSelect();
                 break;
         }
 
-        // @phpstan-ignore classConstant.deprecated
         $this->state = self::STATE_CLEAN;
         $this->dql   = $dql;
 
@@ -429,7 +422,6 @@ class QueryBuilder
         } else {
             // Should never happen with correct joining order. Might be
             // thoughtful to throw exception instead.
-            // @phpstan-ignore method.deprecated
             $rootAlias = $this->getRootAlias();
         }
 
@@ -751,7 +743,6 @@ class QueryBuilder
             $newDqlPart = [];
 
             foreach ($dqlPart as $k => $v) {
-                // @phpstan-ignore method.deprecated
                 $k = is_numeric($k) ? $this->getRootAlias() : $k;
 
                 $newDqlPart[$k] = $v;
@@ -772,7 +763,6 @@ class QueryBuilder
             $this->dqlParts[$dqlPartName] = $isMultiple ? [$dqlPart] : $dqlPart;
         }
 
-        // @phpstan-ignore classConstant.deprecated
         $this->state = self::STATE_DIRTY;
 
         return $this;
@@ -795,7 +785,6 @@ class QueryBuilder
      */
     public function select($select = null)
     {
-        // @phpstan-ignore classConstant.deprecated
         $this->type = self::SELECT;
 
         if (empty($select)) {
@@ -827,8 +816,7 @@ class QueryBuilder
 
         if ($this->dqlParts['distinct'] !== $flag) {
             $this->dqlParts['distinct'] = $flag;
-            // @phpstan-ignore classConstant.deprecated
-            $this->state = self::STATE_DIRTY;
+            $this->state                = self::STATE_DIRTY;
         }
 
         return $this;
@@ -851,7 +839,6 @@ class QueryBuilder
      */
     public function addSelect($select = null)
     {
-        // @phpstan-ignore classConstant.deprecated
         $this->type = self::SELECT;
 
         if (empty($select)) {
@@ -881,7 +868,6 @@ class QueryBuilder
      */
     public function delete($delete = null, $alias = null)
     {
-        // @phpstan-ignore classConstant.deprecated
         $this->type = self::DELETE;
 
         if (! $delete) {
@@ -917,7 +903,6 @@ class QueryBuilder
      */
     public function update($update = null, $alias = null)
     {
-        // @phpstan-ignore classConstant.deprecated
         $this->type = self::UPDATE;
 
         if (! $update) {
@@ -1543,8 +1528,7 @@ class QueryBuilder
     public function resetDQLPart($part)
     {
         $this->dqlParts[$part] = is_array($this->dqlParts[$part]) ? [] : null;
-        // @phpstan-ignore classConstant.deprecated
-        $this->state = self::STATE_DIRTY;
+        $this->state           = self::STATE_DIRTY;
 
         return $this;
     }

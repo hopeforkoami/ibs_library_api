@@ -25,6 +25,7 @@ use Symfony\Component\Stopwatch\Stopwatch;
 use Throwable;
 
 use function count;
+use function method_exists;
 use function ucfirst;
 
 /**
@@ -34,29 +35,22 @@ use function ucfirst;
  */
 final class DbalExecutor implements Executor
 {
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
-    /** @var SchemaDiffProvider */
-    private $schemaProvider;
+    private SchemaDiffProvider $schemaProvider;
 
-    /** @var ParameterFormatter */
-    private $parameterFormatter;
+    private ParameterFormatter $parameterFormatter;
 
-    /** @var Stopwatch */
-    private $stopwatch;
+    private Stopwatch $stopwatch;
 
     /** @var Query[] */
-    private $sql = [];
+    private array $sql = [];
 
-    /** @var MetadataStorage */
-    private $metadataStorage;
+    private MetadataStorage $metadataStorage;
 
-    /** @var LoggerInterface */
-    private $logger;
+    private LoggerInterface $logger;
 
-    /** @var EventDispatcher */
-    private $dispatcher;
+    private EventDispatcher $dispatcher;
 
     public function __construct(
         MetadataStorage $metadataStorage,
@@ -210,6 +204,10 @@ final class DbalExecutor implements Executor
 
         if (! $configuration->isDryRun()) {
             $this->metadataStorage->complete($result);
+        } elseif (method_exists($this->metadataStorage, 'getSql')) {
+            foreach ($this->metadataStorage->getSql($result) as $sqlQuery) {
+                $this->addSql($sqlQuery);
+            }
         }
 
         if ($migration->isTransactional()) {

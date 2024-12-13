@@ -6,13 +6,10 @@
     "license": "MIT",
     "type": "library",
     "require": {
-        "php": "^7.2 || ^8.0"
+        "php": "^7.1 || ^8.0"
     },
     "require-dev": {
-        "doctrine/coding-standard": "^9.0",
-        "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": "^8.5 || ^9.6",
-        "vimeo/psalm": "^4.11"
+        "bamarni/composer-bin-plugin": "^1.4"
     },
     "authors": [
         {
@@ -32,9 +29,12 @@
         }
     },
     "config": {
-        "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "bamarni/composer-bin-plugin": true
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "7.1.0"
         }
     },
     "bin": ["bin/sql-formatter"]

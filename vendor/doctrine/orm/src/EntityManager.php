@@ -30,7 +30,9 @@ use Doctrine\ORM\Query\FilterCollection;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Repository\RepositoryFactory;
 use Doctrine\Persistence\Mapping\MappingException;
+use Doctrine\Persistence\ObjectRepository;
 use InvalidArgumentException;
+use Throwable;
 
 use function array_keys;
 use function class_exists;
@@ -160,9 +162,8 @@ class EntityManager implements EntityManagerInterface
             throw MissingMappingDriverImplementation::create();
         }
 
-        $this->conn   = $conn;
-        $this->config = $config;
-        // @phpstan-ignore method.deprecated
+        $this->conn         = $conn;
+        $this->config       = $config;
         $this->eventManager = $eventManager ?? $conn->getEventManager();
 
         $metadataFactoryClassName = $config->getClassMetadataFactoryName();
@@ -245,24 +246,18 @@ class EntityManager implements EntityManagerInterface
 
         $this->conn->beginTransaction();
 
-        $successful = false;
-
         try {
             $return = $func($this);
 
             $this->flush();
             $this->conn->commit();
 
-            $successful = true;
-
             return $return ?: true;
-        } finally {
-            if (! $successful) {
-                $this->close();
-                if ($this->conn->isTransactionActive()) {
-                    $this->conn->rollBack();
-                }
-            }
+        } catch (Throwable $e) {
+            $this->close();
+            $this->conn->rollBack();
+
+            throw $e;
         }
     }
 
@@ -273,24 +268,18 @@ class EntityManager implements EntityManagerInterface
     {
         $this->conn->beginTransaction();
 
-        $successful = false;
-
         try {
             $return = $func($this);
 
             $this->flush();
             $this->conn->commit();
 
-            $successful = true;
-
             return $return;
-        } finally {
-            if (! $successful) {
-                $this->close();
-                if ($this->conn->isTransactionActive()) {
-                    $this->conn->rollBack();
-                }
-            }
+        } catch (Throwable $e) {
+            $this->close();
+            $this->conn->rollBack();
+
+            throw $e;
         }
     }
 
@@ -417,23 +406,25 @@ class EntityManager implements EntityManagerInterface
     /**
      * Finds an Entity by its identifier.
      *
-     * @param class-string<T> $className   The class name of the entity to find.
-     * @param mixed           $id          The identity of the entity to find.
-     * @param int|null        $lockMode    One of the \Doctrine\DBAL\LockMode::* constants
-     *                                     or NULL if no specific lock mode should be used
-     *                                     during the search.
-     * @param int|null        $lockVersion The version of the entity to find when using
-     *                                     optimistic locking.
+     * @param string   $className   The class name of the entity to find.
+     * @param mixed    $id          The identity of the entity to find.
+     * @param int|null $lockMode    One of the \Doctrine\DBAL\LockMode::* constants
+     *    or NULL if no specific lock mode should be used
+     *    during the search.
+     * @param int|null $lockVersion The version of the entity to find when using
+     * optimistic locking.
+     * @psalm-param class-string<T> $className
      * @psalm-param LockMode::*|null $lockMode
      *
-     * @return T|null The entity instance or NULL if the entity can not be found.
+     * @return object|null The entity instance or NULL if the entity can not be found.
+     * @psalm-return ?T
      *
      * @throws OptimisticLockException
      * @throws ORMInvalidArgumentException
      * @throws TransactionRequiredException
      * @throws ORMException
      *
-     * @template T of object
+     * @template T
      */
     public function find($className, $id, $lockMode = null, $lockVersion = null)
     {
@@ -624,7 +615,6 @@ class EntityManager implements EntityManagerInterface
     public function clear($entityName = null)
     {
         if ($entityName !== null && ! is_string($entityName)) {
-            // @phpstan-ignore staticMethod.deprecated
             throw ORMInvalidArgumentException::invalidEntityName($entityName);
         }
 
@@ -811,9 +801,11 @@ class EntityManager implements EntityManagerInterface
     /**
      * Gets the repository for an entity class.
      *
-     * @param class-string<T> $entityName The name of the entity.
+     * @param string $entityName The name of the entity.
+     * @psalm-param class-string<T> $entityName
      *
-     * @return EntityRepository<T> The repository class.
+     * @return ObjectRepository|EntityRepository The repository class.
+     * @psalm-return EntityRepository<T>
      *
      * @template T of object
      */
@@ -1117,7 +1109,6 @@ class EntityManager implements EntityManagerInterface
 
     private function configureLegacyMetadataCache(): void
     {
-        // @phpstan-ignore method.deprecated
         $metadataCache = $this->config->getMetadataCacheImpl();
         if (! $metadataCache) {
             return;

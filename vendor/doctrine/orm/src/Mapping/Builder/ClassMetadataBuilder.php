@@ -172,8 +172,6 @@ class ClassMetadataBuilder
     /**
      * Adds named query.
      *
-     * @deprecated
-     *
      * @param string $name
      * @param string $dqlQuery
      *
@@ -218,11 +216,11 @@ class ClassMetadataBuilder
     /**
      * Sets the discriminator column details.
      *
-     * @param string                        $name
-     * @param string                        $type
-     * @param int                           $length
-     * @param class-string<BackedEnum>|null $enumType
-     * @param array<string, mixed>          $options
+     * @param string $name
+     * @param string $type
+     * @param int    $length
+     * @psalm-param class-string<BackedEnum>|null $enumType
+     * @psalm-param array<string, mixed> $options
      *
      * @return $this
      */

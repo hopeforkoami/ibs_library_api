@@ -1,23 +1,18 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Generator;
 
 use ArrayObject as SplArrayObject;
 use Laminas\Code\Exception\InvalidArgumentException;
 use Laminas\Stdlib\ArrayObject as StdlibArrayObject;
+use UnitEnum;
 
 use function addcslashes;
 use function array_keys;
 use function array_merge;
 use function array_search;
 use function count;
-use function get_class;
+use function get_debug_type;
 use function get_defined_constants;
 use function gettype;
 use function implode;
@@ -27,59 +22,48 @@ use function is_int;
 use function is_object;
 use function max;
 use function sprintf;
+use function str_contains;
 use function str_repeat;
-use function strpos;
 
 class ValueGenerator extends AbstractGenerator
 {
     /**#@+
      * Constant values
      */
-    const TYPE_AUTO        = 'auto';
-    const TYPE_BOOLEAN     = 'boolean';
-    const TYPE_BOOL        = 'bool';
-    const TYPE_NUMBER      = 'number';
-    const TYPE_INTEGER     = 'integer';
-    const TYPE_INT         = 'int';
-    const TYPE_FLOAT       = 'float';
-    const TYPE_DOUBLE      = 'double';
-    const TYPE_STRING      = 'string';
-    const TYPE_ARRAY       = 'array';
-    const TYPE_ARRAY_SHORT = 'array_short';
-    const TYPE_ARRAY_LONG  = 'array_long';
-    const TYPE_CONSTANT    = 'constant';
-    const TYPE_NULL        = 'null';
-    const TYPE_OBJECT      = 'object';
-    const TYPE_OTHER       = 'other';
+    public const TYPE_AUTO        = 'auto';
+    public const TYPE_BOOLEAN     = 'boolean';
+    public const TYPE_BOOL        = 'bool';
+    public const TYPE_NUMBER      = 'number';
+    public const TYPE_INTEGER     = 'integer';
+    public const TYPE_INT         = 'int';
+    public const TYPE_FLOAT       = 'float';
+    public const TYPE_DOUBLE      = 'double';
+    public const TYPE_STRING      = 'string';
+    public const TYPE_ARRAY       = 'array';
+    public const TYPE_ARRAY_SHORT = 'array_short';
+    public const TYPE_ARRAY_LONG  = 'array_long';
+    public const TYPE_CONSTANT    = 'constant';
+    public const TYPE_NULL        = 'null';
+    public const TYPE_ENUM        = 'enum';
+    public const TYPE_OBJECT      = 'object';
+    public const TYPE_OTHER       = 'other';
     /**#@-*/
 
-    const OUTPUT_MULTIPLE_LINE = 'multipleLine';
-    const OUTPUT_SINGLE_LINE   = 'singleLine';
+    public const OUTPUT_MULTIPLE_LINE = 'multipleLine';
+    public const OUTPUT_SINGLE_LINE   = 'singleLine';
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     protected $value;
 
-    /**
-     * @var string
-     */
-    protected $type = self::TYPE_AUTO;
+    protected string $type = self::TYPE_AUTO;
 
-    /**
-     * @var int
-     */
-    protected $arrayDepth = 0;
+    protected int $arrayDepth = 0;
 
-    /**
-     * @var string
-     */
-    protected $outputMode = self::OUTPUT_MULTIPLE_LINE;
+    /** @var self::OUTPUT_* */
+    protected string $outputMode = self::OUTPUT_MULTIPLE_LINE;
 
-    /**
-     * @var array
-     */
-    protected $allowedTypes;
+    /** @var array */
+    protected array $allowedTypes = [];
 
     /**
      * Autodetectable constants
@@ -89,9 +73,9 @@ class ValueGenerator extends AbstractGenerator
     protected $constants;
 
     /**
-     * @param mixed       $value
-     * @param string      $type
-     * @param string      $outputMode
+     * @param mixed                                 $value
+     * @param string                                $type
+     * @param self::OUTPUT_*                        $outputMode
      * @param null|SplArrayObject|StdlibArrayObject $constants
      */
     public function __construct(
@@ -122,10 +106,15 @@ class ValueGenerator extends AbstractGenerator
 
     /**
      * Init constant list by defined and magic constants
+     *
+     * @deprecated this method attempts to make some magic constants work with the value generator,
+     *             but the value generator is not aware of its surrounding, and cannot really
+     *             generate constant expressions. For such a functionality, consider using an AST-based
+     *             code builder instead.
      */
     public function initEnvironmentConstants()
     {
-        $constants   = [
+        $constants = [
             '__DIR__',
             '__FILE__',
             '__LINE__',
@@ -143,8 +132,12 @@ class ValueGenerator extends AbstractGenerator
     /**
      * Add constant to list
      *
-     * @param string $constant
+     * @deprecated this method attempts to make some magic constants work with the value generator,
+     *             but the value generator is not aware of its surrounding, and cannot really
+     *             generate constant expressions. For such a functionality, consider using an AST-based
+     *             code builder instead.
      *
+     * @param string $constant
      * @return $this
      */
     public function addConstant($constant)
@@ -157,8 +150,12 @@ class ValueGenerator extends AbstractGenerator
     /**
      * Delete constant from constant list
      *
-     * @param string $constant
+     * @deprecated this method attempts to make some magic constants work with the value generator,
+     *             but the value generator is not aware of its surrounding, and cannot really
+     *             generate constant expressions. For such a functionality, consider using an AST-based
+     *             code builder instead.
      *
+     * @param string $constant
      * @return bool
      */
     public function deleteConstant($constant)
@@ -172,6 +169,11 @@ class ValueGenerator extends AbstractGenerator
 
     /**
      * Return constant list
+     *
+     * @deprecated this method attempts to make some magic constants work with the value generator,
+     *             but the value generator is not aware of its surrounding, and cannot really
+     *             generate constant expressions. For such a functionality, consider using an AST-based
+     *             code builder instead.
      *
      * @return SplArrayObject|StdlibArrayObject
      */
@@ -285,6 +287,7 @@ class ValueGenerator extends AbstractGenerator
             self::TYPE_ARRAY_LONG,
             self::TYPE_CONSTANT,
             self::TYPE_NULL,
+            self::TYPE_ENUM,
             self::TYPE_OBJECT,
             self::TYPE_OTHER,
         ];
@@ -307,7 +310,11 @@ class ValueGenerator extends AbstractGenerator
                 return self::TYPE_BOOLEAN;
             case 'string':
                 foreach ($this->constants as $constant) {
-                    if (strpos($value, $constant) !== false) {
+                    if ($value === $constant) {
+                        return self::TYPE_CONSTANT;
+                    }
+
+                    if (str_contains($value, $constant)) {
                         return self::TYPE_CONSTANT;
                     }
                 }
@@ -321,6 +328,10 @@ class ValueGenerator extends AbstractGenerator
             case 'NULL':
                 return self::TYPE_NULL;
             case 'object':
+                if ($value instanceof UnitEnum) {
+                    return self::TYPE_ENUM;
+                }
+                // enums are typed as objects, so this fall through is intentional
             case 'resource':
             case 'unknown type':
             default:
@@ -360,7 +371,7 @@ class ValueGenerator extends AbstractGenerator
                     $newType = self::TYPE_AUTO;
                 }
 
-                $curValue = new self($curValue, $newType, self::OUTPUT_MULTIPLE_LINE, $this->getConstants());
+                $curValue = new self($curValue, $newType, $this->outputMode, $this->getConstants());
                 $curValue->setIndentation($this->indentation);
             }
         }
@@ -394,7 +405,7 @@ class ValueGenerator extends AbstractGenerator
                     $endArray   = ')';
                 } else {
                     $startArray = '[';
-                    $endArray = ']';
+                    $endArray   = ']';
                 }
 
                 $output .= $startArray;
@@ -404,7 +415,7 @@ class ValueGenerator extends AbstractGenerator
                 $outputParts = [];
                 $noKeyIndex  = 0;
                 foreach ($value as $n => $v) {
-                    /* @var $v ValueGenerator */
+                    /** @var ValueGenerator $v */
                     $v->setArrayDepth($this->arrayDepth + 1);
                     $partV = $v->generate();
                     $short = false;
@@ -435,11 +446,18 @@ class ValueGenerator extends AbstractGenerator
                 }
                 $output .= $endArray;
                 break;
+            case self::TYPE_ENUM:
+                if (! is_object($value)) {
+                    throw new Exception\RuntimeException('Value is not an object.');
+                }
+
+                $output = sprintf('\%s::%s', $value::class, (string) $value->name);
+                break;
             case self::TYPE_OTHER:
             default:
                 throw new Exception\RuntimeException(sprintf(
                     'Type "%s" is unknown or cannot be used as property default value.',
-                    is_object($value) ? get_class($value) : gettype($value)
+                    get_debug_type($value)
                 ));
         }
 
@@ -466,8 +484,8 @@ class ValueGenerator extends AbstractGenerator
     }
 
     /**
-     * @param  string $outputMode
-     * @return ValueGenerator
+     * @param  self::OUTPUT_* $outputMode
+     * @return $this
      */
     public function setOutputMode($outputMode)
     {
@@ -476,13 +494,14 @@ class ValueGenerator extends AbstractGenerator
     }
 
     /**
-     * @return string
+     * @return self::OUTPUT_*
      */
     public function getOutputMode()
     {
         return $this->outputMode;
     }
 
+    /** @return string */
     public function __toString()
     {
         return $this->generate();

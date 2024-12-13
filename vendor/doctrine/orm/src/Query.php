@@ -18,8 +18,6 @@ use Doctrine\ORM\Query\AST\DeleteStatement;
 use Doctrine\ORM\Query\AST\SelectStatement;
 use Doctrine\ORM\Query\AST\UpdateStatement;
 use Doctrine\ORM\Query\Exec\AbstractSqlExecutor;
-use Doctrine\ORM\Query\Exec\SqlFinalizer;
-use Doctrine\ORM\Query\OutputWalker;
 use Doctrine\ORM\Query\Parameter;
 use Doctrine\ORM\Query\ParameterTypeInferer;
 use Doctrine\ORM\Query\Parser;
@@ -35,7 +33,6 @@ use function assert;
 use function count;
 use function get_debug_type;
 use function in_array;
-use function is_a;
 use function is_int;
 use function ksort;
 use function md5;
@@ -199,7 +196,7 @@ class Query extends AbstractQuery
      */
     public function getSQL()
     {
-        return $this->getSqlExecutor()->getSqlStatements();
+        return $this->parse()->getSqlExecutor()->getSqlStatements();
     }
 
     /**
@@ -288,7 +285,7 @@ class Query extends AbstractQuery
      */
     protected function _doExecute()
     {
-        $executor = $this->getSqlExecutor();
+        $executor = $this->parse()->getSqlExecutor();
 
         if ($this->_queryCacheProfile) {
             $executor->setQueryCacheProfile($this->_queryCacheProfile);
@@ -347,7 +344,6 @@ class Query extends AbstractQuery
 
         $cache = method_exists(QueryCacheProfile::class, 'getResultCache')
             ? $this->_queryCacheProfile->getResultCache()
-            // @phpstan-ignore method.deprecated
             : $this->_queryCacheProfile->getResultCacheDriver();
 
         assert($cache !== null);
@@ -816,31 +812,11 @@ class Query extends AbstractQuery
     {
         ksort($this->_hints);
 
-        if (! $this->hasHint(self::HINT_CUSTOM_OUTPUT_WALKER)) {
-            // Assume Parser will create the SqlOutputWalker; save is_a call, which might trigger a class load
-            $firstAndMaxResult = '';
-        } else {
-            $outputWalkerClass = $this->getHint(self::HINT_CUSTOM_OUTPUT_WALKER);
-            if (is_a($outputWalkerClass, OutputWalker::class, true)) {
-                $firstAndMaxResult = '';
-            } else {
-                Deprecation::trigger(
-                    'doctrine/orm',
-                    'https://github.com/doctrine/orm/pull/11188/',
-                    'Your output walker class %s should implement %s in order to provide a %s. This also means the output walker should not use the query firstResult/maxResult values, which should be read from the query by the SqlFinalizer only.',
-                    $outputWalkerClass,
-                    OutputWalker::class,
-                    SqlFinalizer::class
-                );
-                $firstAndMaxResult = '&firstResult=' . $this->firstResult . '&maxResult=' . $this->maxResults;
-            }
-        }
-
         return md5(
             $this->getDQL() . serialize($this->_hints) .
             '&platform=' . get_debug_type($this->getEntityManager()->getConnection()->getDatabasePlatform()) .
             ($this->_em->hasFilters() ? $this->_em->getFilters()->getHash() : '') .
-            $firstAndMaxResult .
+            '&firstResult=' . $this->firstResult . '&maxResult=' . $this->maxResults .
             '&hydrationMode=' . $this->_hydrationMode . '&types=' . serialize($this->parsedTypes) . 'DOCTRINE_QUERY_CACHE_SALT'
         );
     }
@@ -858,10 +834,5 @@ class Query extends AbstractQuery
         parent::__clone();
 
         $this->state = self::STATE_DIRTY;
-    }
-
-    private function getSqlExecutor(): AbstractSqlExecutor
-    {
-        return $this->parse()->prepareSqlExecutor($this);
     }
 }

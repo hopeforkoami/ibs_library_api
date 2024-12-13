@@ -91,8 +91,8 @@ class ConvertDoctrine1Schema
     }
 
     /**
-     * @param class-string $className
-     * @param mixed[]      $mappingInformation
+     * @param mixed[] $mappingInformation
+     * @psalm-param class-string $className
      */
     private function convertToClassMetadataInfo(
         string $className,

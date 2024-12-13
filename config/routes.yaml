@@ -1,3 +1,4 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+# config/routes.yaml
+# app_programs_list:
+#   path: /programme/list
+#   controller: App\Controller\ProgrammeController::listFull

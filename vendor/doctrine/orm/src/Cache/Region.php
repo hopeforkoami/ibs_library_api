@@ -8,8 +8,6 @@ use Doctrine\ORM\Cache\Exception\CacheException;
 
 /**
  * Defines a contract for accessing a particular named region.
- *
- * @phpstan-ignore interface.extendsDeprecatedInterface
  */
 interface Region extends MultiGetRegion
 {

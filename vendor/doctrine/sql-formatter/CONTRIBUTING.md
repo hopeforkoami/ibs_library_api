@@ -8,6 +8,7 @@ Make sure you read our [contributing guide][contributing guide on the website].
 
 ```shell
 composer install
+composer bin all install
 ```
 
 ## Running checks locally

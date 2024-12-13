@@ -767,9 +767,6 @@ public function __construct(<params>)
 
             if ($fieldMapping['type'] === 'datetime') {
                 $param = $this->getType($fieldMapping['type']) . ' ' . $param;
-                if (! empty($fieldMapping['nullable'])) {
-                    $param = '?' . $param;
-                }
             }
 
             if (! empty($fieldMapping['nullable'])) {
@@ -1278,23 +1275,10 @@ public function __construct(<params>)
 
         $methods = [];
 
-        $lifecycleEventsByCallback = [];
-        foreach ($metadata->lifecycleCallbacks as $event => $callbacks) {
+        foreach ($metadata->lifecycleCallbacks as $name => $callbacks) {
             foreach ($callbacks as $callback) {
-                $callbackCaseInsensitive = $callback;
-                foreach (array_keys($lifecycleEventsByCallback) as $key) {
-                    if (strtolower($key) === strtolower($callback)) {
-                        $callbackCaseInsensitive = $key;
-                        break;
-                    }
-                }
-
-                $lifecycleEventsByCallback[$callbackCaseInsensitive][] = $event;
+                $methods[] = $this->generateLifecycleCallbackMethod($name, $callback, $metadata);
             }
-        }
-
-        foreach ($lifecycleEventsByCallback as $callback => $events) {
-            $methods[] = $this->generateLifecycleCallbackMethod($events, $callback, $metadata);
         }
 
         return implode("\n\n", array_filter($methods));
@@ -1401,9 +1385,6 @@ public function __construct(<params>)
         if ($typeHint && ! isset($types[$typeHint])) {
             $variableType   =  '\\' . ltrim($variableType, '\\');
             $methodTypeHint =  '\\' . $typeHint . ' ';
-            if ($defaultValue === 'null') {
-                $methodTypeHint = '?' . $methodTypeHint;
-            }
         }
 
         $replacements = [
@@ -1427,8 +1408,8 @@ public function __construct(<params>)
     }
 
     /**
-     * @param string|string[] $name
-     * @param string          $methodName
+     * @param string $name
+     * @param string $methodName
      *
      * @return string
      */
@@ -1438,16 +1419,10 @@ public function __construct(<params>)
             return '';
         }
 
-        $this->staticReflection[$metadata->name]['methods'][] = strtolower($methodName);
+        $this->staticReflection[$metadata->name]['methods'][] = $methodName;
 
-        $eventAnnotations = array_map(
-            function ($event) {
-                return $this->annotationsPrefix . ucfirst($event);
-            },
-            is_array($name) ? $name : [$name]
-        );
-        $replacements     = [
-            '<name>'        => implode("\n * @", $eventAnnotations),
+        $replacements = [
+            '<name>'        => $this->annotationsPrefix . ucfirst($name),
             '<methodName>'  => $methodName,
         ];
 

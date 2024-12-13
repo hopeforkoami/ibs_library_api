@@ -236,7 +236,7 @@ class DockerComposeConfigurator extends AbstractConfigurator
             $dockerComposeFile = $this->findDockerComposeFile($rootDir, $file);
             if (null === $dockerComposeFile) {
                 $dockerComposeFile = $rootDir.'/'.$file;
-                file_put_contents($dockerComposeFile, '');
+                file_put_contents($dockerComposeFile, "version: '3'\n");
                 $this->write(sprintf('  Created <fg=green>"%s"</>', $file));
             }
 

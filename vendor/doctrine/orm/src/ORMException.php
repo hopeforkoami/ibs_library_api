@@ -5,31 +5,11 @@ declare(strict_types=1);
 namespace Doctrine\ORM;
 
 use Doctrine\Common\Cache\Cache as CacheDriver;
-use Doctrine\ORM\Cache\Exception\InvalidResultCacheDriver;
-use Doctrine\ORM\Cache\Exception\MetadataCacheNotConfigured;
-use Doctrine\ORM\Cache\Exception\MetadataCacheUsesNonPersistentCache;
-use Doctrine\ORM\Cache\Exception\QueryCacheNotConfigured;
-use Doctrine\ORM\Cache\Exception\QueryCacheUsesNonPersistentCache;
-use Doctrine\ORM\Exception\EntityManagerClosed;
-use Doctrine\ORM\Exception\InvalidEntityRepository;
-use Doctrine\ORM\Exception\InvalidHydrationMode;
-use Doctrine\ORM\Exception\MismatchedEventManager;
-use Doctrine\ORM\Exception\MissingIdentifierField;
-use Doctrine\ORM\Exception\MissingMappingDriverImplementation;
-use Doctrine\ORM\Exception\NamedNativeQueryNotFound;
-use Doctrine\ORM\Exception\NamedQueryNotFound;
-use Doctrine\ORM\Exception\ProxyClassesAlwaysRegenerating;
-use Doctrine\ORM\Exception\UnexpectedAssociationValue;
-use Doctrine\ORM\Exception\UnknownEntityNamespace;
-use Doctrine\ORM\Exception\UnrecognizedIdentifierFields;
-use Doctrine\ORM\Persisters\Exception\CantUseInOperatorOnCompositeKeys;
-use Doctrine\ORM\Persisters\Exception\InvalidOrientation;
-use Doctrine\ORM\Persisters\Exception\UnrecognizedField;
-use Doctrine\ORM\Repository\Exception\InvalidFindByCall;
-use Doctrine\ORM\Repository\Exception\InvalidMagicMethodCall;
-use Doctrine\ORM\Tools\Exception\NotSupported;
+use Doctrine\Persistence\ObjectRepository;
 use Exception;
 
+use function get_debug_type;
+use function implode;
 use function sprintf;
 
 /**
@@ -46,7 +26,8 @@ class ORMException extends Exception
      */
     public static function missingMappingDriverImpl()
     {
-        return MissingMappingDriverImplementation::create();
+        return new self("It's a requirement to specify a Metadata Driver and pass it " .
+            'to Doctrine\\ORM\\Configuration::setMetadataDriverImpl().');
     }
 
     /**
@@ -58,11 +39,11 @@ class ORMException extends Exception
      */
     public static function namedQueryNotFound($queryName)
     {
-        return NamedQueryNotFound::fromName($queryName);
+        return new self('Could not find a named query by the name "' . $queryName . '"');
     }
 
     /**
-     * @deprecated Use Doctrine\ORM\Exception\NamedNativeQueryNotFound
+     * @deprecated Use Doctrine\ORM\Exception\NamedQueryNotFound
      *
      * @param string $nativeQueryName
      *
@@ -70,7 +51,7 @@ class ORMException extends Exception
      */
     public static function namedNativeQueryNotFound($nativeQueryName)
     {
-        return NamedNativeQueryNotFound::fromName($nativeQueryName);
+        return new self('Could not find a named native query by the name "' . $nativeQueryName . '"');
     }
 
     /**
@@ -82,7 +63,7 @@ class ORMException extends Exception
      */
     public static function unrecognizedField($field)
     {
-        return new UnrecognizedField(sprintf('Unrecognized field: %s', $field));
+        return new self(sprintf('Unrecognized field: %s', $field));
     }
 
     /**
@@ -97,7 +78,7 @@ class ORMException extends Exception
      */
     public static function unexpectedAssociationValue($class, $association, $given, $expected)
     {
-        return UnexpectedAssociationValue::create($class, $association, $given, $expected);
+        return new self(sprintf('Found entity of type %s on association %s#%s, but expecting %s', $given, $class, $association, $expected));
     }
 
     /**
@@ -110,7 +91,7 @@ class ORMException extends Exception
      */
     public static function invalidOrientation($className, $field)
     {
-        return InvalidOrientation::fromClassNameAndField($className, $field);
+        return new self('Invalid order by orientation specified for ' . $className . '#' . $field);
     }
 
     /**
@@ -120,7 +101,7 @@ class ORMException extends Exception
      */
     public static function entityManagerClosed()
     {
-        return EntityManagerClosed::create();
+        return new self('The EntityManager is closed.');
     }
 
     /**
@@ -132,7 +113,7 @@ class ORMException extends Exception
      */
     public static function invalidHydrationMode($mode)
     {
-        return InvalidHydrationMode::fromMode($mode);
+        return new self(sprintf("'%s' is an invalid hydration mode.", $mode));
     }
 
     /**
@@ -142,7 +123,7 @@ class ORMException extends Exception
      */
     public static function mismatchedEventManager()
     {
-        return MismatchedEventManager::create();
+        return new self('Cannot use different EventManager instances for EntityManager and Connection.');
     }
 
     /**
@@ -154,11 +135,11 @@ class ORMException extends Exception
      */
     public static function findByRequiresParameter($methodName)
     {
-        return InvalidMagicMethodCall::onMissingParameter($methodName);
+        return new self("You need to pass a parameter to '" . $methodName . "'");
     }
 
     /**
-     * @deprecated Doctrine\ORM\Repository\Exception\InvalidMagicMethodCall::becauseFieldNotFoundIn()
+     * @deprecated Doctrine\ORM\Repository\Exception\InvalidFindByCall
      *
      * @param string $entityName
      * @param string $fieldName
@@ -168,7 +149,10 @@ class ORMException extends Exception
      */
     public static function invalidMagicCall($entityName, $fieldName, $method)
     {
-        return InvalidMagicMethodCall::becauseFieldNotFoundIn($entityName, $fieldName, $method);
+        return new self(
+            "Entity '" . $entityName . "' has no field '" . $fieldName . "'. " .
+            "You can therefore not call '" . $method . "' on the entities' repository"
+        );
     }
 
     /**
@@ -181,7 +165,10 @@ class ORMException extends Exception
      */
     public static function invalidFindByInverseAssociation($entityName, $associationFieldName)
     {
-        return InvalidFindByCall::fromInverseSideUsage($entityName, $associationFieldName);
+        return new self(
+            "You cannot search for the association field '" . $entityName . '#' . $associationFieldName . "', " .
+            'because it is the inverse side of an association. Find methods only work on owning side associations.'
+        );
     }
 
     /**
@@ -191,7 +178,7 @@ class ORMException extends Exception
      */
     public static function invalidResultCacheDriver()
     {
-        return InvalidResultCacheDriver::create();
+        return new self('Invalid result cache driver; it must implement Doctrine\\Common\\Cache\\Cache.');
     }
 
     /**
@@ -201,7 +188,7 @@ class ORMException extends Exception
      */
     public static function notSupported()
     {
-        return NotSupported::create();
+        return new self('This behaviour is (currently) not supported by Doctrine 2');
     }
 
     /**
@@ -211,7 +198,7 @@ class ORMException extends Exception
      */
     public static function queryCacheNotConfigured()
     {
-        return QueryCacheNotConfigured::create();
+        return new self('Query Cache is not configured.');
     }
 
     /**
@@ -221,7 +208,7 @@ class ORMException extends Exception
      */
     public static function metadataCacheNotConfigured()
     {
-        return MetadataCacheNotConfigured::create();
+        return new self('Class Metadata Cache is not configured.');
     }
 
     /**
@@ -231,7 +218,7 @@ class ORMException extends Exception
      */
     public static function queryCacheUsesNonPersistentCache(CacheDriver $cache)
     {
-        return QueryCacheUsesNonPersistentCache::fromDriver($cache);
+        return new self('Query Cache uses a non-persistent cache driver, ' . get_debug_type($cache) . '.');
     }
 
     /**
@@ -241,7 +228,7 @@ class ORMException extends Exception
      */
     public static function metadataCacheUsesNonPersistentCache(CacheDriver $cache)
     {
-        return MetadataCacheUsesNonPersistentCache::fromDriver($cache);
+        return new self('Metadata Cache uses a non-persistent cache driver, ' . get_debug_type($cache) . '.');
     }
 
     /**
@@ -251,7 +238,7 @@ class ORMException extends Exception
      */
     public static function proxyClassesAlwaysRegenerating()
     {
-        return ProxyClassesAlwaysRegenerating::create();
+        return new self('Proxy Classes are always regenerating.');
     }
 
     /**
@@ -263,7 +250,9 @@ class ORMException extends Exception
      */
     public static function unknownEntityNamespace($entityNamespaceAlias)
     {
-        return UnknownEntityNamespace::fromNamespaceAlias($entityNamespaceAlias);
+        return new self(
+            sprintf("Unknown Entity namespace alias '%s'.", $entityNamespaceAlias)
+        );
     }
 
     /**
@@ -275,7 +264,11 @@ class ORMException extends Exception
      */
     public static function invalidEntityRepository($className)
     {
-        return InvalidEntityRepository::fromClassName($className);
+        return new self(sprintf(
+            "Invalid repository class '%s'. It must be a %s.",
+            $className,
+            ObjectRepository::class
+        ));
     }
 
     /**
@@ -288,7 +281,7 @@ class ORMException extends Exception
      */
     public static function missingIdentifierField($className, $fieldName)
     {
-        return MissingIdentifierField::fromFieldAndClass($fieldName, $className);
+        return new self(sprintf('The identifier %s is missing for a query of %s', $fieldName, $className));
     }
 
     /**
@@ -301,7 +294,10 @@ class ORMException extends Exception
      */
     public static function unrecognizedIdentifierFields($className, $fieldNames)
     {
-        return UnrecognizedIdentifierFields::fromClassAndFieldNames($className, $fieldNames);
+        return new self(
+            "Unrecognized identifier fields: '" . implode("', '", $fieldNames) . "' " .
+            "are not present on class '" . $className . "'."
+        );
     }
 
     /**
@@ -311,6 +307,6 @@ class ORMException extends Exception
      */
     public static function cantUseInOperatorOnCompositeKeys()
     {
-        return CantUseInOperatorOnCompositeKeys::create();
+        return new self("Can't use IN operator on entities that have composite keys.");
     }
 }

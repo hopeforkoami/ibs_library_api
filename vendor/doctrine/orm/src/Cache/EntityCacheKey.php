@@ -26,13 +26,15 @@ class EntityCacheKey extends CacheKey
      * The entity class name
      *
      * @readonly Public only for performance reasons, it should be considered immutable.
-     * @var class-string
+     * @var string
+     * @psalm-var class-string
      */
     public $entityClass;
 
     /**
-     * @param class-string         $entityClass The entity class name. In a inheritance hierarchy it should always be the root entity class.
+     * @param string               $entityClass The entity class name. In a inheritance hierarchy it should always be the root entity class.
      * @param array<string, mixed> $identifier  The entity identifier
+     * @psalm-param class-string $entityClass
      */
     public function __construct($entityClass, array $identifier)
     {

@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/laminas/laminas-code for the canonical source repository
- * @copyright https://github.com/laminas/laminas-code/blob/master/COPYRIGHT.md
- * @license   https://github.com/laminas/laminas-code/blob/master/LICENSE.md New BSD License
- */
-
 namespace Laminas\Code\Generator\DocBlock\Tag;
 
 use Laminas\Code\Generator\AbstractGenerator;
@@ -14,19 +8,15 @@ use Laminas\Code\Reflection\DocBlock\Tag\TagInterface as ReflectionTagInterface;
 
 class AuthorTag extends AbstractGenerator implements TagInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string|null */
     protected $authorName;
 
-    /**
-     * @var string
-     */
+    /** @var string|null */
     protected $authorEmail;
 
     /**
-     * @param string $authorName
-     * @param string $authorEmail
+     * @param string|null $authorName
+     * @param string|null $authorEmail
      */
     public function __construct($authorName = null, $authorEmail = null)
     {
@@ -40,9 +30,9 @@ class AuthorTag extends AbstractGenerator implements TagInterface
     }
 
     /**
-     * @param ReflectionTagInterface $reflectionTag
-     * @return AuthorTag
      * @deprecated Deprecated in 2.3. Use TagManager::createTagFromReflection() instead
+     *
+     * @return AuthorTag
      */
     public static function fromReflection(ReflectionTagInterface $reflectionTag)
     {
@@ -51,9 +41,7 @@ class AuthorTag extends AbstractGenerator implements TagInterface
         return $tagManager->createTagFromReflection($reflectionTag);
     }
 
-    /**
-     * @return string
-     */
+    /** @return 'author' */
     public function getName()
     {
         return 'author';
@@ -69,9 +57,7 @@ class AuthorTag extends AbstractGenerator implements TagInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string|null */
     public function getAuthorEmail()
     {
         return $this->authorEmail;
@@ -87,23 +73,17 @@ class AuthorTag extends AbstractGenerator implements TagInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
+    /** @return string|null */
     public function getAuthorName()
     {
         return $this->authorName;
     }
 
-    /**
-     * @return string
-     */
+    /** @return non-empty-string */
     public function generate()
     {
-        $output = '@author'
+        return '@author'
             . (! empty($this->authorName) ? ' ' . $this->authorName : '')
             . (! empty($this->authorEmail) ? ' <' . $this->authorEmail . '>' : '');
-
-        return $output;
     }
 }

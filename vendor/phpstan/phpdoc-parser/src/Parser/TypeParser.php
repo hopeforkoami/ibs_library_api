@@ -180,13 +180,7 @@ class TypeParser
 				} elseif ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
 					$type = $this->tryParseArrayOrOffsetAccess($tokens, $type);
 
-				} elseif (in_array($type->name, [
-					Ast\Type\ArrayShapeNode::KIND_ARRAY,
-					Ast\Type\ArrayShapeNode::KIND_LIST,
-					Ast\Type\ArrayShapeNode::KIND_NON_EMPTY_ARRAY,
-					Ast\Type\ArrayShapeNode::KIND_NON_EMPTY_LIST,
-					'object',
-				], true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
+				} elseif (in_array($type->name, ['array', 'list', 'object'], true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
 					if ($type->name === 'object') {
 						$type = $this->parseObjectShape($tokens);
 					} else {
@@ -238,17 +232,7 @@ class TypeParser
 				);
 			}
 
-			$type = $this->enrichWithAttributes(
-				$tokens,
-				new Ast\Type\ConstTypeNode($constExpr),
-				$startLine,
-				$startIndex
-			);
-			if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
-				$type = $this->tryParseArrayOrOffsetAccess($tokens, $type);
-			}
-
-			return $type;
+			return $this->enrichWithAttributes($tokens, new Ast\Type\ConstTypeNode($constExpr), $startLine, $startIndex);
 		} catch (LogicException $e) {
 			throw new ParserException(
 				$currentTokenValue,
@@ -497,14 +481,11 @@ class TypeParser
 		$name = $tokens->currentTokenValue();
 		$tokens->consumeTokenType(Lexer::TOKEN_IDENTIFIER);
 
-		$upperBound = $lowerBound = null;
-
 		if ($tokens->tryConsumeTokenValue('of') || $tokens->tryConsumeTokenValue('as')) {
-			$upperBound = $this->parse($tokens);
-		}
+			$bound = $this->parse($tokens);
 
-		if ($tokens->tryConsumeTokenValue('super')) {
-			$lowerBound = $this->parse($tokens);
+		} else {
+			$bound = null;
 		}
 
 		if ($tokens->tryConsumeTokenValue('=')) {
@@ -519,11 +500,7 @@ class TypeParser
 			$description = '';
 		}
 
-		if ($name === '') {
-			throw new LogicException('Template tag name cannot be empty.');
-		}
-
-		return new Ast\PhpDoc\TemplateTagValueNode($name, $upperBound, $description, $default, $lowerBound);
+		return new Ast\PhpDoc\TemplateTagValueNode($name, $bound, $description, $default);
 	}
 
 
@@ -696,13 +673,7 @@ class TypeParser
 							$startIndex
 						));
 
-					} elseif (in_array($type->name, [
-						Ast\Type\ArrayShapeNode::KIND_ARRAY,
-						Ast\Type\ArrayShapeNode::KIND_LIST,
-						Ast\Type\ArrayShapeNode::KIND_NON_EMPTY_ARRAY,
-						Ast\Type\ArrayShapeNode::KIND_NON_EMPTY_LIST,
-						'object',
-					], true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
+					} elseif (in_array($type->name, ['array', 'list', 'object'], true) && $tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_CURLY_BRACKET) && !$tokens->isPrecededByHorizontalWhitespace()) {
 						if ($type->name === 'object') {
 							$type = $this->parseObjectShape($tokens);
 						} else {
@@ -762,14 +733,14 @@ class TypeParser
 				);
 			}
 
-			$type = $this->enrichWithAttributes(
-				$tokens,
-				new Ast\Type\ConstTypeNode($constExpr),
-				$startLine,
-				$startIndex
-			);
+			$type = new Ast\Type\ConstTypeNode($constExpr);
 			if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_SQUARE_BRACKET)) {
-				$type = $this->tryParseArrayOrOffsetAccess($tokens, $type);
+				$type = $this->tryParseArrayOrOffsetAccess($tokens, $this->enrichWithAttributes(
+					$tokens,
+					$type,
+					$startLine,
+					$startIndex
+				));
 			}
 
 			return $type;
@@ -863,7 +834,6 @@ class TypeParser
 
 		$items = [];
 		$sealed = true;
-		$unsealedType = null;
 
 		do {
 			$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
@@ -874,17 +844,6 @@ class TypeParser
 
 			if ($tokens->tryConsumeTokenType(Lexer::TOKEN_VARIADIC)) {
 				$sealed = false;
-
-				$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-				if ($tokens->isCurrentTokenType(Lexer::TOKEN_OPEN_ANGLE_BRACKET)) {
-					if ($kind === Ast\Type\ArrayShapeNode::KIND_ARRAY) {
-						$unsealedType = $this->parseArrayShapeUnsealedType($tokens);
-					} else {
-						$unsealedType = $this->parseListShapeUnsealedType($tokens);
-					}
-					$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-				}
-
 				$tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA);
 				break;
 			}
@@ -897,7 +856,7 @@ class TypeParser
 		$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
 		$tokens->consumeTokenType(Lexer::TOKEN_CLOSE_CURLY_BRACKET);
 
-		return new Ast\Type\ArrayShapeNode($items, $sealed, $kind, $unsealedType);
+		return new Ast\Type\ArrayShapeNode($items, $sealed, $kind);
 	}
 
 
@@ -971,63 +930,6 @@ class TypeParser
 		return $this->enrichWithAttributes(
 			$tokens,
 			$key,
-			$startLine,
-			$startIndex
-		);
-	}
-
-	/**
-	 * @phpstan-impure
-	 */
-	private function parseArrayShapeUnsealedType(TokenIterator $tokens): Ast\Type\ArrayShapeUnsealedTypeNode
-	{
-		$startLine = $tokens->currentTokenLine();
-		$startIndex = $tokens->currentTokenIndex();
-
-		$tokens->consumeTokenType(Lexer::TOKEN_OPEN_ANGLE_BRACKET);
-		$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-
-		$valueType = $this->parse($tokens);
-		$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-
-		$keyType = null;
-		if ($tokens->tryConsumeTokenType(Lexer::TOKEN_COMMA)) {
-			$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-
-			$keyType = $valueType;
-			$valueType = $this->parse($tokens);
-			$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-		}
-
-		$tokens->consumeTokenType(Lexer::TOKEN_CLOSE_ANGLE_BRACKET);
-
-		return $this->enrichWithAttributes(
-			$tokens,
-			new Ast\Type\ArrayShapeUnsealedTypeNode($valueType, $keyType),
-			$startLine,
-			$startIndex
-		);
-	}
-
-	/**
-	 * @phpstan-impure
-	 */
-	private function parseListShapeUnsealedType(TokenIterator $tokens): Ast\Type\ArrayShapeUnsealedTypeNode
-	{
-		$startLine = $tokens->currentTokenLine();
-		$startIndex = $tokens->currentTokenIndex();
-
-		$tokens->consumeTokenType(Lexer::TOKEN_OPEN_ANGLE_BRACKET);
-		$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-
-		$valueType = $this->parse($tokens);
-		$tokens->tryConsumeTokenType(Lexer::TOKEN_PHPDOC_EOL);
-
-		$tokens->consumeTokenType(Lexer::TOKEN_CLOSE_ANGLE_BRACKET);
-
-		return $this->enrichWithAttributes(
-			$tokens,
-			new Ast\Type\ArrayShapeUnsealedTypeNode($valueType, null),
 			$startLine,
 			$startIndex
 		);

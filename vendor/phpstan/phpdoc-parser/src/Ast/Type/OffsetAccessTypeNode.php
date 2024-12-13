@@ -25,6 +25,7 @@ class OffsetAccessTypeNode implements TypeNode
 	{
 		if (
 			$this->type instanceof CallableTypeNode
+			|| $this->type instanceof ConstTypeNode
 			|| $this->type instanceof NullableTypeNode
 		) {
 			return '(' . $this->type . ')[' . $this->offset . ']';

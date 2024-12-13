@@ -17,12 +17,13 @@ use Doctrine\ORM\EntityRepository;
 final class MappedSuperclass implements MappingAttribute
 {
     /**
-     * @var class-string<EntityRepository>|null
+     * @var string|null
+     * @psalm-var class-string<EntityRepository>|null
      * @readonly
      */
     public $repositoryClass;
 
-    /** @param class-string<EntityRepository>|null $repositoryClass */
+    /** @psalm-param class-string<EntityRepository>|null $repositoryClass */
     public function __construct(?string $repositoryClass = null)
     {
         $this->repositoryClass = $repositoryClass;

@@ -114,13 +114,8 @@ trait FilesystemCommonTrait
                 touch($this->tmp, $expiresAt ?: time() + 31556952); // 1 year in seconds
             }
 
-            if ('\\' === \DIRECTORY_SEPARATOR) {
-                $success = copy($this->tmp, $file);
-                $unlink = true;
-            } else {
-                $success = rename($this->tmp, $file);
-                $unlink = !$success;
-            }
+            $success = rename($this->tmp, $file);
+            $unlink = !$success;
 
             return $success;
         } finally {

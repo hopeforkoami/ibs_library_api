@@ -77,10 +77,12 @@ class ResultSetMappingBuilder extends ResultSetMapping
     /**
      * Adds a root entity and all of its fields to the result set.
      *
-     * @param class-string          $class          The class name of the root entity.
-     * @param string                $alias          The unique alias to use for the root entity.
-     * @param array<string, string> $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName).
-     * @param int|null              $renameMode     One of the COLUMN_RENAMING_* constants or array for BC reasons (CUSTOM).
+     * @param string   $class          The class name of the root entity.
+     * @param string   $alias          The unique alias to use for the root entity.
+     * @param string[] $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName).
+     * @param int|null $renameMode     One of the COLUMN_RENAMING_* constants or array for BC reasons (CUSTOM).
+     * @psalm-param class-string $class
+     * @psalm-param array<string, string> $renamedColumns
      * @psalm-param self::COLUMN_RENAMING_*|null $renameMode
      *
      * @return void
@@ -97,13 +99,15 @@ class ResultSetMappingBuilder extends ResultSetMapping
     /**
      * Adds a joined entity and all of its fields to the result set.
      *
-     * @param class-string          $class          The class name of the joined entity.
-     * @param string                $alias          The unique alias to use for the joined entity.
-     * @param string                $parentAlias    The alias of the entity result that is the parent of this joined result.
-     * @param string                $relation       The association field that connects the parent entity result
-     *                                              with the joined entity result.
-     * @param array<string, string> $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName).
-     * @param int|null              $renameMode     One of the COLUMN_RENAMING_* constants or array for BC reasons (CUSTOM).
+     * @param string   $class          The class name of the joined entity.
+     * @param string   $alias          The unique alias to use for the joined entity.
+     * @param string   $parentAlias    The alias of the entity result that is the parent of this joined result.
+     * @param string   $relation       The association field that connects the parent entity result
+     *                                 with the joined entity result.
+     * @param string[] $renamedColumns Columns that have been renamed (tableColumnName => queryColumnName).
+     * @param int|null $renameMode     One of the COLUMN_RENAMING_* constants or array for BC reasons (CUSTOM).
+     * @psalm-param class-string $class
+     * @psalm-param array<string, string> $renamedColumns
      * @psalm-param self::COLUMN_RENAMING_*|null $renameMode
      *
      * @return void
@@ -224,11 +228,12 @@ class ResultSetMappingBuilder extends ResultSetMapping
      *
      * This depends on the renaming mode selected by the user.
      *
-     * @param class-string $className
+     * @psalm-param class-string $className
      * @psalm-param self::COLUMN_RENAMING_* $mode
      * @psalm-param array<string, string> $customRenameColumns
      *
      * @return string[]
+     * @psalm-return array<array-key, string>
      */
     private function getColumnAliasMap(
         string $className,

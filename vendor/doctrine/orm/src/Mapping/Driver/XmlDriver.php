@@ -37,8 +37,6 @@ use function strtoupper;
  * XmlDriver is a metadata driver that enables mapping through XML files.
  *
  * @link        www.doctrine-project.org
- *
- * @template-extends FileDriver<SimpleXMLElement>
  */
 class XmlDriver extends FileDriver
 {
@@ -73,14 +71,15 @@ class XmlDriver extends FileDriver
     /**
      * {@inheritDoc}
      *
-     * @param class-string<T>  $className
-     * @param ClassMetadata<T> $metadata
+     * @psalm-param class-string<T> $className
+     * @psalm-param ClassMetadata<T> $metadata
      *
      * @template T of object
      */
     public function loadMetadataForClass($className, PersistenceClassMetadata $metadata)
     {
         $xmlRoot = $this->getElement($className);
+        assert($xmlRoot instanceof SimpleXMLElement);
 
         if ($xmlRoot->getName() === 'entity') {
             if (isset($xmlRoot['repository-class'])) {
@@ -122,7 +121,6 @@ class XmlDriver extends FileDriver
         // Evaluate named queries
         if (isset($xmlRoot->{'named-queries'})) {
             foreach ($xmlRoot->{'named-queries'}->{'named-query'} ?? [] as $namedQueryElement) {
-                // @phpstan-ignore method.deprecated
                 $metadata->addNamedQuery(
                     [
                         'name'  => (string) $namedQueryElement['name'],
@@ -135,7 +133,6 @@ class XmlDriver extends FileDriver
         // Evaluate native named queries
         if (isset($xmlRoot->{'named-native-queries'})) {
             foreach ($xmlRoot->{'named-native-queries'}->{'named-native-query'} ?? [] as $nativeQueryElement) {
-                // @phpstan-ignore method.deprecated
                 $metadata->addNamedNativeQuery(
                     [
                         'name'              => isset($nativeQueryElement['name']) ? (string) $nativeQueryElement['name'] : null,
@@ -206,7 +203,6 @@ class XmlDriver extends FileDriver
                     ];
 
                     if (isset($discrColumn['options'])) {
-                        assert($discrColumn['options'] instanceof SimpleXMLElement);
                         $columnDef['options'] = $this->parseOptions($discrColumn['options']->children());
                     }
 
@@ -218,7 +214,6 @@ class XmlDriver extends FileDriver
                 // Evaluate <discriminator-map...>
                 if (isset($xmlRoot->{'discriminator-map'})) {
                     $map = [];
-                    assert($xmlRoot->{'discriminator-map'}->{'discriminator-mapping'} instanceof SimpleXMLElement);
                     foreach ($xmlRoot->{'discriminator-map'}->{'discriminator-mapping'} as $discrMapElement) {
                         $map[(string) $discrMapElement['value']] = (string) $discrMapElement['class'];
                     }
@@ -491,7 +486,6 @@ class XmlDriver extends FileDriver
                         /** @psalm-suppress DeprecatedConstant */
                         $orderBy[(string) $orderByField['name']] = isset($orderByField['direction'])
                             ? (string) $orderByField['direction']
-                            // @phpstan-ignore classConstant.deprecated
                             : (class_exists(Order::class) ? (Order::Ascending)->value : Criteria::ASC);
                     }
 
@@ -621,7 +615,6 @@ class XmlDriver extends FileDriver
                         /** @psalm-suppress DeprecatedConstant */
                         $orderBy[(string) $orderByField['name']] = isset($orderByField['direction'])
                             ? (string) $orderByField['direction']
-                            // @phpstan-ignore classConstant.deprecated
                             : (class_exists(Order::class) ? (Order::Ascending)->value : Criteria::ASC);
                     }
 
@@ -971,19 +964,19 @@ class XmlDriver extends FileDriver
 
         if (isset($xmlElement->entity)) {
             foreach ($xmlElement->entity as $entityElement) {
-                /** @var class-string $entityName */
+                /** @psalm-var class-string $entityName */
                 $entityName          = (string) $entityElement['name'];
                 $result[$entityName] = $entityElement;
             }
         } elseif (isset($xmlElement->{'mapped-superclass'})) {
             foreach ($xmlElement->{'mapped-superclass'} as $mappedSuperClass) {
-                /** @var class-string $className */
+                /** @psalm-var class-string $className */
                 $className          = (string) $mappedSuperClass['name'];
                 $result[$className] = $mappedSuperClass;
             }
         } elseif (isset($xmlElement->embeddable)) {
             foreach ($xmlElement->embeddable as $embeddableElement) {
-                /** @var class-string $embeddableName */
+                /** @psalm-var class-string $embeddableName */
                 $embeddableName          = (string) $embeddableElement['name'];
                 $result[$embeddableName] = $embeddableElement;
             }

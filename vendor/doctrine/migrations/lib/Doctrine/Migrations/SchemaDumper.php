@@ -37,20 +37,17 @@ use const PREG_RECURSION_LIMIT_ERROR;
  */
 class SchemaDumper
 {
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
     /** @var AbstractSchemaManager<AbstractPlatform> */
-    private $schemaManager;
+    private AbstractSchemaManager $schemaManager;
 
-    /** @var Generator */
-    private $migrationGenerator;
+    private Generator $migrationGenerator;
 
-    /** @var SqlGenerator */
-    private $migrationSqlGenerator;
+    private SqlGenerator $migrationSqlGenerator;
 
     /** @var string[] */
-    private $excludedTablesRegexes;
+    private array $excludedTablesRegexes;
 
     /**
      * @param AbstractSchemaManager<AbstractPlatform> $schemaManager
@@ -81,7 +78,7 @@ class SchemaDumper
         bool $formatted = false,
         int $lineLength = 120
     ): string {
-        $schema = $this->schemaManager->createSchema();
+        $schema = $this->schemaManager->introspectSchema();
 
         $up   = [];
         $down = [];
@@ -153,7 +150,8 @@ class SchemaDumper
      *
      * @internal
      *
-     * @param mixed[] $matches
+     * @param mixed[]                                                 $matches
+     * @param int-mask-of<PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL> $flags
      */
     private static function pregMatch(string $pattern, string $subject, ?array &$matches = null, int $flags = 0, int $offset = 0): int
     {

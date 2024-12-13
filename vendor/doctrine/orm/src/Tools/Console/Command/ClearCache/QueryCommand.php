@@ -71,7 +71,6 @@ EOT
 
         $cacheDriver = null;
         if (! $cache) {
-            // @phpstan-ignore method.deprecated
             $cacheDriver = $em->getConfiguration()->getQueryCacheImpl();
 
             if (! $cacheDriver) {

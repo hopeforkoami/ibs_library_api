@@ -9,7 +9,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use Doctrine\DBAL\Schema\Comparator;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 use Doctrine\DBAL\Types\Types;
@@ -18,6 +17,7 @@ use Doctrine\Migrations\Metadata\AvailableMigration;
 use Doctrine\Migrations\Metadata\ExecutedMigration;
 use Doctrine\Migrations\Metadata\ExecutedMigrationsList;
 use Doctrine\Migrations\MigrationsRepository;
+use Doctrine\Migrations\Query\Query;
 use Doctrine\Migrations\Version\Comparator as MigrationsComparator;
 use Doctrine\Migrations\Version\Direction;
 use Doctrine\Migrations\Version\ExecutionResult;
@@ -26,7 +26,6 @@ use InvalidArgumentException;
 
 use function array_change_key_case;
 use function floatval;
-use function method_exists;
 use function round;
 use function sprintf;
 use function strlen;
@@ -38,29 +37,22 @@ use const CASE_LOWER;
 
 final class TableMetadataStorage implements MetadataStorage
 {
-    /** @var bool */
-    private $isInitialized;
+    private bool $isInitialized = false;
 
-    /** @var bool */
-    private $schemaUpToDate = false;
+    private bool $schemaUpToDate = false;
 
-    /** @var Connection */
-    private $connection;
+    private Connection $connection;
 
     /** @var AbstractSchemaManager<AbstractPlatform> */
-    private $schemaManager;
+    private AbstractSchemaManager $schemaManager;
 
-    /** @var AbstractPlatform */
-    private $platform;
+    private AbstractPlatform $platform;
 
-    /** @var TableMetadataStorageConfiguration */
-    private $configuration;
+    private TableMetadataStorageConfiguration $configuration;
 
-    /** @var MigrationsRepository|null */
-    private $migrationRepository;
+    private ?MigrationsRepository $migrationRepository = null;
 
-    /** @var MigrationsComparator */
-    private $comparator;
+    private MigrationsComparator $comparator;
 
     public function __construct(
         Connection $connection,
@@ -70,7 +62,7 @@ final class TableMetadataStorage implements MetadataStorage
     ) {
         $this->migrationRepository = $migrationRepository;
         $this->connection          = $connection;
-        $this->schemaManager       = $connection->getSchemaManager();
+        $this->schemaManager       = $connection->createSchemaManager();
         $this->platform            = $connection->getDatabasePlatform();
 
         if ($configuration !== null && ! ($configuration instanceof TableMetadataStorageConfiguration)) {
@@ -154,6 +146,35 @@ final class TableMetadataStorage implements MetadataStorage
         }
     }
 
+    /**
+     * @return iterable<Query>
+     */
+    public function getSql(ExecutionResult $result): iterable
+    {
+        yield new Query('-- Version ' . (string) $result->getVersion() . ' update table metadata');
+
+        if ($result->getDirection() === Direction::DOWN) {
+            yield new Query(sprintf(
+                'DELETE FROM %s WHERE %s = %s',
+                $this->configuration->getTableName(),
+                $this->configuration->getVersionColumnName(),
+                $this->connection->quote((string) $result->getVersion())
+            ));
+
+            return;
+        }
+
+        yield new Query(sprintf(
+            'INSERT INTO %s (%s, %s, %s) VALUES (%s, %s, 0)',
+            $this->configuration->getTableName(),
+            $this->configuration->getVersionColumnName(),
+            $this->configuration->getExecutedAtColumnName(),
+            $this->configuration->getExecutionTimeColumnName(),
+            $this->connection->quote((string) $result->getVersion()),
+            $this->connection->quote(($result->getExecutedAt() ?? new DateTimeImmutable())->format('Y-m-d H:i:s'))
+        ));
+    }
+
     public function ensureInitialized(): void
     {
         if (! $this->isInitialized()) {
@@ -185,13 +206,10 @@ final class TableMetadataStorage implements MetadataStorage
             return null;
         }
 
-        $comparator   = method_exists($this->schemaManager, 'createComparator') ?
-            $this->schemaManager->createComparator() :
-            new Comparator();
-        $currentTable = $this->schemaManager->listTableDetails($this->configuration->getTableName());
-        $diff         = $comparator->diffTable($currentTable, $expectedTable);
+        $currentTable = $this->schemaManager->introspectTable($this->configuration->getTableName());
+        $diff         = $this->schemaManager->createComparator()->compareTables($currentTable, $expectedTable);
 
-        return $diff instanceof TableDiff ? $diff : null;
+        return $diff->isEmpty() ? null : $diff;
     }
 
     private function isInitialized(): bool

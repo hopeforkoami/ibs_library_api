@@ -65,7 +65,6 @@ class AttributeDriver extends CompatibilityAnnotationDriver
         $this->reader = new AttributeReader();
         $this->addPaths($paths);
 
-        // @phpstan-ignore property.deprecated
         if ($this->entityAnnotationClasses !== self::ENTITY_ATTRIBUTE_CLASSES) {
             Deprecation::trigger(
                 'doctrine/orm',
@@ -115,7 +114,6 @@ class AttributeDriver extends CompatibilityAnnotationDriver
 
         foreach ($classAttributes as $a) {
             $attr = $a instanceof RepeatableAttributeCollection ? $a[0] : $a;
-            // @phpstan-ignore property.deprecated
             if (isset($this->entityAnnotationClasses[get_class($attr)])) {
                 return false;
             }
@@ -127,8 +125,8 @@ class AttributeDriver extends CompatibilityAnnotationDriver
     /**
      * {@inheritDoc}
      *
-     * @param class-string<T>  $className
-     * @param ClassMetadata<T> $metadata
+     * @psalm-param class-string<T> $className
+     * @psalm-param ClassMetadata<T> $metadata
      *
      * @template T of object
      */

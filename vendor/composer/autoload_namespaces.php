@@ -6,5 +6,4 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
 );

@@ -355,18 +355,11 @@ class Inline
         ++$i;
 
         // [foo, bar, ...]
-        $lastToken = null;
         while ($i < $len) {
             if (']' === $sequence[$i]) {
                 return $output;
             }
             if (',' === $sequence[$i] || ' ' === $sequence[$i]) {
-                if (',' === $sequence[$i] && (null === $lastToken || 'separator' === $lastToken)) {
-                    $output[] = null;
-                } elseif (',' === $sequence[$i]) {
-                    $lastToken = 'separator';
-                }
-
                 ++$i;
 
                 continue;
@@ -410,7 +403,6 @@ class Inline
 
             $output[] = $value;
 
-            $lastToken = 'value';
             ++$i;
         }
 
@@ -708,13 +700,8 @@ class Inline
                     case Parser::preg_match('/^(-|\+)?[0-9][0-9_]*(\.[0-9_]+)?$/', $scalar):
                         return (float) str_replace('_', '', $scalar);
                     case Parser::preg_match(self::getTimestampRegex(), $scalar):
-                        try {
-                            // When no timezone is provided in the parsed date, YAML spec says we must assume UTC.
-                            $time = new \DateTime($scalar, new \DateTimeZone('UTC'));
-                        } catch (\Exception $e) {
-                            // Some dates accepted by the regex are not valid dates.
-                            throw new ParseException(\sprintf('The date "%s" could not be parsed as it is an invalid date.', $scalar), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename, $e);
-                        }
+                        // When no timezone is provided in the parsed date, YAML spec says we must assume UTC.
+                        $time = new \DateTime($scalar, new \DateTimeZone('UTC'));
 
                         if (Yaml::PARSE_DATETIME & $flags) {
                             return $time;

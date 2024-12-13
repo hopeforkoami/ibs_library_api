@@ -26,7 +26,8 @@ class CollectionCacheKey extends CacheKey
      * The owner entity class
      *
      * @readonly Public only for performance reasons, it should be considered immutable.
-     * @var class-string
+     * @var string
+     * @psalm-var class-string
      */
     public $entityClass;
 
@@ -39,9 +40,10 @@ class CollectionCacheKey extends CacheKey
     public $association;
 
     /**
-     * @param class-string         $entityClass     The entity class.
+     * @param string               $entityClass     The entity class.
      * @param string               $association     The field name that represents the association.
      * @param array<string, mixed> $ownerIdentifier The identifier of the owning entity.
+     * @psalm-param class-string $entityClass
      */
     public function __construct($entityClass, $association, array $ownerIdentifier)
     {
