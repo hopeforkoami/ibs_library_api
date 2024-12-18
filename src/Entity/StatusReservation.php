@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StatusReservationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -22,6 +24,14 @@ class StatusReservation
 
     #[ORM\Column(length: 255)]
     private ?string $couleur = null;
+
+    #[ORM\OneToMany(mappedBy: 'statusReservation', targetEntity: Reservation::class)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +70,36 @@ class StatusReservation
     public function setCouleur(string $couleur): static
     {
         $this->couleur = $couleur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setStatusReservation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getStatusReservation() === $this) {
+                $reservation->setStatusReservation(null);
+            }
+        }
 
         return $this;
     }

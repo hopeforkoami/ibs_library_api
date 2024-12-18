@@ -58,10 +58,14 @@ class Livre
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Exemplaire::class)]
     private Collection $exemplaires;
 
+    #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'livre')]
+    private Collection $reservations;
+
     public function __construct()
     {
         $this->chapitres = new ArrayCollection();
         $this->exemplaires = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +260,33 @@ class Livre
             if ($exemplaire->getLivreId() === $this) {
                 $exemplaire->setLivreId(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->addLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            $reservation->removeLivre($this);
         }
 
         return $this;
