@@ -231,6 +231,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\StatusReservationRepository" class="App\Repository\StatusReservationRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="argument_metadata_factory" class="Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadataFactory"/>
     <service id="response_listener" class="Symfony\Component\HttpKernel\EventListener\ResponseListener">
       <tag name="kernel.event_subscriber"/>
@@ -2240,7 +2244,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.oYoUstU"/>
+      <argument type="service" id=".service_locator.pfTblwI"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2874,6 +2878,8 @@
     <service id=".abstract.instanceof.App\Repository\LangueRepository" class="App\Repository\LangueRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SousCategorieRepository" class="App\Repository\SousCategorieRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\SousCategorieRepository" class="App\Repository\SousCategorieRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\StatusReservationRepository" class="App\Repository\StatusReservationRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\StatusReservationRepository" class="App\Repository\StatusReservationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".service_locator.gSv9zYw" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
@@ -3368,13 +3374,14 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.oYoUstU" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.pfTblwI" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
         <argument key="App\Repository\EmplacementRepository" type="service_closure" id="App\Repository\EmplacementRepository"/>
         <argument key="App\Repository\LangueRepository" type="service_closure" id="App\Repository\LangueRepository"/>
         <argument key="App\Repository\SousCategorieRepository" type="service_closure" id="App\Repository\SousCategorieRepository"/>
+        <argument key="App\Repository\StatusReservationRepository" type="service_closure" id="App\Repository\StatusReservationRepository"/>
       </argument>
     </service>
     <service id=".service_locator.KLVvNIq" class="Symfony\Component\DependencyInjection\ServiceLocator">
