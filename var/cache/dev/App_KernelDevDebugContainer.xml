@@ -227,6 +227,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\LivreRepository" class="App\Repository\LivreRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\RoleRepository" class="App\Repository\RoleRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -2252,7 +2256,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.yOC1igS"/>
+      <argument type="service" id=".service_locator.nyOeFm8"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2884,6 +2888,8 @@
     <service id=".abstract.instanceof.App\Repository\EmplacementRepository" class="App\Repository\EmplacementRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LangueRepository" class="App\Repository\LangueRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\LangueRepository" class="App\Repository\LangueRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LivreRepository" class="App\Repository\LivreRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\LivreRepository" class="App\Repository\LivreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\RoleRepository" class="App\Repository\RoleRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\RoleRepository" class="App\Repository\RoleRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\SousCategorieRepository" class="App\Repository\SousCategorieRepository" autowire="true" abstract="true"/>
@@ -3386,12 +3392,13 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.yOC1igS" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.nyOeFm8" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
         <argument key="App\Repository\EmplacementRepository" type="service_closure" id="App\Repository\EmplacementRepository"/>
         <argument key="App\Repository\LangueRepository" type="service_closure" id="App\Repository\LangueRepository"/>
+        <argument key="App\Repository\LivreRepository" type="service_closure" id="App\Repository\LivreRepository"/>
         <argument key="App\Repository\RoleRepository" type="service_closure" id="App\Repository\RoleRepository"/>
         <argument key="App\Repository\SousCategorieRepository" type="service_closure" id="App\Repository\SousCategorieRepository"/>
         <argument key="App\Repository\StatusEmpruntRepository" type="service_closure" id="App\Repository\StatusEmpruntRepository"/>

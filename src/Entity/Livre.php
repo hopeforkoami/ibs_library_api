@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\LivreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
@@ -48,6 +51,14 @@ class Livre
 
     #[ORM\Column(length: 255)]
     private ?string $edition = null;
+
+    #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Chapitre::class)]
+    private Collection $chapitres;
+
+    public function __construct()
+    {
+        $this->chapitres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -182,6 +193,36 @@ class Livre
     public function setEdition(string $edition): static
     {
         $this->edition = $edition;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Chapitre>
+     */
+    public function getChapitres(): Collection
+    {
+        return $this->chapitres;
+    }
+
+    public function addChapitre(Chapitre $chapitre): static
+    {
+        if (!$this->chapitres->contains($chapitre)) {
+            $this->chapitres->add($chapitre);
+            $chapitre->setLivreId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChapitre(Chapitre $chapitre): static
+    {
+        if ($this->chapitres->removeElement($chapitre)) {
+            // set the owning side to null (unless already changed)
+            if ($chapitre->getLivreId() === $this) {
+                $chapitre->setLivreId(null);
+            }
+        }
 
         return $this;
     }
