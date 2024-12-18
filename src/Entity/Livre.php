@@ -55,9 +55,13 @@ class Livre
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Chapitre::class)]
     private Collection $chapitres;
 
+    #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Exemplaire::class)]
+    private Collection $exemplaires;
+
     public function __construct()
     {
         $this->chapitres = new ArrayCollection();
+        $this->exemplaires = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,6 +225,36 @@ class Livre
             // set the owning side to null (unless already changed)
             if ($chapitre->getLivreId() === $this) {
                 $chapitre->setLivreId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exemplaire>
+     */
+    public function getExemplaires(): Collection
+    {
+        return $this->exemplaires;
+    }
+
+    public function addExemplaire(Exemplaire $exemplaire): static
+    {
+        if (!$this->exemplaires->contains($exemplaire)) {
+            $this->exemplaires->add($exemplaire);
+            $exemplaire->setLivreId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExemplaire(Exemplaire $exemplaire): static
+    {
+        if ($this->exemplaires->removeElement($exemplaire)) {
+            // set the owning side to null (unless already changed)
+            if ($exemplaire->getLivreId() === $this) {
+                $exemplaire->setLivreId(null);
             }
         }
 

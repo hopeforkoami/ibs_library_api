@@ -25,6 +25,9 @@ class Emplacement
     #[ORM\Column(length: 255)]
     private ?string $libelle = null;
 
+    #[ORM\OneToOne(mappedBy: 'emplacementId', cascade: ['persist', 'remove'])]
+    private ?Exemplaire $exemplaire = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,28 @@ class Emplacement
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    public function getExemplaire(): ?Exemplaire
+    {
+        return $this->exemplaire;
+    }
+
+    public function setExemplaire(?Exemplaire $exemplaire): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($exemplaire === null && $this->exemplaire !== null) {
+            $this->exemplaire->setEmplacementId(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($exemplaire !== null && $exemplaire->getEmplacementId() !== $this) {
+            $exemplaire->setEmplacementId($this);
+        }
+
+        $this->exemplaire = $exemplaire;
 
         return $this;
     }
