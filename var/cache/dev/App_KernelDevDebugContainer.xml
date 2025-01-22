@@ -172,6 +172,13 @@
       <tag name="controller.service_arguments"/>
       <tag name="routing.route_loader"/>
     </service>
+    <service id="App\Controller\AuteurController" class="App\Controller\AuteurController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\AuteurController"/>
+      </call>
+    </service>
     <service id="App\Controller\MatiereController" class="App\Controller\MatiereController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -224,6 +231,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\EmplacementRepository" class="App\Repository\EmplacementRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\EmpruntRepository" class="App\Repository\EmpruntRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -2272,7 +2283,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.1JHhI0h"/>
+      <argument type="service" id=".service_locator.nlP_ktc"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2879,6 +2890,9 @@
         <argument>Start a dump server that collects and displays dumps in a single place</argument>
       </call>
     </service>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -2904,6 +2918,8 @@
     <service id=".abstract.instanceof.App\Repository\ChapitreRepository" class="App\Repository\ChapitreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EmplacementRepository" class="App\Repository\EmplacementRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\EmplacementRepository" class="App\Repository\EmplacementRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EmpruntRepository" class="App\Repository\EmpruntRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\EmpruntRepository" class="App\Repository\EmpruntRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ExemplaireRepository" class="App\Repository\ExemplaireRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ExemplaireRepository" class="App\Repository\ExemplaireRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LangueRepository" class="App\Repository\LangueRepository" autowire="true" abstract="true"/>
@@ -3416,12 +3432,13 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.1JHhI0h" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.nlP_ktc" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
         <argument key="App\Repository\ChapitreRepository" type="service_closure" id="App\Repository\ChapitreRepository"/>
         <argument key="App\Repository\EmplacementRepository" type="service_closure" id="App\Repository\EmplacementRepository"/>
+        <argument key="App\Repository\EmpruntRepository" type="service_closure" id="App\Repository\EmpruntRepository"/>
         <argument key="App\Repository\ExemplaireRepository" type="service_closure" id="App\Repository\ExemplaireRepository"/>
         <argument key="App\Repository\LangueRepository" type="service_closure" id="App\Repository\LangueRepository"/>
         <argument key="App\Repository\LivreRepository" type="service_closure" id="App\Repository\LivreRepository"/>
@@ -3463,6 +3480,12 @@
         <argument key="serializer" type="service_closure" id="serializer" on-invalid="ignore"/>
         <argument key="session" type="service_closure" id=".session.deprecated" on-invalid="ignore"/>
       </argument>
+    </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\AuteurController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\AuteurController"/>
+      <argument>App\Controller\AuteurController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
     <service id=".service_locator.mx0UMmY.App\Controller\MatiereController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\MatiereController"/>
