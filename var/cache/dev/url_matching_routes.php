@@ -8,6 +8,9 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
+        '/auteur' => [[['_route' => 'app_auteur', '_controller' => 'App\\Controller\\AuteurController::index'], null, null, null, false, false, null]],
+        '/categorie' => [[['_route' => 'app_categorie', '_controller' => 'App\\Controller\\CategorieController::index'], null, null, null, false, false, null]],
+        '/livre' => [[['_route' => 'app_livre', '_controller' => 'App\\Controller\\LivreController::index'], null, null, null, false, false, null]],
         '/matiere/add' => [[['_route' => 'app_matiere', '_controller' => 'App\\Controller\\MatiereController::add'], null, null, null, false, false, null]],
         '/matiere/update' => [[['_route' => 'app_matiere_update', '_controller' => 'App\\Controller\\MatiereController::update'], null, null, null, false, false, null]],
         '/matiere/delete' => [[['_route' => 'app_matiere_delete', '_controller' => 'App\\Controller\\MatiereController::delete'], null, null, null, false, false, null]],

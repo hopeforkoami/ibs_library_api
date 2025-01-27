@@ -179,6 +179,20 @@
         <argument type="service" id=".service_locator.mx0UMmY.App\Controller\AuteurController"/>
       </call>
     </service>
+    <service id="App\Controller\CategorieController" class="App\Controller\CategorieController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\CategorieController"/>
+      </call>
+    </service>
+    <service id="App\Controller\LivreController" class="App\Controller\LivreController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\LivreController"/>
+      </call>
+    </service>
     <service id="App\Controller\MatiereController" class="App\Controller\MatiereController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -251,6 +265,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\MembreRepository" class="App\Repository\MembreRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -2283,7 +2301,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.nlP_ktc"/>
+      <argument type="service" id=".service_locator.th1wZNV"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2893,6 +2911,12 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\AuteurController" class="App\Controller\AuteurController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\CategorieController" class="App\Controller\CategorieController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\CategorieController" class="App\Controller\CategorieController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\CategorieController" class="App\Controller\CategorieController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -2928,6 +2952,8 @@
     <service id=".abstract.instanceof.App\Repository\LivreRepository" class="App\Repository\LivreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\MembreRepository" class="App\Repository\MembreRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\MembreRepository" class="App\Repository\MembreRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\RoleRepository" class="App\Repository\RoleRepository" autowire="true" abstract="true"/>
@@ -3432,7 +3458,7 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.nlP_ktc" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.th1wZNV" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
@@ -3443,6 +3469,7 @@
         <argument key="App\Repository\LangueRepository" type="service_closure" id="App\Repository\LangueRepository"/>
         <argument key="App\Repository\LivreRepository" type="service_closure" id="App\Repository\LivreRepository"/>
         <argument key="App\Repository\MembreRepository" type="service_closure" id="App\Repository\MembreRepository"/>
+        <argument key="App\Repository\NsAuthorisationRepository" type="service_closure" id="App\Repository\NsAuthorisationRepository"/>
         <argument key="App\Repository\ReservationRepository" type="service_closure" id="App\Repository\ReservationRepository"/>
         <argument key="App\Repository\RoleRepository" type="service_closure" id="App\Repository\RoleRepository"/>
         <argument key="App\Repository\SousCategorieRepository" type="service_closure" id="App\Repository\SousCategorieRepository"/>
@@ -3484,6 +3511,18 @@
     <service id=".service_locator.mx0UMmY.App\Controller\AuteurController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\AuteurController"/>
       <argument>App\Controller\AuteurController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
+    </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\CategorieController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\CategorieController"/>
+      <argument>App\Controller\CategorieController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
+    </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\LivreController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\LivreController"/>
+      <argument>App\Controller\LivreController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
