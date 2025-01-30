@@ -193,39 +193,11 @@
         <argument type="service" id=".service_locator.mx0UMmY.App\Controller\LivreController"/>
       </call>
     </service>
-    <service id="App\Controller\MatiereController" class="App\Controller\MatiereController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="container.service_subscriber"/>
-      <call method="setContainer">
-        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\MatiereController"/>
-      </call>
-    </service>
     <service id="App\Controller\MembreController" class="App\Controller\MembreController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
       <call method="setContainer">
         <argument type="service" id=".service_locator.mx0UMmY.App\Controller\MembreController"/>
-      </call>
-    </service>
-    <service id="App\Controller\NiveauController" class="App\Controller\NiveauController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="container.service_subscriber"/>
-      <call method="setContainer">
-        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\NiveauController"/>
-      </call>
-    </service>
-    <service id="App\Controller\ProgrammeController" class="App\Controller\ProgrammeController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="container.service_subscriber"/>
-      <call method="setContainer">
-        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\ProgrammeController"/>
-      </call>
-    </service>
-    <service id="App\Controller\SerieController" class="App\Controller\SerieController" public="true" autowire="true" autoconfigure="true">
-      <tag name="controller.service_arguments"/>
-      <tag name="container.service_subscriber"/>
-      <call method="setContainer">
-        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\SerieController"/>
       </call>
     </service>
     <service id="App\Controller\SystemController" class="App\Controller\SystemController" public="true" autowire="true" autoconfigure="true">
@@ -2924,21 +2896,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\LivreController" class="App\Controller\LivreController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ProgrammeController" class="App\Controller\ProgrammeController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ProgrammeController" class="App\Controller\ProgrammeController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\ProgrammeController" class="App\Controller\ProgrammeController" autowire="true" autoconfigure="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SerieController" class="App\Controller\SerieController" autowire="true" abstract="true"/>
-    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SerieController" class="App\Controller\SerieController" autowire="true" abstract="true"/>
-    <service id=".abstract.instanceof.App\Controller\SerieController" class="App\Controller\SerieController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3361,58 +3321,27 @@
         <argument key="userRepositor" type="service_closure" id="App\Repository\MembreRepository"/>
       </argument>
     </service>
-    <service id=".errored.z7GSB8X" class="App\Repository\NsUserRepository"/>
-    <service id=".service_locator.fwzx7X4" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.2Goeg_1" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
         <argument key="serializer" type="service_closure" id="serializer"/>
-        <argument key="userRepositor" type="service_closure" id=".errored.z7GSB8X"/>
+        <argument key="userRepository" type="service_closure" id="App\Repository\MembreRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.oHjXJaG" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.xA2mKHW" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
-        <argument key="App\Controller\MatiereController::add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController::update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\LivreController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController::login" type="service_closure" id=".service_locator.JGIwGE_"/>
-        <argument key="App\Controller\NiveauController::add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController::update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController::add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController::update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController::add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController::update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SystemController::login" type="service_closure" id=".service_locator.fwzx7X4"/>
+        <argument key="App\Controller\SystemController::login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
-        <argument key="App\Controller\MatiereController:add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\MatiereController:update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\LivreController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController:login" type="service_closure" id=".service_locator.JGIwGE_"/>
-        <argument key="App\Controller\NiveauController:add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\NiveauController:update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController:add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\ProgrammeController:update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController:add" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SerieController:update" type="service_closure" id=".service_locator.8chbYI7"/>
-        <argument key="App\Controller\SystemController:login" type="service_closure" id=".service_locator.fwzx7X4"/>
+        <argument key="App\Controller\SystemController:login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
       </argument>
@@ -3546,33 +3475,9 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
-    <service id=".service_locator.mx0UMmY.App\Controller\MatiereController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\MatiereController"/>
-      <argument>App\Controller\MatiereController</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.mx0UMmY" method="withContext"/>
-    </service>
     <service id=".service_locator.mx0UMmY.App\Controller\MembreController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\MembreController"/>
       <argument>App\Controller\MembreController</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.mx0UMmY" method="withContext"/>
-    </service>
-    <service id=".service_locator.mx0UMmY.App\Controller\NiveauController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\NiveauController"/>
-      <argument>App\Controller\NiveauController</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.mx0UMmY" method="withContext"/>
-    </service>
-    <service id=".service_locator.mx0UMmY.App\Controller\ProgrammeController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\ProgrammeController"/>
-      <argument>App\Controller\ProgrammeController</argument>
-      <argument type="service" id="service_container"/>
-      <factory service=".service_locator.mx0UMmY" method="withContext"/>
-    </service>
-    <service id=".service_locator.mx0UMmY.App\Controller\SerieController" class="Symfony\Component\DependencyInjection\ServiceLocator">
-      <tag name="container.service_locator_context" id="App\Controller\SerieController"/>
-      <argument>App\Controller\SerieController</argument>
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
@@ -3667,12 +3572,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.oHjXJaG"/>
+      <argument type="service" id=".service_locator.xA2mKHW"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.oHjXJaG"/>
+      <argument type="service" id=".service_locator.xA2mKHW"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4305,7 +4210,7 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.oHjXJaG"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.xA2mKHW"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -4313,8 +4218,8 @@
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.WOvfL7_" alias=".service_locator.JGIwGE_"/>
-    <service id=".service_locator.pfKozbv" alias=".service_locator.fwzx7X4"/>
-    <service id=".service_locator.En4Imxy" alias=".service_locator.oHjXJaG"/>
+    <service id=".service_locator._a84_yo" alias=".service_locator.2Goeg_1"/>
+    <service id=".service_locator.K8JdXt9" alias=".service_locator.xA2mKHW"/>
     <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
     <service id=".service_locator.0ghLsew" alias=".service_locator.mx0UMmY"/>
@@ -4334,7 +4239,7 @@
     <service id=".service_locator.uo5c0SP" alias=".service_locator.xUrKPVU"/>
     <service id=".service_locator.n5qkfAE" alias=".service_locator.8chbYI7"/>
     <service id=".service_locator.wAkYVSY" alias=".service_locator.JGIwGE_"/>
-    <service id=".service_locator.i5KFNpZ" alias=".service_locator.fwzx7X4"/>
+    <service id=".service_locator.Pmy_Ykj" alias=".service_locator.2Goeg_1"/>
     <service id=".service_locator.6pQ159q" alias=".service_locator.mx0UMmY"/>
     <service id=".service_locator.L0rFhJm" alias=".service_locator.GVyCdgr"/>
   </services>

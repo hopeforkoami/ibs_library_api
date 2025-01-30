@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class MembreController extends AbstractController
 {
-    #[Route('/login', name: 'app_membre_login')]
+    #[Route('/userLogin', name: 'app_membre_login')]
     public function login(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,  MembreRepository $userRepositor): JsonResponse
     {
         $response = new NogSystemResponse(500,'system error',[]);

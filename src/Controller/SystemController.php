@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\NsAuthorisation;
 use App\Modele\NogSystemResponse;
+use App\Repository\MembreRepository;
 use App\Repository\NsUserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 class SystemController extends AbstractController
 {
     #[Route('/login', name: 'app_system')]
-    public function login(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,  NsUserRepository $userRepositor): JsonResponse
+    public function login(Request $request, SerializerInterface $serializer, EntityManagerInterface $em,  MembreRepository $userRepository): JsonResponse
     {
         $response = new NogSystemResponse(500,'system error',[]);
         //checking the request method to be post
@@ -32,7 +33,7 @@ class SystemController extends AbstractController
             }
             else{
                 $data = json_decode($request->getContent(), true);
-                $user = $userRepositor->findOneBy(['login' => $data['login'], 'password' =>md5($data['password'])]);
+                $user = $userRepository->findOneBy(['login' => $data['login'], 'password' =>md5($data['password'])]);
                 if ($user) {
                     //on cree une nouvelle NsAuthorisation avec l'utilisateur en generant un token
                     $authorisation = new NsAuthorisation();
