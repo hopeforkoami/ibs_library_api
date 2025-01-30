@@ -200,6 +200,13 @@
         <argument type="service" id=".service_locator.mx0UMmY.App\Controller\MatiereController"/>
       </call>
     </service>
+    <service id="App\Controller\MembreController" class="App\Controller\MembreController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\MembreController"/>
+      </call>
+    </service>
     <service id="App\Controller\NiveauController" class="App\Controller\NiveauController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -2920,6 +2927,9 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\MatiereController" class="App\Controller\MatiereController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\NiveauController" class="App\Controller\NiveauController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3343,6 +3353,14 @@
         <argument key="serializer" type="service_closure" id="serializer"/>
       </argument>
     </service>
+    <service id=".service_locator.JGIwGE_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator"/>
+      <argument type="collection">
+        <argument key="em" type="service_closure" id="doctrine.orm.default_entity_manager"/>
+        <argument key="serializer" type="service_closure" id="serializer"/>
+        <argument key="userRepositor" type="service_closure" id="App\Repository\MembreRepository"/>
+      </argument>
+    </service>
     <service id=".errored.z7GSB8X" class="App\Repository\NsUserRepository"/>
     <service id=".service_locator.fwzx7X4" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
@@ -3352,13 +3370,14 @@
         <argument key="userRepositor" type="service_closure" id=".errored.z7GSB8X"/>
       </argument>
     </service>
-    <service id=".service_locator.XUbR5yB" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.oHjXJaG" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\MatiereController::add" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MatiereController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MatiereController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MatiereController::update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController::login" type="service_closure" id=".service_locator.JGIwGE_"/>
         <argument key="App\Controller\NiveauController::add" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\NiveauController::delete" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\NiveauController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3380,6 +3399,7 @@
         <argument key="App\Controller\MatiereController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MatiereController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MatiereController:update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController:login" type="service_closure" id=".service_locator.JGIwGE_"/>
         <argument key="App\Controller\NiveauController:add" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\NiveauController:delete" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\NiveauController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3532,6 +3552,12 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\MembreController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\MembreController"/>
+      <argument>App\Controller\MembreController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
+    </service>
     <service id=".service_locator.mx0UMmY.App\Controller\NiveauController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\NiveauController"/>
       <argument>App\Controller\NiveauController</argument>
@@ -3641,12 +3667,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.XUbR5yB"/>
+      <argument type="service" id=".service_locator.oHjXJaG"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.XUbR5yB"/>
+      <argument type="service" id=".service_locator.oHjXJaG"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4279,15 +4305,16 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.XUbR5yB"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.oHjXJaG"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
     <service id="doctrine.id_generator_locator" alias=".service_locator.KLVvNIq"/>
     <service id="Psr\Log\LoggerInterface" alias="logger"/>
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
+    <service id=".service_locator.WOvfL7_" alias=".service_locator.JGIwGE_"/>
     <service id=".service_locator.pfKozbv" alias=".service_locator.fwzx7X4"/>
-    <service id=".service_locator.oFNK___" alias=".service_locator.XUbR5yB"/>
+    <service id=".service_locator.En4Imxy" alias=".service_locator.oHjXJaG"/>
     <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
     <service id=".service_locator.0ghLsew" alias=".service_locator.mx0UMmY"/>
@@ -4306,6 +4333,7 @@
     <service id="doctrine.orm.default_metadata_driver" alias=".doctrine.orm.default_metadata_driver"/>
     <service id=".service_locator.uo5c0SP" alias=".service_locator.xUrKPVU"/>
     <service id=".service_locator.n5qkfAE" alias=".service_locator.8chbYI7"/>
+    <service id=".service_locator.wAkYVSY" alias=".service_locator.JGIwGE_"/>
     <service id=".service_locator.i5KFNpZ" alias=".service_locator.fwzx7X4"/>
     <service id=".service_locator.6pQ159q" alias=".service_locator.mx0UMmY"/>
     <service id=".service_locator.L0rFhJm" alias=".service_locator.GVyCdgr"/>
