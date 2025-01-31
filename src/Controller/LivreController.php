@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Auteur;
 use App\Entity\Livre;
 use App\Entity\NsAuthorisation;
 use App\Modele\NogSystemResponse;
@@ -34,22 +35,21 @@ class LivreController extends AbstractController
         if ($auth->checkTokenValidity($token)) {
             // Check if the user has the correct rights
             // Fetch all programmes
-            $livres = $em->getRepository(Livre::class)->findAll();
+            $livres = $em->getRepository(Livre::class)->findBy(array()
+                , array('libelle' => 'ASC'));
 
             if (!$livres) {
                 $response->statut = 404;
-                $response->message = 'Series not found';
+                $response->message = 'livre not found';
                 return $this->json($response->getSystemResponse());
             }
             else{
                 
                 $response->statut = 200;
-                $response->message = 'Series list';
+                $response->message = 'livres list';
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($livres, 'json', ['circular_reference_handler' => function ($object) {
-                    return $object->getId();
-                }])) ;
+                $response->data = json_decode($serializer->serialize($livres, 'json',['groups' => 'livre:read'])); 
             }
         } else {
             $response->statut = 401;

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: LivreRepository::class)]
 class Livre
@@ -14,54 +15,70 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['livre:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['livre:read'])]
     private ?string $libelle = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['livre:read'])]
     private ?Auteur $auteurId = null;
 
     #[ORM\Column]
+    #[Groups(['livre:read'])]
     private ?int $nbrePages = null;
 
     #[ORM\Column]
+    #[Groups(['livre:read'])]
     private ?int $nbreExemplaires = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['livre:read'])]
     private ?Langue $langueId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?string $isbn = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['livre:read'])]
     private ?SousCategorie $sousCategorieId = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?string $tags = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?string $themes = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['livre:read'])]
     private ?string $resume = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['livre:read'])]
     private ?string $edition = null;
 
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Chapitre::class)]
+    #[Groups(['livre:read'])]
     private Collection $chapitres;
 
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Exemplaire::class)]
+    #[Groups(['livre:read'])]
     private Collection $exemplaires;
 
     #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'livre')]
+    #[Groups(['livre:read'])]
     private Collection $reservations;
 
     public function __construct()
