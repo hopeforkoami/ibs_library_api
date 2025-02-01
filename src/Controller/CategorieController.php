@@ -88,4 +88,47 @@ class CategorieController extends AbstractController
 
         return $this->json($response->getSystemResponse());
     }
+
+    #[Route('/categorie/listfull', name: 'app_categorie_listFull', methods: ['GET'])]
+    public function listFull(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $categorie = $em->getRepository(SousCategorie::class)->findBy(array()
+                , array('libelle' => 'ASC'));
+
+            if (!$categorie) {
+                $response->statut = 404;
+                $response->message = 'Category not found';
+                return $this->json($response->getSystemResponse());
+            }
+            else{
+                
+                $response->statut = 200;
+                $response->message = 'categorie list';
+                //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
+                //return $this->json($series);
+                $response->data = json_decode($serializer->serialize($categorie, 'json',['groups' => 'categorie:read'])); 
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        return $this->json($response->getSystemResponse());
+    }
 }
