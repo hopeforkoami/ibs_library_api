@@ -15,20 +15,20 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read'])]
     private ?string $libelle = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livresimple:read'])]
     private ?Auteur $auteurId = null;
 
     #[ORM\Column]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read','livresimple:read'])]
     private ?int $nbrePages = null;
 
     #[ORM\Column]
@@ -41,7 +41,7 @@ class Livre
     private ?Langue $langueId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -50,7 +50,7 @@ class Livre
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read','livresimple:read'])]
     private ?SousCategorie $sousCategorieId = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

@@ -31,7 +31,7 @@ class NsAuthorisationRepository extends ServiceEntityRepository
             $dateFin = $authorisation->getDateFin();
             $now = new DateTime('now');
             // Check if current date is within the validity period
-            if ($now->format('y-m-d') == $dateDebut->format('y-m-d') ) {
+            if ($now->format('y-m-d') <= $dateFin->format('y-m-d') ) {
                 return true;
             } else {
                 // Deactivate the token by setting valid to false

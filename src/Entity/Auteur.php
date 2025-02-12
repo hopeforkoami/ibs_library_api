@@ -15,11 +15,11 @@ class Auteur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['auteur:read', 'livre:read'])]
+    #[Groups(['auteur:read', 'livre:read','livresimple:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['auteur:read', 'livre:read'])]
+    #[Groups(['auteur:read', 'livre:read','livresimple:read'])]
     private ?string $nomComplet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -31,7 +31,6 @@ class Auteur
     private ?int $nbreLivres = null;
 
     #[ORM\OneToMany(mappedBy: 'auteurId', targetEntity: Livre::class)]
-    #[Groups(['auteur:read'])]
     private Collection $livres;
 
     public function __construct()

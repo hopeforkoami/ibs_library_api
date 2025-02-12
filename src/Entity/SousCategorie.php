@@ -15,11 +15,11 @@ class SousCategorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['sous_categorie:read', 'livre:read'])]
+    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['sous_categorie:read', 'livre:read'])]
+    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column(type: Types::TEXT)]
@@ -31,7 +31,6 @@ class SousCategorie
     private ?int $parentId = null;
 
     #[ORM\OneToMany(mappedBy: 'sousCategorieId', targetEntity: Livre::class)]
-    #[Groups(['sous_categorie:read'])]
     private Collection $livres;
 
     public function __construct()

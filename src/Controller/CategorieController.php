@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -90,7 +91,7 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/categorie/listfull', name: 'app_categorie_listFull', methods: ['GET'])]
-    public function listFull(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): JsonResponse
+    public function listFull(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500, 'system error', []);
         
@@ -122,13 +123,13 @@ class CategorieController extends AbstractController
                 $response->message = 'categorie list';
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($categorie, 'json',['groups' => 'categorie:read'])); 
+                $response->data = json_decode($serializer->serialize($categorie, 'json',['groups' => 'sous_categorie:read'])); 
             }
         } else {
             $response->statut = 401;
             $response->message = 'Token expired';
         }
 
-        return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
 }
