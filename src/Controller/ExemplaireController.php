@@ -22,7 +22,7 @@ class ExemplaireController extends AbstractController
     {
         $response = new NogSystemResponse(500,'system error',[]);
         //on verifie la methode de la requete est post
-        if ($request->getMethod() != 'PUT') {
+        if ($request->getMethod() != 'POST') {
             $response->statut = 405;
             $response->message = 'Method not allowed';
             return $response->getSystemHttpResponse();
