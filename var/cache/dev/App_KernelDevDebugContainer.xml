@@ -235,6 +235,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\ExemplaireLivreRepository" class="App\Repository\ExemplaireLivreRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\ExemplaireRepository" class="App\Repository\ExemplaireRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -252,6 +256,10 @@
       <argument type="service" id="doctrine"/>
     </service>
     <service id="App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
+    <service id="App\Repository\PositionRepository" class="App\Repository\PositionRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
@@ -2288,7 +2296,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.JoS6KJ3"/>
+      <argument type="service" id=".service_locator.xlMF7Uj"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2924,6 +2932,8 @@
     <service id=".abstract.instanceof.App\Repository\EmplacementRepository" class="App\Repository\EmplacementRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\EmpruntRepository" class="App\Repository\EmpruntRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\EmpruntRepository" class="App\Repository\EmpruntRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ExemplaireLivreRepository" class="App\Repository\ExemplaireLivreRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\ExemplaireLivreRepository" class="App\Repository\ExemplaireLivreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ExemplaireRepository" class="App\Repository\ExemplaireRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ExemplaireRepository" class="App\Repository\ExemplaireRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\LangueRepository" class="App\Repository\LangueRepository" autowire="true" abstract="true"/>
@@ -2934,6 +2944,8 @@
     <service id=".abstract.instanceof.App\Repository\MembreRepository" class="App\Repository\MembreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\PositionRepository" class="App\Repository\PositionRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\PositionRepository" class="App\Repository\PositionRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\RangerRepository" class="App\Repository\RangerRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\RangerRepository" class="App\Repository\RangerRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" abstract="true"/>
@@ -3447,7 +3459,7 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.JoS6KJ3" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.xlMF7Uj" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
@@ -3455,11 +3467,13 @@
         <argument key="App\Repository\ColonneRepository" type="service_closure" id="App\Repository\ColonneRepository"/>
         <argument key="App\Repository\EmplacementRepository" type="service_closure" id="App\Repository\EmplacementRepository"/>
         <argument key="App\Repository\EmpruntRepository" type="service_closure" id="App\Repository\EmpruntRepository"/>
+        <argument key="App\Repository\ExemplaireLivreRepository" type="service_closure" id="App\Repository\ExemplaireLivreRepository"/>
         <argument key="App\Repository\ExemplaireRepository" type="service_closure" id="App\Repository\ExemplaireRepository"/>
         <argument key="App\Repository\LangueRepository" type="service_closure" id="App\Repository\LangueRepository"/>
         <argument key="App\Repository\LivreRepository" type="service_closure" id="App\Repository\LivreRepository"/>
         <argument key="App\Repository\MembreRepository" type="service_closure" id="App\Repository\MembreRepository"/>
         <argument key="App\Repository\NsAuthorisationRepository" type="service_closure" id="App\Repository\NsAuthorisationRepository"/>
+        <argument key="App\Repository\PositionRepository" type="service_closure" id="App\Repository\PositionRepository"/>
         <argument key="App\Repository\RangerRepository" type="service_closure" id="App\Repository\RangerRepository"/>
         <argument key="App\Repository\ReservationRepository" type="service_closure" id="App\Repository\ReservationRepository"/>
         <argument key="App\Repository\RoleRepository" type="service_closure" id="App\Repository\RoleRepository"/>

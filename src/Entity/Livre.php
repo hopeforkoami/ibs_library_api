@@ -81,11 +81,15 @@ class Livre
     #[Groups(['livre:read'])]
     private Collection $reservations;
 
+    #[ORM\OneToMany(mappedBy: 'livre', targetEntity: ExemplaireLivre::class)]
+    private Collection $exemplaireLivres;
+
     public function __construct()
     {
         $this->chapitres = new ArrayCollection();
         $this->exemplaires = new ArrayCollection();
         $this->reservations = new ArrayCollection();
+        $this->exemplaireLivres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -318,6 +322,36 @@ class Livre
     {
         if ($this->reservations->removeElement($reservation)) {
             $reservation->removeLivre($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ExemplaireLivre>
+     */
+    public function getExemplaireLivres(): Collection
+    {
+        return $this->exemplaireLivres;
+    }
+
+    public function addExemplaireLivre(ExemplaireLivre $exemplaireLivre): static
+    {
+        if (!$this->exemplaireLivres->contains($exemplaireLivre)) {
+            $this->exemplaireLivres->add($exemplaireLivre);
+            $exemplaireLivre->setLivre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExemplaireLivre(ExemplaireLivre $exemplaireLivre): static
+    {
+        if ($this->exemplaireLivres->removeElement($exemplaireLivre)) {
+            // set the owning side to null (unless already changed)
+            if ($exemplaireLivre->getLivre() === $this) {
+                $exemplaireLivre->setLivre(null);
+            }
         }
 
         return $this;
