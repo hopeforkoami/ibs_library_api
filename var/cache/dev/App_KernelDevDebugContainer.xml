@@ -251,6 +251,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\RangerRepository" class="App\Repository\RangerRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -2280,7 +2284,7 @@
     <service id="doctrine.orm.configuration" class="Doctrine\ORM\Configuration" abstract="true"/>
     <service id="doctrine.orm.entity_manager.abstract" class="Doctrine\ORM\EntityManager" lazy="true" abstract="true"/>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory">
-      <argument type="service" id=".service_locator.th1wZNV"/>
+      <argument type="service" id=".service_locator.PTzTUAj"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -2924,6 +2928,8 @@
     <service id=".abstract.instanceof.App\Repository\MembreRepository" class="App\Repository\MembreRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\NsAuthorisationRepository" class="App\Repository\NsAuthorisationRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\RangerRepository" class="App\Repository\RangerRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\RangerRepository" class="App\Repository\RangerRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\ReservationRepository" class="App\Repository\ReservationRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\RoleRepository" class="App\Repository\RoleRepository" autowire="true" abstract="true"/>
@@ -3329,13 +3335,14 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\MembreRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.hROszF_" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.qsRUsKy" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AuteurController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\CategorieController::addCategorie" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\CategorieController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::addLivre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\LivreController::deleteLivre" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::details" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::listFilterCategory" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3356,6 +3363,7 @@
         <argument key="App\Controller\CategorieController:addCategorie" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\CategorieController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:addLivre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\LivreController:deleteLivre" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:details" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:listFilterCategory" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3433,7 +3441,7 @@
         <argument key="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber" type="service_closure" id="doctrine.orm.listeners.pdo_cache_adapter_doctrine_schema_subscriber"/>
       </argument>
     </service>
-    <service id=".service_locator.th1wZNV" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.PTzTUAj" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\AuteurRepository" type="service_closure" id="App\Repository\AuteurRepository"/>
@@ -3445,6 +3453,7 @@
         <argument key="App\Repository\LivreRepository" type="service_closure" id="App\Repository\LivreRepository"/>
         <argument key="App\Repository\MembreRepository" type="service_closure" id="App\Repository\MembreRepository"/>
         <argument key="App\Repository\NsAuthorisationRepository" type="service_closure" id="App\Repository\NsAuthorisationRepository"/>
+        <argument key="App\Repository\RangerRepository" type="service_closure" id="App\Repository\RangerRepository"/>
         <argument key="App\Repository\ReservationRepository" type="service_closure" id="App\Repository\ReservationRepository"/>
         <argument key="App\Repository\RoleRepository" type="service_closure" id="App\Repository\RoleRepository"/>
         <argument key="App\Repository\SousCategorieRepository" type="service_closure" id="App\Repository\SousCategorieRepository"/>
@@ -3598,12 +3607,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.hROszF_"/>
+      <argument type="service" id=".service_locator.qsRUsKy"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.hROszF_"/>
+      <argument type="service" id=".service_locator.qsRUsKy"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4236,7 +4245,7 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.hROszF_"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.qsRUsKy"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -4245,7 +4254,7 @@
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.WOvfL7_" alias=".service_locator.JGIwGE_"/>
     <service id=".service_locator._a84_yo" alias=".service_locator.2Goeg_1"/>
-    <service id=".service_locator..0l6_OV" alias=".service_locator.hROszF_"/>
+    <service id=".service_locator.0Ojg2Tu" alias=".service_locator.qsRUsKy"/>
     <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
     <service id=".service_locator.0ghLsew" alias=".service_locator.mx0UMmY"/>

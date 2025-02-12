@@ -240,12 +240,20 @@ class MembreController extends AbstractController
             {
                 $response->statut = 409;
                 $response->message = 'member already exist';
-                return $this->json($response->getSystemHttpResponse());
+                return $response->getSystemHttpResponse();
             }
             else{
+                //check if user login already exist
+                $membre = $em->getRepository(Membre::class)->findOneBy(['login' => $data['login']]);
+                if($membre)
+                {
+                    $response->statut = 409;
+                    $response->message = 'login already exist';
+                    return $response->getSystemHttpResponse();
+                }
                 //on va charger l'image avec la fonction save_base64_image de la classe NogCustomedFunctions et on recupere le nom de l'image
                 $csts = new NogCustomedFunctions();
-                $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/');
+                $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/', 'membre');
 
                 $membre = new Membre();
                 $membre->setNom($data['nom']);
@@ -319,12 +327,24 @@ class MembreController extends AbstractController
                         return $this->json($response->getSystemResponse());
                     }
                     else{
+                        //check if user login already exist
+                        $membre = $em->getRepository(Membre::class)->findOneBy(['login' => $data['login']]);
+                        if($membre)
+                        {
+                            $response->statut = 409;
+                            $response->message = 'login already exist';
+                            return $response->getSystemHttpResponse();
+                        }
+                        //on va charger l'image avec la fonction save_base64_image de la classe NogCustomedFunctions et on recupere le nom de l'image
+                        $csts = new NogCustomedFunctions();
+                        $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/', 'membre');
+
                         //update the livre
                         //libelle,auteur_id_id, image, isbn, edition, resume,  langue_id_id, sous_categorie_id_id
                         $membre = new Membre();
                         $membre->setNom($data['nom']);
                         $membre->setPrenom($data['prenom']);
-                        $membre->setProfil($data['profil']);
+                        $membre->setProfil($profilName);
                         $membre->setLogin($data['login']);
                         $membre->setPassword($data['password']);
                         $membre->setContact($data['contact']);

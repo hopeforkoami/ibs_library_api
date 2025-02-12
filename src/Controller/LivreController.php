@@ -7,6 +7,7 @@ use App\Entity\Langue;
 use App\Entity\Livre;
 use App\Entity\NsAuthorisation;
 use App\Entity\SousCategorie;
+use App\Modele\NogCustomedFunctions;
 use App\Modele\NogSystemResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -56,9 +57,13 @@ class LivreController extends AbstractController
                 return $this->json($response->getSystemHttpResponse());
             }
             else{
+                //on va uploader l'image du livre et recuperer le nom du fichier pour l'enregistrer dans la base de donnees 
+                $cst = new NogCustomedFunctions();
+                $imageUrl = $cst->save_base64_image($data['image'], 'uploads/livres/');
+
                 $livre = new Livre();
                 $livre->setLibelle($data['libelle']);
-                $livre->setImage($data['image']);
+                $livre->setImage($imageUrl);
                 $livre->setIsbn($data['isbn']);
                 $livre->setEdition($data['edition']);
                 $livre->setResume($data['resume']);
@@ -380,5 +385,47 @@ class LivreController extends AbstractController
         }
 
         return $this->json($response->getSystemResponse());
+    }
+    #[Route('/livre/delete', name: 'app_livre_delete', methods: ['DELETE'])]
+    public function deleteLivre(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'DELETE') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $id = $request->query->get('id', 0);
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $livre = $em->getRepository(Livre::class)->find($id);
+            //on supprime si le livre existe
+            if($livre){
+                $em->remove($livre);
+                $em->flush();
+                $response->statut = 200;
+                $response->message = 'livre deleted';
+                return $this->json($response->getSystemResponse());
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'livre not found';
+                return $this->json($response->getSystemResponse());
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
 }
