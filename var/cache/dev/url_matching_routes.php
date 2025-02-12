@@ -18,6 +18,11 @@ return [
         '/livre/listcategoryfilter' => [[['_route' => 'app_livre_list_categoryFilter', '_controller' => 'App\\Controller\\LivreController::listFilterCategory'], null, ['GET' => 0], null, false, false, null]],
         '/livre/update2' => [[['_route' => 'app_livre_update2', '_controller' => 'App\\Controller\\LivreController::update'], null, null, null, false, false, null]],
         '/userLogin' => [[['_route' => 'app_membre_login', '_controller' => 'App\\Controller\\MembreController::login'], null, null, null, false, false, null]],
+        '/user/delete' => [[['_route' => 'app_user_delete', '_controller' => 'App\\Controller\\MembreController::deleteMembre'], null, ['DELETE' => 0], null, false, false, null]],
+        '/user/details' => [[['_route' => 'app_user_details', '_controller' => 'App\\Controller\\MembreController::details'], null, ['GET' => 0], null, false, false, null]],
+        '/user/listfull' => [[['_route' => 'app_user_list_full', '_controller' => 'App\\Controller\\MembreController::listAll'], null, ['GET' => 0], null, false, false, null]],
+        '/user/add' => [[['_route' => 'user', '_controller' => 'App\\Controller\\MembreController::addUser'], null, ['POST' => 0], null, false, false, null]],
+        '/user/update' => [[['_route' => 'app_user_update', '_controller' => 'App\\Controller\\MembreController::update'], null, ['PUT' => 0], null, false, false, null]],
         '/login' => [[['_route' => 'app_system', '_controller' => 'App\\Controller\\SystemController::login'], null, null, null, false, false, null]],
     ],
     [ // $regexpList

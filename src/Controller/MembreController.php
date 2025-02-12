@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Membre;
 use App\Entity\NsAuthorisation;
+use App\Entity\Role;
+use App\Modele\NogCustomedFunctions;
 use App\Modele\NogSystemResponse;
 use App\Repository\MembreRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -202,6 +204,161 @@ class MembreController extends AbstractController
 
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
+    }
+
+    #[Route('/user/add', name: 'user', methods: ['POST'])]
+    public function addUser(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'POST') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemHttpResponse());
+        }
+         $data = json_decode($request->getContent(), true);
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            /**
+             * les differents parametres de la requete
+             * auteur, langue, libelle, categorie, nbrePage, nreExemplaire, image, isbn, edition, resume, tags, themes
+             */
+           
+            if (!isset($data['role']) || !isset($data['nom']) || !isset($data['prenom'])|| !isset($data['login'])|| !isset($data['password'])|| !isset($data['contact'])|| !isset($data['whatsapp'])|| !isset($data['email']) || !isset($data['profil'])) {
+                $response->statut = 400;
+                $response->message = 'Bad request';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            //on si un libre existe avec le meme libelle et isbn
+            $membre = $em->getRepository(Membre::class)->findOneBy(['nom' => $data['nom'], 'prenom' => $data['prenom']]);
+            if($membre)
+            {
+                $response->statut = 409;
+                $response->message = 'member already exist';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            else{
+                //on va charger l'image avec la fonction save_base64_image de la classe NogCustomedFunctions et on recupere le nom de l'image
+                $csts = new NogCustomedFunctions();
+                $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/');
+
+                $membre = new Membre();
+                $membre->setNom($data['nom']);
+                $membre->setPrenom($data['prenom']);
+                $membre->setProfil($profilName);
+                $membre->setLogin($data['login']);
+                $membre->setPassword(password_hash($data['password'],PASSWORD_BCRYPT) );
+                $membre->setContact($data['contact']);
+                $membre->setWhatsapp($data['whatsapp']);
+                $membre->setEmail($data['email']);
+                $membre->setRoleId($em->getRepository(Role::class)->find($data['role']));
+                
+                $em->persist($membre);
+                $em->flush();
+                if($membre->getId()){
+                    $response->statut = 201;
+                    $response->message = 'Member added';
+                    $response->data = [];
+                }
+                else{
+                    $response->statut = 500;
+                    $response->message = 'System error';
+                }
+            }
+            
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+    #[Route('/user/update', name: 'app_user_update', methods: ['PUT'])]
+    public function update(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500,'system error',[]);
+        //on verifie la methode de la requete est post
+        if ($request->getMethod() != 'PUT') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $response->getSystemHttpResponse();
+        }
+        else{
+            if (!$request->getContent()) {
+                $response->statut = 400;
+                $response->message = 'Bad request';
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                //on verifie si le token dans le post est valide
+                $data = json_decode($request->getContent(), true);
+                $token = $data['token'];
+                //$nogCustomedFunctions = new NogCustomedFunctions();
+                $auth = $em->getRepository(NsAuthorisation::class);
+               
+                if($auth->checkTokenValidity($token)){
+                    //$nogCustomedFunctions->checkUserRight($token, $nogCustomedFunctions->ADMIN);
+                    //check if the user has the right to add a programme
+                    if (!isset($data['role']) || !isset($data['nom']) || !isset($data['prenom'])|| !isset($data['login'])|| !isset($data['password'])|| !isset($data['contact'])|| !isset($data['whatsapp'])|| !isset($data['email']) || !isset($data['profil'])) {
+                        $response->statut = 400;
+                        $response->message = 'Bad request';
+                        return $this->json($response->getSystemHttpResponse());
+                    }
+                    $membre = $em->getRepository(Membre::class)->find($data['id']);
+                   // var_dump($pays);
+                    if(!$membre){
+                        $response->statut = 404;
+                        $response->message = 'Member not found or already deleted';
+                        return $this->json($response->getSystemResponse());
+                    }
+                    else{
+                        //update the livre
+                        //libelle,auteur_id_id, image, isbn, edition, resume,  langue_id_id, sous_categorie_id_id
+                        $membre = new Membre();
+                        $membre->setNom($data['nom']);
+                        $membre->setPrenom($data['prenom']);
+                        $membre->setProfil($data['profil']);
+                        $membre->setLogin($data['login']);
+                        $membre->setPassword($data['password']);
+                        $membre->setContact($data['contact']);
+                        $membre->setWhatsapp($data['whatsapp']);
+                        $membre->setEmail($data['email']);
+                        $membre->setRoleId($em->getRepository(Role::class)->find($data['role']));
+                        
+                        $em->persist($membre);
+                        $em->flush();
+                        if($membre->getId()){
+                            $response->statut = 200;
+                            $response->message = 'member updated';
+                            $response->data = [];
+                        }
+                        else{
+                            $response->statut = 500;
+                            $response->message = 'System error';
+                        }
+                        
+                        
+                        
+                    }
+                    
+                }
+                else{
+                    $response->statut = 401;
+                    $response->message = 'Token expired';
+                }
+
+
+            }
+        }
+
+        return $this->json($response->getSystemResponse());
     }
 
 }

@@ -3329,7 +3329,7 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\MembreRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.8GXYB8C" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.hROszF_" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AuteurController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3341,7 +3341,12 @@
         <argument key="App\Controller\LivreController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::update" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController::updateLivre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController::addUser" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController::deleteMembre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController::details" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController::listAll" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController::login" type="service_closure" id=".service_locator.JGIwGE_"/>
+        <argument key="App\Controller\MembreController::update" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\SystemController::login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -3356,7 +3361,12 @@
         <argument key="App\Controller\LivreController:listFull" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:update" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\LivreController:updateLivre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController:addUser" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController:deleteMembre" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController:details" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\MembreController:listAll" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController:login" type="service_closure" id=".service_locator.JGIwGE_"/>
+        <argument key="App\Controller\MembreController:update" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\SystemController:login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -3588,12 +3598,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.8GXYB8C"/>
+      <argument type="service" id=".service_locator.hROszF_"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.8GXYB8C"/>
+      <argument type="service" id=".service_locator.hROszF_"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4226,7 +4236,7 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.8GXYB8C"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.hROszF_"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -4235,7 +4245,7 @@
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.WOvfL7_" alias=".service_locator.JGIwGE_"/>
     <service id=".service_locator._a84_yo" alias=".service_locator.2Goeg_1"/>
-    <service id=".service_locator.OdKoa9D" alias=".service_locator.8GXYB8C"/>
+    <service id=".service_locator..0l6_OV" alias=".service_locator.hROszF_"/>
     <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
     <service id=".service_locator.0ghLsew" alias=".service_locator.mx0UMmY"/>

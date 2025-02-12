@@ -19,11 +19,16 @@ class NogCustomedFunctions{
         $dte = new \DateTime('now');
         return $this->SHOPCODE .'_'.uniqid($tablePref) . $dte->getTimestamp();
     }
-    public function save_base64_image($image, $path_with_end_slash="" ) {
+    public function save_base64_image($image, $path_with_end_slash="", $prefix="upload-") {
         $imageInfo = explode(";base64,", $image);
         $imgExt = str_replace('data:image/', '', $imageInfo[0]);
         $data = str_replace(' ', '+', $imageInfo[1]);
-        $imageName = "prod-".time().".".$imgExt;
+        $imageName = $prefix.time().".".$imgExt;
+        $path = $path_with_end_slash . $imageName;  // File path
+        $dir = dirname($path); 
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
         file_put_contents( $path_with_end_slash . $imageName, base64_decode($data) );
 
         return $imageName;
