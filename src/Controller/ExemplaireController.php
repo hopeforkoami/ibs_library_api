@@ -138,4 +138,79 @@ class ExemplaireController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+
+    #[Route('/exemplaire/update', name: 'app_exemplaire_update', methods: ['PUT'])]
+    public function update(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500,'system error',[]);
+        //on verifie la methode de la requete est post
+        if ($request->getMethod() != 'PUT') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $response->getSystemHttpResponse();
+        }
+        else{
+            if (!$request->getContent()) {
+                $response->statut = 400;
+                $response->message = 'Bad request';
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                //on verifie si le token dans le post est valide
+                $data = json_decode($request->getContent(), true);
+                $token = $data['token'];
+                //$nogCustomedFunctions = new NogCustomedFunctions();
+                $auth = $em->getRepository(NsAuthorisation::class);
+               
+                if($auth->checkTokenValidity($token)){
+                    //$nogCustomedFunctions->checkUserRight($token, $nogCustomedFunctions->ADMIN);
+                    //check if the user has the right to add a programme
+                    if (!isset($data['livre']) || !isset($data['position']) || !isset($data['numero'])|| !isset($data['id'])) {
+                        $response->statut = 400;
+                        $response->message = 'Bad request';
+                        return $this->json($response->getSystemHttpResponse());
+                    }
+                    $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($data['id']);
+                    if(!$exemplaire){
+                        $response->statut = 409;
+                        $response->message = 'exemplaire not found or already deleted';
+                        return $response->getSystemHttpResponse();
+                    }
+                    else{
+                        
+                        //update the exemplaire
+                        $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($data['id']);
+                        $exemplaire->setNumero($data['numero']);
+                        $exemplaire->setLibre($data['libre']??true);
+                        $exemplaire->setDateDisponible(new \DateTime($data['dateDisponible']??'now'));
+                        $exemplaire->setLivre($em->getRepository(Livre::class)->find($data['livre']));
+                        $exemplaire->setPosition($em->getRepository(Position::class)->find($data['position']));                          
+                        $em->persist($exemplaire);
+                        $em->flush();
+                        if($exemplaire->getId()){
+                            $response->statut = 200;
+                            $response->message = 'exemplaire updated';
+                            $response->data = [];
+                        }
+                        else{
+                            $response->statut = 500;
+                            $response->message = 'System error';
+                        }
+                        
+                        
+                        
+                    }
+                    
+                }
+                else{
+                    $response->statut = 401;
+                    $response->message = 'Token expired';
+                }
+
+
+            }
+        }
+
+        return $this->json($response->getSystemResponse());
+    }
 }
