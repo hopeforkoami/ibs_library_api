@@ -207,6 +207,20 @@
         <argument type="service" id=".service_locator.mx0UMmY.App\Controller\MembreController"/>
       </call>
     </service>
+    <service id="App\Controller\PositionController" class="App\Controller\PositionController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\PositionController"/>
+      </call>
+    </service>
+    <service id="App\Controller\ReservationController" class="App\Controller\ReservationController" public="true" autowire="true" autoconfigure="true">
+      <tag name="controller.service_arguments"/>
+      <tag name="container.service_subscriber"/>
+      <call method="setContainer">
+        <argument type="service" id=".service_locator.mx0UMmY.App\Controller\ReservationController"/>
+      </call>
+    </service>
     <service id="App\Controller\SystemController" class="App\Controller\SystemController" public="true" autowire="true" autoconfigure="true">
       <tag name="controller.service_arguments"/>
       <tag name="container.service_subscriber"/>
@@ -2925,6 +2939,12 @@
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\MembreController" class="App\Controller\MembreController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\PositionController" class="App\Controller\PositionController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\PositionController" class="App\Controller\PositionController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\PositionController" class="App\Controller\PositionController" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\ReservationController" class="App\Controller\ReservationController" autowire="true" abstract="true"/>
+    <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\ReservationController" class="App\Controller\ReservationController" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Controller\ReservationController" class="App\Controller\ReservationController" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Symfony\Contracts\Service\ServiceSubscriberInterface.0.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" abstract="true"/>
     <service id=".instanceof.Symfony\Bundle\FrameworkBundle\Controller\AbstractController.0.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Controller\SystemController" class="App\Controller\SystemController" autowire="true" autoconfigure="true" abstract="true"/>
@@ -3363,7 +3383,7 @@
         <argument key="userRepository" type="service_closure" id="App\Repository\MembreRepository"/>
       </argument>
     </service>
-    <service id=".service_locator.J6EsP.D" class="Symfony\Component\DependencyInjection\ServiceLocator">
+    <service id=".service_locator.p5nEduF" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\AuteurController::listFull" type="service_closure" id=".service_locator.8chbYI7"/>
@@ -3385,6 +3405,9 @@
         <argument key="App\Controller\MembreController::listAll" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController::login" type="service_closure" id=".service_locator.JGIwGE_"/>
         <argument key="App\Controller\MembreController::update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController::addIfNotExist" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController::listColonne" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController::listRanger" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\SystemController::login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="App\Kernel::loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="App\Kernel::registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -3409,6 +3432,9 @@
         <argument key="App\Controller\MembreController:listAll" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\MembreController:login" type="service_closure" id=".service_locator.JGIwGE_"/>
         <argument key="App\Controller\MembreController:update" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController:addIfNotExist" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController:listColonne" type="service_closure" id=".service_locator.8chbYI7"/>
+        <argument key="App\Controller\PositionController:listRanger" type="service_closure" id=".service_locator.8chbYI7"/>
         <argument key="App\Controller\SystemController:login" type="service_closure" id=".service_locator.2Goeg_1"/>
         <argument key="kernel:loadRoutes" type="service_closure" id=".service_locator.xUrKPVU"/>
         <argument key="kernel:registerContainerConfiguration" type="service_closure" id=".service_locator.xUrKPVU"/>
@@ -3559,6 +3585,18 @@
       <argument type="service" id="service_container"/>
       <factory service=".service_locator.mx0UMmY" method="withContext"/>
     </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\PositionController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\PositionController"/>
+      <argument>App\Controller\PositionController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
+    </service>
+    <service id=".service_locator.mx0UMmY.App\Controller\ReservationController" class="Symfony\Component\DependencyInjection\ServiceLocator">
+      <tag name="container.service_locator_context" id="App\Controller\ReservationController"/>
+      <argument>App\Controller\ReservationController</argument>
+      <argument type="service" id="service_container"/>
+      <factory service=".service_locator.mx0UMmY" method="withContext"/>
+    </service>
     <service id=".service_locator.mx0UMmY.App\Controller\SystemController" class="Symfony\Component\DependencyInjection\ServiceLocator">
       <tag name="container.service_locator_context" id="App\Controller\SystemController"/>
       <argument>App\Controller\SystemController</argument>
@@ -3650,12 +3688,12 @@
     <service id="debug.argument_resolver.request.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver"/>
     <service id="debug.argument_resolver.session.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\SessionValueResolver"/>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver">
-      <argument type="service" id=".service_locator.J6EsP.D"/>
+      <argument type="service" id=".service_locator.p5nEduF"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver">
-      <argument type="service" id=".service_locator.J6EsP.D"/>
+      <argument type="service" id=".service_locator.p5nEduF"/>
     </service>
     <service id=".doctrine.orm.default_metadata_driver.inner" class="Doctrine\Persistence\Mapping\Driver\MappingDriverChain">
       <call method="addDriver">
@@ -4288,7 +4326,7 @@
     <service id="doctrine.orm.default_entity_manager.event_manager" alias="doctrine.dbal.default_connection.event_manager"/>
     <service id="doctrine.migrations.metadata_storage" alias="doctrine.migrations.storage.table_storage"/>
     <service id="container.env_var_processors_locator" alias=".service_locator.gSv9zYw" public="true"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.J6EsP.D"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.p5nEduF"/>
     <service id="session" alias=".session.do-not-use" public="true">
       <deprecated package="symfony/framework-bundle" version="5.3">The "%alias_id%" service and "SessionInterface" alias are deprecated, use "$requestStack-&gt;getSession()" instead.</deprecated>
     </service>
@@ -4297,7 +4335,7 @@
     <service id=".service_locator.0GV1BZZ" alias=".service_locator.gSv9zYw"/>
     <service id=".service_locator.WOvfL7_" alias=".service_locator.JGIwGE_"/>
     <service id=".service_locator._a84_yo" alias=".service_locator.2Goeg_1"/>
-    <service id=".service_locator.2c6V3Mh" alias=".service_locator.J6EsP.D"/>
+    <service id=".service_locator.RcGkGza" alias=".service_locator.p5nEduF"/>
     <service id=".service_locator.bkUSUfi" alias=".service_locator.AHPGEE6"/>
     <service id=".service_locator.4hi2aOY" alias=".service_locator.bBRwv06"/>
     <service id=".service_locator.0ghLsew" alias=".service_locator.mx0UMmY"/>

@@ -40,7 +40,7 @@ class SystemController extends AbstractController
                     $authorisation->setUser($user);
                     $authorisation->setToken(md5(uniqid()));
                     $authorisation->setDateDebut(new \DateTime('now'));
-                    $authorisation->setDateFin(new \DateTime('now + 1 hour'));
+                    $authorisation->setDateFin(new \DateTime('now + 1 day'));
                     $authorisation->setValide(true);
                     $em->persist($authorisation);
                     $em->flush();
