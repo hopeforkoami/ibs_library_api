@@ -97,7 +97,7 @@ class ExemplaireController extends AbstractController
     }
 
     #[Route('/exemplaire/delete', name: 'app_exemplaire_delete', methods: ['DELETE'])]
-     public function deleteMembre(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+     public function deleteExemplaire(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500, 'system error', []);
         
@@ -212,5 +212,47 @@ class ExemplaireController extends AbstractController
         }
 
         return $this->json($response->getSystemResponse());
+    }
+    #[Route('/exemplaire/checkfree', name: 'app_exemplaire_checkfree', methods: ['GET'])]
+     public function exemplaireCheckFree(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $id = $request->query->get('id', 0);
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch available exemplaires of the book
+            $exemplaire = $em->getRepository(ExemplaireLivre::class)->findBy(array('livre' => $em->getRepository(Livre::class)->find($id), 'libre' => true));
+            //on supprime si le livre existe
+            if($exemplaire){
+                
+                $response->statut = 200;
+                $response->message = ' a des exemplaires libres';
+                $response->data = $exemplaire;
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
 }
