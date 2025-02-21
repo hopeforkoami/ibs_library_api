@@ -239,12 +239,55 @@ class ExemplaireController extends AbstractController
                 
                 $response->statut = 200;
                 $response->message = ' a des exemplaires libres';
-                $response->data = $exemplaire;
+                $response->data = $exemplaire;      
                 return $response->getSystemHttpResponse();
             }
             else{
                 $response->statut = 404;
                 $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+    #[Route('/exemplaire/getofbook', name: 'app_exemplaire_filter_book', methods: ['GET'])]
+     public function bookExemplaires(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $id = $request->query->get('id', 0);
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $exemplaires = $em->getRepository(ExemplaireLivre::class)->findBy(array('livre' => $em->getRepository(Livre::class)->find($id)));    
+            //on supprime si le livre existe
+            if($exemplaires){
+                
+                $response->statut = 200;
+                $response->message = 'Exemplaires found';
+                $response->data = $exemplaires;
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                $response->data = [];
                 return $response->getSystemHttpResponse();
             }
         } else {
