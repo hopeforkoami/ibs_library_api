@@ -6,6 +6,7 @@ use App\Repository\PositionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PositionRepository::class)]
 class Position
@@ -13,21 +14,27 @@ class Position
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['position:read', 'livre:details'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'positions')]
+    #[Groups(['position:read'])]
     private ?Ranger $ranger = null;
 
     #[ORM\ManyToOne(inversedBy: 'numero')]
+    #[Groups(['position:read'])]
     private ?Colonne $colonne = null;
 
     #[ORM\Column]
+    #[Groups(['position:read'])]
     private ?int $numero = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['position:read', 'livre:details'])]
     private ?string $libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'position', targetEntity: ExemplaireLivre::class)]
+    #[Groups(['position:read'])]
     private Collection $exemplaireLivres;
 
     public function __construct()

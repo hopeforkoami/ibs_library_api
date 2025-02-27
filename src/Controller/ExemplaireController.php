@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ExemplaireController extends AbstractController
 {
-    #[Route('/exemplaire/add', name: 'app_exemplaire_add', methods: ['POST'])]
+    #[Route('/exemplaire/add', name: 'app_exemplaire_add', methods: ['POST', 'OPTIONS'])]
     public function add(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500,'system error',[]);
@@ -36,20 +36,23 @@ class ExemplaireController extends AbstractController
             else{
                 //on verifie si le token dans le post est valide
                 $data = json_decode($request->getContent(), true);
-                $token = $data['token'];
+                $token = $request->query->get('token', '');
                 //$nogCustomedFunctions = new NogCustomedFunctions();
                 $auth = $em->getRepository(NsAuthorisation::class);
                
                 if($auth->checkTokenValidity($token)){
                     //$nogCustomedFunctions->checkUserRight($token, $nogCustomedFunctions->ADMIN);
                     //check if the user has the right to add a programme
-                    if (!isset($data['livre']) || !isset($data['position']) || !isset($data['numero'])) {
+                    if (!isset($data['livreId']) || !isset($data['position']) || !isset($data['numero'])|| !isset($data['isFree'])) {
                         $response->statut = 400;
                         $response->message = 'Bad request';
                         return $this->json($response->getSystemHttpResponse());
                     }
+                    $livre = $em->getRepository(Livre::class)->find($data['livreId']);
+                    $position = $em->getRepository(Position::class)->find($data['position']);
                     $exemplaire = $em->getRepository(ExemplaireLivre::class)->findBy(array(
-                        'livre' => $data['livre'], 
+                        'livre' => $livre,
+                        'position' => $position, 
                         'numero' => $data['numero']));
                    // var_dump($pays);
                     if($exemplaire){
@@ -63,15 +66,15 @@ class ExemplaireController extends AbstractController
                         //libelle,auteur_id_id, image, isbn, edition, resume,  langue_id_id, sous_categorie_id_id
                         $exemplaire = new ExemplaireLivre();
                         $exemplaire->setNumero($data['numero']);
-                        $exemplaire->setLibre(true);
+                        $exemplaire->setLibre($data['isFree']);
                         $exemplaire->setDateDisponible(new \DateTime('now'));
-                        $exemplaire->setLivre($em->getRepository(Livre::class)->find($data['livre']));
-                        $exemplaire->setPosition($em->getRepository(Position::class)->find($data['position']));                          
+                        $exemplaire->setLivre($livre);
+                        $exemplaire->setPosition($position);                          
                         $em->persist($exemplaire);
                         $em->flush();
                         if($exemplaire->getId()){
                             $response->statut = 200;
-                            $response->message = 'exemplaire updated';
+                            $response->message = 'exemplaire Added';
                             $response->data = [];
                         }
                         else{
@@ -93,7 +96,7 @@ class ExemplaireController extends AbstractController
             }
         }
 
-        return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
 
     #[Route('/exemplaire/delete', name: 'app_exemplaire_delete', methods: ['DELETE'])]

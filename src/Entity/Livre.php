@@ -15,73 +15,74 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details'])]
     private ?string $libelle = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read', 'livresimple:read'])]
+    #[Groups(['livre:read', 'livresimple:read', 'livre:details'])]
     private ?Auteur $auteurId = null;
 
     #[ORM\Column]
-    #[Groups(['livre:read','livresimple:read'])]
+    #[Groups(['livre:read','livresimple:read', 'livre:details'])]
     private ?int $nbrePages = null;
 
     #[ORM\Column]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?int $nbreExemplaires = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?Langue $langueId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['livre:read', 'sous_categorie:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livre:details'])]
     private ?string $image = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?string $isbn = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['livre:read','livresimple:read'])]
+    #[Groups(['livre:read','livresimple:read', 'livre:details'])]
     private ?SousCategorie $sousCategorieId = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?string $tags = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?string $themes = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?string $resume = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private ?string $edition = null;
 
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Chapitre::class)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private Collection $chapitres;
 
     #[ORM\OneToMany(mappedBy: 'livreId', targetEntity: Exemplaire::class)]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private Collection $exemplaires;
 
     #[ORM\ManyToMany(targetEntity: Reservation::class, mappedBy: 'livre')]
-    #[Groups(['livre:read'])]
+    #[Groups(['livre:read', 'livre:details'])]
     private Collection $reservations;
 
     #[ORM\OneToMany(mappedBy: 'livre', targetEntity: ExemplaireLivre::class)]
+    #[Groups(['livre:read', 'livre:details'])]
     private Collection $exemplaireLivres;
 
     public function __construct()
