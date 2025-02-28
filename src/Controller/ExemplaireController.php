@@ -56,7 +56,7 @@ class ExemplaireController extends AbstractController
                         'numero' => $data['numero']));
                    // var_dump($pays);
                     if($exemplaire){
-                        $response->statut = 409;
+                        $response->statut = 200;
                         $response->message = 'exemplaire already existe already exist';
                         return $response->getSystemHttpResponse();
                     }
