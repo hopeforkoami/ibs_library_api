@@ -98,6 +98,79 @@ class ExemplaireController extends AbstractController
 
         return $response->getSystemHttpResponse();
     }
+    #[Route('/exemplaire/update', name: 'app_exemplaire_update', methods: ['UPDATE', 'OPTIONS'])]
+    public function updateExemplaire(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500,'system error',[]);
+        //on verifie la methode de la requete est post
+        if ($request->getMethod() != 'POST') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $response->getSystemHttpResponse();
+        }
+        else{
+            if (!$request->getContent()) {
+                $response->statut = 400;
+                $response->message = 'Bad request';
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                //on verifie si le token dans le post est valide
+                $data = json_decode($request->getContent(), true);
+                $token = $request->query->get('token', '');
+                //$nogCustomedFunctions = new NogCustomedFunctions();
+                $auth = $em->getRepository(NsAuthorisation::class);
+               
+                if($auth->checkTokenValidity($token)){
+                    //$nogCustomedFunctions->checkUserRight($token, $nogCustomedFunctions->ADMIN);
+                    //check if the user has the right to add a programme
+                    if (!isset($data['exemplaireId']) || !isset($data['position']) || !isset($data['isFree'])) {
+                        $response->statut = 400;
+                        $response->message = 'Bad request';
+                        return $this->json($response->getSystemHttpResponse());
+                    }
+                    $position = $em->getRepository(Position::class)->find($data['position']);
+                    $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($data['exemplaireId']);
+                    if(!$exemplaire){
+                        $response->statut = 409;
+                        $response->message = 'exemplaire not found or already deleted';
+                        return $response->getSystemHttpResponse();
+                    }
+                    else{
+                        
+                        //update the exemplaire 
+                        $exemplaire->setLibre($data['isFree']??true);
+                        $exemplaire->setDateDisponible( new \DateTime($data['dateDisponible']??'now'));
+                        $exemplaire->setPosition($em->getRepository(Position::class)->find($data['position']));                          
+                        $em->persist($exemplaire);
+                        $em->flush();
+                        if($exemplaire->getId()){
+                            $response->statut = 200;
+                            $response->message = 'exemplaire updated';
+                            $response->data = [];
+                        }
+                        else{
+                            $response->statut = 500;
+                            $response->message = 'System error';
+                        }
+                        
+                        
+                        
+                    }
+                   
+                    
+                }
+                else{
+                    $response->statut = 401;
+                    $response->message = 'Token expired';
+                }
+
+
+            }
+        }
+
+        return $response->getSystemHttpResponse();
+    }
 
     #[Route('/exemplaire/delete', name: 'app_exemplaire_delete', methods: ['DELETE'])]
      public function deleteExemplaire(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
@@ -258,6 +331,50 @@ class ExemplaireController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+    #[Route('/exemplaire/details', name: 'app_exemplaire_details', methods: ['GET'])]
+     public function exemplaireDetails(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $id = $request->query->get('id', 0);
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch available exemplaires of the book
+            $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($id);
+            //on supprime si le livre existe
+            if($exemplaire){
+                
+                $response->statut = 200;
+                $response->message = 'Details of exemplaires';
+                $response->data = json_decode($serializer->serialize($exemplaire, 'json',['groups' => 'exemplaire_livre:read'])); 
+   
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
     #[Route('/exemplaire/getofbook', name: 'app_exemplaire_filter_book', methods: ['GET'])]
      public function bookExemplaires(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {

@@ -33,6 +33,7 @@ class ExemplaireLivre
     private ?bool $libre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups(['exemplaire_livre:read', 'livre:details'])]
     private ?\DateTimeInterface $dateDisponible = null;
 
     public function getId(): ?int

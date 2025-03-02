@@ -14,23 +14,23 @@ class Position
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['position:read', 'livre:details'])]
+    #[Groups(['position:read', 'livre:details','exemplaire_livre:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'positions')]
-    #[Groups(['position:read'])]
+    #[Groups(['position:read','exemplaire_livre:read'])]
     private ?Ranger $ranger = null;
 
     #[ORM\ManyToOne(inversedBy: 'numero')]
-    #[Groups(['position:read'])]
+    #[Groups(['position:read','exemplaire_livre:read'])]
     private ?Colonne $colonne = null;
 
     #[ORM\Column]
-    #[Groups(['position:read'])]
+    #[Groups(['position:read','exemplaire_livre:read'])]
     private ?int $numero = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['position:read', 'livre:details'])]
+    #[Groups(['position:read', 'livre:details','exemplaire_livre:read'])]
     private ?string $libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'position', targetEntity: ExemplaireLivre::class)]

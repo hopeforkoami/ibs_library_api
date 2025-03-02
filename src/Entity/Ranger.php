@@ -15,11 +15,11 @@ class Ranger
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['ranger:read'])]
+    #[Groups(['ranger:read','exemplaire_livre:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['ranger:read'])]
+    #[Groups(['ranger:read','exemplaire_livre:read'])]
     private ?string $libelle = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
