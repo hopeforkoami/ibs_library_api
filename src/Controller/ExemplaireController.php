@@ -98,7 +98,7 @@ class ExemplaireController extends AbstractController
 
         return $response->getSystemHttpResponse();
     }
-    #[Route('/exemplaire/update', name: 'app_exemplaire_update', methods: ['UPDATE', 'OPTIONS'])]
+    #[Route('/exemplaire/update2', name: 'app_exemplaire_update2', methods: ['UPDATE', 'OPTIONS'])]
     public function updateExemplaire(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500,'system error',[]);
@@ -215,7 +215,7 @@ class ExemplaireController extends AbstractController
         return $response->getSystemHttpResponse();
     }
 
-    #[Route('/exemplaire/update', name: 'app_exemplaire_update', methods: ['PUT'])]
+    #[Route('/exemplaire/update', name: 'app_exemplaire_update', methods: ['PUT', 'OPTIONS'])]
     public function update(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500,'system error',[]);
@@ -234,14 +234,14 @@ class ExemplaireController extends AbstractController
             else{
                 //on verifie si le token dans le post est valide
                 $data = json_decode($request->getContent(), true);
-                $token = $data['token'];
+                $token = $request->query->get('token', '');
                 //$nogCustomedFunctions = new NogCustomedFunctions();
                 $auth = $em->getRepository(NsAuthorisation::class);
                
                 if($auth->checkTokenValidity($token)){
                     //$nogCustomedFunctions->checkUserRight($token, $nogCustomedFunctions->ADMIN);
                     //check if the user has the right to add a programme
-                    if (!isset($data['livre']) || !isset($data['position']) || !isset($data['numero'])|| !isset($data['id'])) {
+                    if ( !isset($data['position']) || !isset($data['id'])) {
                         $response->statut = 400;
                         $response->message = 'Bad request';
                         return $this->json($response->getSystemHttpResponse());
@@ -256,10 +256,7 @@ class ExemplaireController extends AbstractController
                         
                         //update the exemplaire
                         $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($data['id']);
-                        $exemplaire->setNumero($data['numero']);
                         $exemplaire->setLibre($data['libre']??true);
-                        $exemplaire->setDateDisponible(new \DateTime($data['dateDisponible']??'now'));
-                        $exemplaire->setLivre($em->getRepository(Livre::class)->find($data['livre']));
                         $exemplaire->setPosition($em->getRepository(Position::class)->find($data['position']));                          
                         $em->persist($exemplaire);
                         $em->flush();
@@ -287,7 +284,7 @@ class ExemplaireController extends AbstractController
             }
         }
 
-        return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
     #[Route('/exemplaire/checkfree', name: 'app_exemplaire_checkfree', methods: ['GET'])]
      public function exemplaireCheckFree(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
