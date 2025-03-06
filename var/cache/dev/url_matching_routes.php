@@ -24,6 +24,7 @@ return [
         '/livre/update' => [[['_route' => 'app_livre_update', '_controller' => 'App\\Controller\\LivreController::updateLivre'], null, ['PUT' => 0], null, false, false, null]],
         '/livre/listfull' => [[['_route' => 'app_livre_listFull', '_controller' => 'App\\Controller\\LivreController::listFull'], null, ['GET' => 0], null, false, false, null]],
         '/livre/details' => [[['_route' => 'app_livre_details', '_controller' => 'App\\Controller\\LivreController::details'], null, ['GET' => 0], null, false, false, null]],
+        '/livre/detailsfromisbn' => [[['_route' => 'app_livre_details_from_isbn', '_controller' => 'App\\Controller\\LivreController::detailsFromIsbn'], null, ['GET' => 0], null, false, false, null]],
         '/livre/listcategoryfilter' => [[['_route' => 'app_livre_list_categoryFilter', '_controller' => 'App\\Controller\\LivreController::listFilterCategory'], null, ['GET' => 0], null, false, false, null]],
         '/livre/update2' => [[['_route' => 'app_livre_update2', '_controller' => 'App\\Controller\\LivreController::update'], null, null, null, false, false, null]],
         '/livre/delete' => [[['_route' => 'app_livre_delete', '_controller' => 'App\\Controller\\LivreController::deleteLivre'], null, ['DELETE' => 0], null, false, false, null]],

@@ -14,7 +14,7 @@ class Position
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['position:read', 'livre:details','exemplaire_livre:read'])]
+    #[Groups(['position:read','livre:read', 'livre:details','exemplaire_livre:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'positions')]
@@ -30,7 +30,7 @@ class Position
     private ?int $numero = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['position:read', 'livre:details','exemplaire_livre:read'])]
+    #[Groups(['position:read','livre:read', 'livre:details','exemplaire_livre:read'])]
     private ?string $libelle = null;
 
     #[ORM\OneToMany(mappedBy: 'position', targetEntity: ExemplaireLivre::class)]

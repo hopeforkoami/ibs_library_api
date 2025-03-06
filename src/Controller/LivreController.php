@@ -288,7 +288,7 @@ class LivreController extends AbstractController
                 $response->message = 'livre details';
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($livre, 'json',['groups' => 'livre:details'])); 
+                $response->data = json_decode($serializer->serialize($livre, 'json',['groups' => 'livre:read'])); 
             }
         } else {
             $response->statut = 401;

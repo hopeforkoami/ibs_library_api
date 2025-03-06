@@ -48,12 +48,13 @@ class PositionController extends AbstractController
                         $response->message = 'Bad request';
                         return $this->json($response->getSystemHttpResponse());
                     }
+                    $numero = (isset($data['position']) && $data['position'] > 0) ? $data['position'] : $data['numero'];
                     $ranger = $em->getRepository(Ranger::class)->findBy(array('libelle' => $data['ranger']));
                     $colonne = $em->getRepository(Colonne::class)->findBy(array('libelle' => $data['colonne']));
                     $position = $em->getRepository(Position::class)->findBy(array(
                         'ranger' => $ranger[0], 
                         'colonne' => $colonne[0],
-                        'numero' => $data['numero']));
+                        'numero' => $numero));
                    // var_dump($pays);
                     if($position){
                         $response->statut = 409;
@@ -68,7 +69,7 @@ class PositionController extends AbstractController
                         $position = new Position();
                         $position->setRanger($ranger[0]);
                         $position->setColonne($colonne[0]);
-                        $position->setNumero($data['numero']);
+                        $position->setNumero($numero);
                         $libelle = "R".$position->getRanger()->getId()."C".$position->getColonne()->getId()."_".$position->getNumero();
                         $position->setLibelle($data['libelle']?? $libelle);
                         $em->persist($position);
