@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Exemplaire;
 use App\Entity\Membre;
 use App\Entity\NsAuthorisation;
 use App\Entity\Reservation;
@@ -18,7 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class ReservationController extends AbstractController
 {
-    #[Route('/reservation/add', name: 'app_reservation_add', methods: ['POST'])]
+    #[Route('/reservation/add', name: 'app_reservation_add', methods: ['POST', 'OPTIONS'])]
     public function addReservation(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500,'system error',[]);
@@ -29,7 +30,9 @@ class ReservationController extends AbstractController
             return $response->getSystemHttpResponse();
         }
         else{
-            if (!isset($data['membre']) || !isset($data['status']) || !isset($data['dateDebut']) || !isset($data['dateFin']) || !isset($data['dateCreation'])) {
+            $data = json_decode($request->getContent(), true);
+            
+            if (!isset($data['idMembre']) || !isset($data['contenuPanier']) || !isset($data['dateDebut']) || !isset($data['dateFin']) ||  !isset($data['statut']) ) {
                 $response->statut = 400;
                 $response->message = 'Bad request';
                 return $response->getSystemHttpResponse();
@@ -37,7 +40,7 @@ class ReservationController extends AbstractController
             else{
                 //on verifie si le token dans le post est valide
                 $data = json_decode($request->getContent(), true);
-                $token = $data['token'];
+                $token = $request->query->get('token', '');
                 //$nogCustomedFunctions = new NogCustomedFunctions();
                 $auth = $em->getRepository(NsAuthorisation::class);
                
@@ -45,11 +48,11 @@ class ReservationController extends AbstractController
                     //check if the reservation already exist
                     
                     $reservation = $em->getRepository(Reservation::class)->findBy(array(
-                        'membre' => $em->getRepository(Membre::class)->find($data['membre']) , 
-                        'statusReservation' => $em->getRepository(Membre::class)->find($data['status']),
+                        'membre' => $em->getRepository(Membre::class)->find($data['idMembre']) , 
+                        'statusReservation' => $em->getRepository(Membre::class)->find($data['statut']),
                         'dateDebutPrevu' => new \DateTime($data['dateDebut']) ,
                         'dateFinPrevu' => new \DateTime($data['dateFin']) ,
-                        'dateReservation' => new \DateTime($data['dateCreation']) 
+                        'dateReservation' => new \DateTime('now') 
                     ));
                    // var_dump($pays);
                     if($reservation){
@@ -63,17 +66,39 @@ class ReservationController extends AbstractController
                         //update the livre
                         //libelle,auteur_id_id, image, isbn, edition, resume,  langue_id_id, sous_categorie_id_id
                         $reservation = new Reservation();
-                        $reservation->setMembre($em->getRepository(Membre::class)->find($data['membre']));
-                        $reservation->setStatusReservation($em->getRepository(StatusReservation::class)->find($data['status']));
+                        $reservation->setMembre($em->getRepository(Membre::class)->find($data['idMembre']));
+                        $reservation->setStatusReservation($em->getRepository(StatusReservation::class)->find($data['statut']));
                         $reservation->setDateDebutPrevu(new DateTime($data['dateDebut']) );
                         $reservation->setDateFinPrevu(new DateTime($data['dateFin']) );
-                        $reservation->setDateReservation(new DateTime($data['dateCreation']) );
+                        $reservation->setDateReservation(new DateTime('now') );
                         $em->persist($reservation);
                         $em->flush();
                         if($reservation->getId()){
                             $response->statut = 200;
                             $response->message = 'reservation created';
                             $response->data = $reservation;
+                            //on ajoute le contenu du panier à la reservation
+                            $contenuPanier = json_decode($data['contenuPanier'], true);
+                            foreach($contenuPanier as $contenu){
+                                $exemplaire = $em->getRepository(Exemplaire::class)->find($contenu['id']);
+                                if(!$exemplaire){
+                                    $response->statut = 409;
+                                    $response->message = 'exemplaire not found';
+                                    $response->data = [];
+                                    return $response->getSystemHttpResponse();
+                                }
+                                //on verifie si l'exemplaire est libre
+                                if($exemplaire->getStatusExemplaire()->getId() != 1){
+                                    $response->statut = 409;
+                                    $response->message = 'exemplaire not available';
+                                    $response->data = [];
+                                    return $response->getSystemHttpResponse();
+                                }
+                                //on ajoute l'exemplaire à la reservation
+                                $reservation->addExemplaireId($exemplaire);
+                                $em->persist($exemplaire);
+                                
+                            }
                         }
                         else{
                             $response->statut = 500;

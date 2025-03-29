@@ -40,7 +40,7 @@ return [
         '/position/add' => [[['_route' => 'app_position_add', '_controller' => 'App\\Controller\\PositionController::addIfNotExist'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/colonnes/list' => [[['_route' => 'app_colonne_list', '_controller' => 'App\\Controller\\PositionController::listColonne'], null, ['GET' => 0], null, false, false, null]],
         '/rangers/list' => [[['_route' => 'app_ranger_list', '_controller' => 'App\\Controller\\PositionController::listRanger'], null, ['GET' => 0], null, false, false, null]],
-        '/reservation/add' => [[['_route' => 'app_reservation_add', '_controller' => 'App\\Controller\\ReservationController::addReservation'], null, ['POST' => 0], null, false, false, null]],
+        '/reservation/add' => [[['_route' => 'app_reservation_add', '_controller' => 'App\\Controller\\ReservationController::addReservation'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/reservation/getStatus' => [[['_route' => 'app_reservation_status_update', '_controller' => 'App\\Controller\\ReservationController::listReservationStatus'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/login' => [[['_route' => 'app_system', '_controller' => 'App\\Controller\\SystemController::login'], null, null, null, false, false, null]],
     ],
