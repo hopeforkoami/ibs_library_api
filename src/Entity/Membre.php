@@ -57,7 +57,8 @@ class Membre
     #[ORM\OneToMany(mappedBy: 'membre', targetEntity: Reservation::class)]
     #[Groups(['membre:details'])]
     private Collection $reservations;
-
+    
+    #[Groups(['membre:read', 'membre:details'])]
     private ?string $code = null;
 
     public function __construct()

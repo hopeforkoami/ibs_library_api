@@ -164,6 +164,55 @@ class MembreController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+    #[Route('/user/detailsfromcode', name: 'app_user_details_from_code', methods: ['GET'])]
+    public function detailsFromCode(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $code = $request->query->get('code', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+        $id = $this->getIdFromMemberCode($code);
+        if($id == null){
+            $response->statut = 400;
+            $response->message = 'Bad request';
+            return $this->json($response->getSystemHttpResponse());
+        }
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $membre = $em->getRepository(Membre::class)->find($id);
+
+            if (!$membre) {
+                $response->statut = 404;
+                $response->message = 'member not found';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            else{
+                
+                $response->statut = 200;
+                $response->message = 'member details';
+                $membre->setCode($this->generateMemberCode($membre));
+                //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
+                //return $this->json($series);
+                $response->data = json_decode($serializer->serialize($membre, 'json',['groups' => 'membre:details'])); 
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
 
     #[Route('/user/listfull', name: 'app_user_list_full', methods: ['GET'])]
     public function listAll(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
@@ -410,6 +459,14 @@ class MembreController extends AbstractController
         $contact = $cts->getRandomChars($member->getContact(), $remainingLength);
         
         return $baseCode . $contact;
+    }
+    public function getIdFromMemberCode($code) {
+        $cts = new NogCustomedFunctions();
+        $parts = explode('_', $code);
+        if (count($parts) >= 3) {
+            return $parts[2];
+        }
+        return null;
     }
 
 }
