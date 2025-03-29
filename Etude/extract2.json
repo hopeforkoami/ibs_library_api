@@ -1,0 +1,75 @@
+[
+  {
+    "nomComplet": "John Smith",
+    "email": "john.smith@gmail.com",
+    "contact": "+1 555-123-4567",
+    "addresse": "123 Main St, New York, NY 10001, USA",
+    "lien": "https://www.nafainternationalllc.com/product-page/msi-gf63-thin-11uc-1242us-gaming-laptop",
+    "avis": "The MSI GF63 is perfect for gaming and work. Lightweight yet powerful. Delivery was fast and packaging secure."
+  },
+  {
+    "nomComplet": "Emily Johnson",
+    "email": "ejohnson84@yahoo.com",
+    "contact": "+1 555-987-6543",
+    "addresse": "456 Oak Ave, Los Angeles, CA 90001, USA",
+    "lien": "https://www.nafainternationalllc.com/product-page/apple-iphone-14-pro-max-128gb-space-black",
+    "avis": "iPhone 14 Pro Max arrived in perfect condition. Camera quality is outstanding. Very happy with this purchase!"
+  },
+  {
+    "nomComplet": "Michael Brown",
+    "email": "michael.brown2023@outlook.com",
+    "contact": "+1 555-456-7890",
+    "addresse": "789 Pine Rd, Chicago, IL 60601, USA",
+    "lien": "https://www.nafainternationalllc.com/product-page/samsung-galaxy-tab-s9-ultra-5g-256gb",
+    "avis": "The Tab S9 Ultra is a productivity beast. Gorgeous display and smooth performance. Excellent tablet."
+  },
+  {
+    "nomComplet": "James Wilson",
+    "email": "james.wilson@icloud.com",
+    "contact": "+44 20 7123 4567",
+    "addresse": "10 Downing Street, London, SW1A 2AA, UK",
+    "lien": "https://www.nafainternationalllc.com/product-page/dell-xps-15-9520-i7-12700h-32gb-1tb-ssd",
+    "avis": "XPS 15 is worth every penny. Stunning OLED display. Arrived earlier than estimated."
+  },
+  {
+    "nomComplet": "Olivia Taylor",
+    "email": "olivia.taylor88@hotmail.com",
+    "contact": "+44 20 7987 6543",
+    "addresse": "25 Baker St, London, W1U 8EQ, UK",
+    "lien": "https://www.nafainternationalllc.com/product-page/hp-spectre-x360-14-ef2017tu",
+    "avis": "Love the Spectre x360's 2-in-1 design. Perfect for note-taking. Would buy from Nafa again."
+  },
+  {
+    "nomComplet": "William Davies",
+    "email": "wdavies1975@gmail.com",
+    "contact": "+44 20 7456 7890",
+    "addresse": "7 Abbey Rd, London, NW8 9AY, UK",
+    "lien": "https://www.nafainternationalllc.com/product-page/lenovo-legion-pro-7i-16-gen-8",
+    "avis": "Legion Pro 7i handles all my games at max settings. Delivery was prompt. Top-notch!"
+  },
+  {
+    "nomComplet": "Fatou Diabaté",
+    "email": "diabate.fatou@gmail.com",
+    "contact": "+225 05 555 1234",
+    "addresse": "Rue du Commerce, Yamoussoukro, Côte d'Ivoire",
+    "lien": "https://www.nafainternationalllc.com/product-page/new-14-inch-slim-cheap-notebook-laptop-12gb-ram-1tb-512gb-256gb-ssd-windows-10-q",
+    "avis": "Ultra-léger et prix imbattable ! J'ai choisi la version 512GB SSD et je ne regrette pas. SAV courtois et professionnel."
+  },
+  {
+    "nomComplet": "Komlan Agbeko",
+    "email": "k.agbeko@protonmail.com",
+    "contact": "+228 22 789 0123",
+    "addresse": "Boulevard du 13 Janvier, Kara, Togo",
+    "lien": "https://www.nafainternationalllc.com/product-page/15-6-laptop-intel-alder-n95-16gb-ram-512gb-ssd-windows-11-pro-work-computer",
+    "avis": "Le processeur Alder surclasse tout ce que j'ai testé ! Livraison suivie en temps réel. Un partenariat durable avec Nafa s'annonce."
+  },
+  {
+    "nomComplet": "Chinedu Mbakwe",
+    "email": "c.mbakwe@gmail.com",
+    "contact": "+234 81 234 5678",
+    "addresse": "17 Adeola Odeku St, Victoria Island, Nigeria",
+    "lien": "https://www.nafainternationalllc.com/product-page/c24-ultra-5g-smartphone-6-256gb-unlocked-phone-48-108mp-zoom-camera-6800mah-6-8",
+    "avis": "L'appareil photo zoom est incroyable ! Batterie qui tient 2 jours. Paiement sécurisé et suivi de commande précis. Top qualité !"
+  }
+ 
+]

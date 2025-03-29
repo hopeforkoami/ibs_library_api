@@ -22,6 +22,10 @@ class SousCategorie
     #[Groups(['sous_categorie:read', 'livre:read','livresimple:read'])]
     private ?string $libelle = null;
 
+     #[ORM\Column(length: 255)]
+    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read'])]
+    private ?string $code = null;
+
     #[ORM\Column(type: Types::TEXT)]
     #[Groups(['sous_categorie:read'])]
     private ?string $description = null;
@@ -51,6 +55,18 @@ class SousCategorie
     public function setLibelle(string $libelle): static
     {
         $this->libelle = $libelle;
+
+        return $this;
+    }
+    
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }

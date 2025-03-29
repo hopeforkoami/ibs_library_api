@@ -354,6 +354,7 @@ class ExemplaireController extends AbstractController
                 
                 $response->statut = 200;
                 $response->message = 'Details of exemplaires';
+                $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
                 $response->data = json_decode($serializer->serialize($exemplaire, 'json',['groups' => 'exemplaire_livre:read'])); 
    
                 return $response->getSystemHttpResponse();
@@ -371,6 +372,7 @@ class ExemplaireController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+
 
     #[Route('/exemplaire/getofbook', name: 'app_exemplaire_filter_book', methods: ['GET'])]
      public function bookExemplaires(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
@@ -395,10 +397,14 @@ class ExemplaireController extends AbstractController
             $exemplaires = $em->getRepository(ExemplaireLivre::class)->findBy(array('livre' => $em->getRepository(Livre::class)->find($id)));    
             //on supprime si le livre existe
             if($exemplaires){
-                
+                $retour = [];
+                foreach($exemplaires as $exemplaire){
+                    $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
+                    $retour[] = $exemplaire;
+                }
                 $response->statut = 200;
                 $response->message = 'Exemplaires found';
-                $response->data = $exemplaires;
+                $response->data = $retour;
                 return $response->getSystemHttpResponse();
             }
             else{
@@ -415,4 +421,120 @@ class ExemplaireController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+
+    #[Route('/exemplaire/all', name: 'app_exemplaire_all', methods: ['GET'])]
+     public function exemplaireListFull(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch available exemplaires of the book
+            $exemplaires = $em->getRepository(ExemplaireLivre::class)->findAll();
+            //on supprime si le livre existe
+            if($exemplaires){
+                $retour = [];
+                foreach($exemplaires as $exemplaire){
+                    $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
+                    $retour[] = $exemplaire;
+                }
+                //return $this->json($retour);
+                $response->statut = 200;
+                $response->message = 'list of exemplaires';
+                $response->data = json_decode($serializer->serialize($exemplaires, 'json',['groups' => 'exemplaire_livre:read'])) ; 
+   
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+    #[Route('/exemplaire/fromcode', name: 'app_exemplaire_fromcode', methods: ['GET'])]
+     public function exemplaireFromCode(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $code = $request->query->get('code', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch available exemplaires of the book
+            $codeToArray = explode('_',$code);
+            //if lenght is not 3, then the code is not valid
+            if(count($codeToArray) != 3){
+                $response->statut = 400;
+                $response->message = 'Invalid code';
+                return $response->getSystemHttpResponse();
+            }
+            $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($codeToArray[2]);
+            
+            //on supprime si le livre existe
+            if($exemplaire){
+                $retour = [];
+                $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
+                $response->statut = 200;
+                $response->message = 'details exemplaire';
+                $response->data = json_decode($serializer->serialize($exemplaire, 'json',['groups' => 'exemplaire_livre:read'])); 
+   
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+    function generateExemplaireCode($exemplaire){
+        $livre = $exemplaire->getLivre();
+        $libelle = preg_replace("/[^A-Za-z0-9 ]/", '', $livre->getLibelle());
+        $extrait_titre_2_Alpha = strtoupper(substr($libelle,0,2));
+        $qrvalueString = $livre->getSousCategorieId()->getCode().'_'.$extrait_titre_2_Alpha.'_'.$exemplaire->getId();
+         return  [
+                    'qrString' => $qrvalueString, 
+                    'categorie' => $livre->getSousCategorieId()->getCode(),
+                    'livre2Alph' => $extrait_titre_2_Alpha,
+                    'exemplaire' => $exemplaire->getId(),
+                    'couleur' => '#'.$livre->getSousCategorieId()->getDescription(),
+                ];
+    }
+    
 }

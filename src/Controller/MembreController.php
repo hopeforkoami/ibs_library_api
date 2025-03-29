@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 class MembreController extends AbstractController
 {
@@ -76,7 +77,7 @@ class MembreController extends AbstractController
         return $httpResponse;
     }
 
-    #[Route('/user/delete', name: 'app_user_delete', methods: ['DELETE'])]
+    #[Route('/user/delete', name: 'app_user_delete', methods: ['DELETE', 'OPTIONS'])]
      public function deleteMembre(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500, 'system error', []);
@@ -85,7 +86,7 @@ class MembreController extends AbstractController
         if ($request->getMethod() != 'DELETE') {
             $response->statut = 405;
             $response->message = 'Method not allowed';
-            return $this->json($response->getSystemResponse());
+            return $response->getSystemHttpResponse();
         }
 
         // Retrieve the token from GET parameters
@@ -103,12 +104,12 @@ class MembreController extends AbstractController
                 $em->flush();
                 $response->statut = 200;
                 $response->message = 'member deleted';
-                return $this->json($response->getSystemResponse());
+                return $response->getSystemHttpResponse();
             }
             else{
                 $response->statut = 404;
                 $response->message = 'member not found';
-                return $this->json($response->getSystemResponse());
+                return $response->getSystemHttpResponse();
             }
         } else {
             $response->statut = 401;
@@ -150,9 +151,10 @@ class MembreController extends AbstractController
                 
                 $response->statut = 200;
                 $response->message = 'member details';
+                $membre->setCode($this->generateMemberCode($membre));
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($membre, 'json',['groups' => 'member:fulldetails'])); 
+                $response->data = json_decode($serializer->serialize($membre, 'json',['groups' => 'membre:details'])); 
             }
         } else {
             $response->statut = 401;
@@ -195,7 +197,7 @@ class MembreController extends AbstractController
                 $response->message = 'members list';
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($membres, 'json',['groups' => 'member:read'])); 
+                $response->data = json_decode($serializer->serialize($membres, 'json',['groups' => 'membre:read'])); 
             }
         } else {
             $response->statut = 401;
@@ -206,7 +208,7 @@ class MembreController extends AbstractController
         return $response->getSystemHttpResponse();
     }
 
-    #[Route('/user/add', name: 'user', methods: ['POST'])]
+    #[Route('/user/add', name: 'user', methods: ['POST', 'OPTIONS'])]
     public function addUser(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500, 'system error', []);
@@ -215,7 +217,7 @@ class MembreController extends AbstractController
         if ($request->getMethod() != 'POST') {
             $response->statut = 405;
             $response->message = 'Method not allowed';
-            return $this->json($response->getSystemHttpResponse());
+            return $response->getSystemHttpResponse();
         }
          $data = json_decode($request->getContent(), true);
         // Retrieve the token from GET parameters
@@ -288,7 +290,7 @@ class MembreController extends AbstractController
         return $response->getSystemHttpResponse();
     }
 
-    #[Route('/user/update', name: 'app_user_update', methods: ['PUT'])]
+    #[Route('/user/update', name: 'app_user_update', methods: ['PUT', 'OPTIONS'])]
     public function update(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
     {
         $response = new NogSystemResponse(500,'system error',[]);
@@ -307,7 +309,7 @@ class MembreController extends AbstractController
             else{
                 //on verifie si le token dans le post est valide
                 $data = json_decode($request->getContent(), true);
-                $token = $data['token'];
+                $token = $request->query->get('token', '');;
                 //$nogCustomedFunctions = new NogCustomedFunctions();
                 $auth = $em->getRepository(NsAuthorisation::class);
                
@@ -328,8 +330,8 @@ class MembreController extends AbstractController
                     }
                     else{
                         //check if user login already exist
-                        $membre = $em->getRepository(Membre::class)->findOneBy(['login' => $data['login']]);
-                        if($membre)
+                        $membreCheck = $em->getRepository(Membre::class)->findOneBy(['login' => $data['login']]);
+                        if($membreCheck->getId() != $data['id'])
                         {
                             $response->statut = 409;
                             $response->message = 'login already exist';
@@ -337,16 +339,24 @@ class MembreController extends AbstractController
                         }
                         //on va charger l'image avec la fonction save_base64_image de la classe NogCustomedFunctions et on recupere le nom de l'image
                         $csts = new NogCustomedFunctions();
-                        $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/', 'membre');
+                        //check if data['profil'] is a base64 image
+                        $profilName="";
+                        if($csts->is_base64($data['profil'])){
 
+                        $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/', 'membre');
+                        }
+                        else{
+                            $profilName = $data['profil'];
+                        }
                         //update the livre
                         //libelle,auteur_id_id, image, isbn, edition, resume,  langue_id_id, sous_categorie_id_id
-                        $membre = new Membre();
+                        
                         $membre->setNom($data['nom']);
                         $membre->setPrenom($data['prenom']);
                         $membre->setProfil($profilName);
                         $membre->setLogin($data['login']);
-                        $membre->setPassword($data['password']);
+                        $membre->setPassword(strlen($data['password'])>0?password_hash($data['password'],PASSWORD_BCRYPT):$membre->getPassword());
+                        
                         $membre->setContact($data['contact']);
                         $membre->setWhatsapp($data['whatsapp']);
                         $membre->setEmail($data['email']);
@@ -378,7 +388,28 @@ class MembreController extends AbstractController
             }
         }
 
-        return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+    public function generateMemberCode(Membre $member) {
+        $cts = new NogCustomedFunctions();
+        $nom = $cts->getRandomChars($member->getNom(), 2);
+        $prenom = $cts->getRandomChars($member->getPrenom(), 2);
+        $nom2 = $cts->getRandomChars($member->getNom(), 2);
+        $role = $cts->getRandomChars($member->getRoleId()->getLibelle(), 3);
+        $email = $cts->getRandomChars($member->getEmail(), 3);
+        $id = $member->getId();
+        
+        // Construire le code sans le contact
+        $baseCode = $nom . $prenom . $nom2 .'_'. $role .'_'. $id .'_'.$email;
+        
+        // Calculer le nombre de caractères manquants
+        $remainingLength = 16 - strlen($baseCode);
+        
+        // Ajouter des caractères du contact pour compléter
+        $contact = $cts->getRandomChars($member->getContact(), $remainingLength);
+        
+        return $baseCode . $contact;
     }
 
 }

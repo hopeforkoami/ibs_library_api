@@ -80,5 +80,32 @@ class NogCustomedFunctions{
         return false;
     }
 
+    public function is_base64($string) {
+        // Check if the string contains only valid Base64 characters
+        if (!preg_match('/^[A-Za-z0-9+\/=]+$/', $string)) {
+            return false;
+        }
+    
+        // Check if length is a multiple of 4
+        if (strlen($string) % 4 !== 0) {
+            return false;
+        }
+    
+        // Decode and re-encode to verify
+        $decoded = base64_decode($string, true);
+        if ($decoded === false) {
+            return false;
+        }
+    
+        return base64_encode($decoded) === $string;
+    }
+
+    public function getRandomChars($string, $length) {
+        if (strlen($string) < $length) {
+            return str_pad($string, $length, "X"); // Si trop court, on complète avec "X"
+        }
+        return substr(str_shuffle($string), 0, $length);
+    }
+
 
 }

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
@@ -14,27 +15,32 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([ 'membre:details'])]
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Exemplaire::class, inversedBy: 'reservations')]
     private Collection $exemplaireId;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'reservations')]
+    #[Groups(['membre:details'])]
     private Collection $livre;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Membre $membre = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['membre:details'])]
     private ?\DateTimeInterface $dateDebutPrevu = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['membre:details'])]
     private ?\DateTimeInterface $dateFinPrevu = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?StatusReservation $statusReservation = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups(['membre:details'])]
     private ?\DateTimeInterface $dateReservation = null;
 
     public function __construct()

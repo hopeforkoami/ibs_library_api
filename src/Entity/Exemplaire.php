@@ -37,6 +37,8 @@ class Exemplaire
     #[ORM\OneToMany(mappedBy: 'exemplaire', targetEntity: Emprunt::class)]
     private Collection $emprunts;
 
+    private ?string $qrValue = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -164,4 +166,9 @@ class Exemplaire
 
         return $this;
     }
+    public function getQrValue()
+    {
+        return $this->qrValue;
+    }
+    
 }

@@ -165,4 +165,49 @@ class ReservationController extends AbstractController
 
         return $response->getSystemHttpResponse();
     }
+
+    #[Route('/reservation/getStatus', name: 'app_reservation_status_update', methods: ['GET', 'OPTIONS'])]
+    public function listReservationStatus(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500,'system error',[]);
+        //on verifie la methode de la requete est post
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $response->getSystemHttpResponse();
+        }
+        else{
+            //on verifie si le token dans le post est valide
+            $data = json_decode($request->getContent(), true);
+            $token = $request->query->get('token', '');
+            //$nogCustomedFunctions = new NogCustomedFunctions();
+            $auth = $em->getRepository(NsAuthorisation::class);
+           
+            if($auth->checkTokenValidity($token)){
+                //check if the reservation already exist
+                
+                $status = $em->getRepository(StatusReservation::class)->findAll();
+               // var_dump($pays);
+                if(!$status){
+                    $response->statut = 205;
+                    $response->message = 'reservation not found';
+                    $response->data = [];
+                    return $response->getSystemHttpResponse();
+                }
+                else{
+                    
+                    $response->statut = 200;
+                    $response->message = "Reservation status founded";
+                    $response->data = json_decode($serializer->serialize($status, 'json',['groups' => 'reservation_status:read'])); 
+                }
+                
+            }
+            else{
+                $response->statut = 401;
+                $response->message = 'Token expired';
+            }
+        }
+
+        return $response->getSystemHttpResponse();
+    }
 }

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MembreRepository::class)]
 class Membre
@@ -14,37 +15,50 @@ class Membre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['membre:details'])]
     private ?string $login = null;
 
     #[ORM\Column(type: Types::TEXT)]
+
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?string $contact = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['membre:details'])]
     private ?string $whatsapp = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['membre:details'])]
     private ?string $profil = null;
 
     #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[Groups(['membre:read', 'membre:details'])]
     private ?Role $roleId = null;
 
     #[ORM\OneToMany(mappedBy: 'membre', targetEntity: Reservation::class)]
+    #[Groups(['membre:details'])]
     private Collection $reservations;
+
+    private ?string $code = null;
 
     public function __construct()
     {
@@ -190,6 +204,16 @@ class Membre
                 $reservation->setMembre(null);
             }
         }
+
+        return $this;
+    }
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+    public function setCode(?string $code): static
+    {
+        $this->code = $code;
 
         return $this;
     }
