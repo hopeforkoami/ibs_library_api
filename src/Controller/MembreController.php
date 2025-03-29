@@ -458,7 +458,7 @@ class MembreController extends AbstractController
         // Ajouter des caractères du contact pour compléter
         $contact = $cts->getRandomChars($member->getContact(), $remainingLength);
         
-        return $baseCode . $contact;
+        return strtoupper($baseCode . $contact) ;
     }
     public function getIdFromMemberCode($code) {
         $cts = new NogCustomedFunctions();
