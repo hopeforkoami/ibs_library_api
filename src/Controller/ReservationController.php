@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Exemplaire;
+use App\Entity\ExemplaireLivre;
 use App\Entity\Membre;
 use App\Entity\NsAuthorisation;
 use App\Entity\Reservation;
@@ -51,13 +52,12 @@ class ReservationController extends AbstractController
                         'membre' => $em->getRepository(Membre::class)->find($data['idMembre']) , 
                         'statusReservation' => $em->getRepository(Membre::class)->find($data['statut']),
                         'dateDebutPrevu' => new \DateTime($data['dateDebut']) ,
-                        'dateFinPrevu' => new \DateTime($data['dateFin']) ,
-                        'dateReservation' => new \DateTime('now') 
+                        'dateFinPrevu' => new \DateTime($data['dateFin']) 
                     ));
                    // var_dump($pays);
                     if($reservation){
                         $response->statut = 409;
-                        $response->message = 'la Position already exist';
+                        $response->message = 'la Reservation already have a resrvation';
                         $response->data = $reservation[0];
                         return $response->getSystemHttpResponse();
                     }
@@ -71,39 +71,36 @@ class ReservationController extends AbstractController
                         $reservation->setDateDebutPrevu(new DateTime($data['dateDebut']) );
                         $reservation->setDateFinPrevu(new DateTime($data['dateFin']) );
                         $reservation->setDateReservation(new DateTime('now') );
+                        //ajouter le contenu du pannier
+                        $contenuPanier = $data['contenuPanier'];
+                        foreach($contenuPanier as $contenu){
+                            $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($contenu['id']);
+                            if(!$exemplaire){
+                                $response->statut = 409;
+                                $response->message = 'exemplaire not found';
+                                $response->data = [];
+                                return $response->getSystemHttpResponse();
+                            }
+                            //on verifie si l'exemplaire est libre
+                            if($exemplaire->isLibre() != 1){
+                                $response->statut = 409;
+                                $response->message = 'exemplaire not available';
+                                $response->data = [];
+                                return $response->getSystemHttpResponse();
+                            }
+                            //on ajoute l'exemplaire à la reservation
+                            $reservation->addExemplaireId($exemplaire);
+                            $em->persist($exemplaire);
+                            $reservation->addExemplaireId($exemplaire);
+                            
+                        }
                         $em->persist($reservation);
                         $em->flush();
-                        if($reservation->getId()){
-                            $response->statut = 200;
-                            $response->message = 'reservation created';
-                            $response->data = $reservation;
-                            //on ajoute le contenu du panier à la reservation
-                            $contenuPanier = json_decode($data['contenuPanier'], true);
-                            foreach($contenuPanier as $contenu){
-                                $exemplaire = $em->getRepository(Exemplaire::class)->find($contenu['id']);
-                                if(!$exemplaire){
-                                    $response->statut = 409;
-                                    $response->message = 'exemplaire not found';
-                                    $response->data = [];
-                                    return $response->getSystemHttpResponse();
-                                }
-                                //on verifie si l'exemplaire est libre
-                                if($exemplaire->getStatusExemplaire()->getId() != 1){
-                                    $response->statut = 409;
-                                    $response->message = 'exemplaire not available';
-                                    $response->data = [];
-                                    return $response->getSystemHttpResponse();
-                                }
-                                //on ajoute l'exemplaire à la reservation
-                                $reservation->addExemplaireId($exemplaire);
-                                $em->persist($exemplaire);
-                                
-                            }
-                        }
-                        else{
-                            $response->statut = 500;
-                            $response->message = 'System error';
-                        }
+                        $response->statut = 200;
+                        $response->message = 'reservation effectue avec success';
+                        $response->data = [];
+
+                        
                         
                         
                         
@@ -235,4 +232,49 @@ class ReservationController extends AbstractController
 
         return $response->getSystemHttpResponse();
     }
+
+    #[Route('/reservation/listfull', name: 'app_reservation_list_full', methods: ['GET'])]
+    public function listAll(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $reservations= $em->getRepository(Reservation::class)->findAll();
+
+            if (!$reservations) {
+                $response->statut = 404;
+                $response->message = 'reservations not found';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            else{
+                
+                $response->statut = 200;
+                $response->message = 'reservations list';
+                //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
+                //return $this->json($series);
+                $response->data = json_decode($serializer->serialize($reservations, 'json',['groups' => 'reservation:read'])); 
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+
 }

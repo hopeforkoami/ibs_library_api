@@ -15,32 +15,32 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups([ 'membre:details'])]
+    #[Groups([ 'membre:details','reservation:read'])]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Exemplaire::class, inversedBy: 'reservations')]
+    #[ORM\ManyToMany(targetEntity: ExemplaireLivre::class, inversedBy: 'reservations')]
     private Collection $exemplaireId;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'reservations')]
-    #[Groups(['membre:details'])]
+    #[Groups(['membre:details','reservation:read'])]
     private Collection $livre;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Membre $membre = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details'])]
+    #[Groups(['membre:details','reservation:read'])]
     private ?\DateTimeInterface $dateDebutPrevu = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details'])]
+    #[Groups(['membre:details','reservation:read'])]
     private ?\DateTimeInterface $dateFinPrevu = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?StatusReservation $statusReservation = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details'])]
+    #[Groups(['membre:details','reservation:read'])]
     private ?\DateTimeInterface $dateReservation = null;
 
     public function __construct()
@@ -55,14 +55,14 @@ class Reservation
     }
 
     /**
-     * @return Collection<int, Exemplaire>
+     * @return Collection<int, ExemplaireLivre>
      */
     public function getExemplaireId(): Collection
     {
         return $this->exemplaireId;
     }
 
-    public function addExemplaireId(Exemplaire $exemplaireId): static
+    public function addExemplaireId(ExemplaireLivre $exemplaireId): static
     {
         if (!$this->exemplaireId->contains($exemplaireId)) {
             $this->exemplaireId->add($exemplaireId);
@@ -71,7 +71,7 @@ class Reservation
         return $this;
     }
 
-    public function removeExemplaireId(Exemplaire $exemplaireId): static
+    public function removeExemplaireId(ExemplaireLivre $exemplaireId): static
     {
         $this->exemplaireId->removeElement($exemplaireId);
 

@@ -42,6 +42,7 @@ return [
         '/rangers/list' => [[['_route' => 'app_ranger_list', '_controller' => 'App\\Controller\\PositionController::listRanger'], null, ['GET' => 0], null, false, false, null]],
         '/reservation/add' => [[['_route' => 'app_reservation_add', '_controller' => 'App\\Controller\\ReservationController::addReservation'], null, ['POST' => 0, 'OPTIONS' => 1], null, false, false, null]],
         '/reservation/getStatus' => [[['_route' => 'app_reservation_status_update', '_controller' => 'App\\Controller\\ReservationController::listReservationStatus'], null, ['GET' => 0, 'OPTIONS' => 1], null, false, false, null]],
+        '/reservation/listfull' => [[['_route' => 'app_reservation_list_full', '_controller' => 'App\\Controller\\ReservationController::listAll'], null, ['GET' => 0], null, false, false, null]],
         '/login' => [[['_route' => 'app_system', '_controller' => 'App\\Controller\\SystemController::login'], null, null, null, false, false, null]],
     ],
     [ // $regexpList

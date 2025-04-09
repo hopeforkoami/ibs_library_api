@@ -446,13 +446,16 @@ class ExemplaireController extends AbstractController
             if($exemplaires){
                 $retour = [];
                 foreach($exemplaires as $exemplaire){
-                    $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
-                    $retour[] = $exemplaire;
+                    if($exemplaire->getId() > 227){
+                        $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
+                        $retour[] = $exemplaire;
+                    }
+                    
                 }
                 //return $this->json($retour);
                 $response->statut = 200;
                 $response->message = 'list of exemplaires';
-                $response->data = json_decode($serializer->serialize($exemplaires, 'json',['groups' => 'exemplaire_livre:read'])) ; 
+                $response->data = json_decode($serializer->serialize($retour, 'json',['groups' => 'exemplaire_livre:read'])) ; 
    
                 return $response->getSystemHttpResponse();
             }
