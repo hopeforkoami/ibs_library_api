@@ -275,7 +275,7 @@ class LivreController extends AbstractController
         if ($auth->checkTokenValidity($token)) {
             // Check if the user has the correct rights
             // Fetch all programmes
-            $livre = $em->getRepository(Livre::class)->findBy(array('isbn'=>$isbn));
+            $livre = $em->getRepository(Livre::class)->findOneBy(array('isbn'=>$isbn));
 
             if (!$livre) {
                 $response->statut = 404;
@@ -288,7 +288,9 @@ class LivreController extends AbstractController
                 $response->message = 'livre details';
                 //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
                 //return $this->json($series);
-                $response->data = json_decode($serializer->serialize($livre, 'json',['groups' => 'livre:read'])); 
+                $newArray=[];
+                $newArray[]=json_decode($serializer->serialize($livre, 'json',['groups' => 'livre:read']));
+                $response->data = $newArray; 
             }
         } else {
             $response->statut = 401;

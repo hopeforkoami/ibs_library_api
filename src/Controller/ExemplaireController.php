@@ -446,7 +446,7 @@ class ExemplaireController extends AbstractController
             if($exemplaires){
                 $retour = [];
                 foreach($exemplaires as $exemplaire){
-                    if($exemplaire->getId() > 227){
+                    if($exemplaire->getId() > 1233){
                         $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
                         $retour[] = $exemplaire;
                     }
