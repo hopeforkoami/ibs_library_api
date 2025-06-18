@@ -19,13 +19,15 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: ExemplaireLivre::class, inversedBy: 'reservations')]
+    #[Groups(['membre:details','reservation:read'])]
     private Collection $exemplaireId;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'reservations')]
-    #[Groups(['membre:details','reservation:read'])]
+    
     private Collection $livre;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(targetEntity: Membre::class, inversedBy: 'reservations')]
+    #[Groups(['reservation:read'])]
     private ?Membre $membre = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -37,6 +39,7 @@ class Reservation
     private ?\DateTimeInterface $dateFinPrevu = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[Groups(['reservation:read'])]
     private ?StatusReservation $statusReservation = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
