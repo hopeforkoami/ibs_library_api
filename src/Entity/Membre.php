@@ -43,11 +43,11 @@ class Membre
     private ?string $whatsapp = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['membre:read', 'membre:details'])]
+    #[Groups(['membre:read', 'membre:details','reservation:details'])]
     private ?string $email = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['membre:details'])]
+    #[Groups(['membre:details','reservation:details'])]
     private ?string $profil = null;
 
     #[ORM\ManyToOne(inversedBy: 'membres')]
