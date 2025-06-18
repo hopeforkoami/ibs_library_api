@@ -15,18 +15,18 @@ class StatusReservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['reservation_status:read','reservation:read'])]
+    #[Groups(['reservation_status:read','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['reservation_status:read','reservation:read'])]
+    #[Groups(['reservation_status:read','reservation:read','reservation:details'])]
     private ?string $libelle = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['reservation_status:read','reservation:read'])]
+    #[Groups(['reservation_status:read','reservation:read','reservation:details'])]
     private ?string $couleur = null;
 
     #[ORM\OneToMany(mappedBy: 'statusReservation', targetEntity: Reservation::class)]

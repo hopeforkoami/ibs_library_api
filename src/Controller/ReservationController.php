@@ -275,6 +275,49 @@ class ReservationController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+    #[Route('/reservation/details', name: 'app_reservation_details', methods: ['GET'])]
+    public function detailsReservation(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $reservationId = $request->query->get('id', '');
+            $reservation= $em->getRepository(Reservation::class)->find($reservationId);
+
+            if (!$reservation) {
+                $response->statut = 404;
+                $response->message = 'reservation not found';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            else{
+                
+                $response->statut = 200;
+                $response->message = 'reservations details';
+                //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
+                //return $this->json($series);
+                $response->data = json_decode($serializer->serialize($reservation, 'json',['groups' => 'reservation:details'])); 
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
 
 
 }

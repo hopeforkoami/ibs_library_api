@@ -13,11 +13,11 @@ class ExemplaireLivre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read'])]
+    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'exemplaireLivres')]
-    #[Groups(['exemplaire_livre:read','reservation:read','reservation:read'])]
+    #[Groups(['exemplaire_livre:read','reservation:read','reservation:read','reservation:details'])]
     private ?Livre $livre = null;
 
     #[ORM\ManyToOne(inversedBy: 'exemplaireLivres')]
@@ -29,14 +29,14 @@ class ExemplaireLivre
     private ?int $numero = null;
 
     #[ORM\Column]
-    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read'])]
+    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
     private ?bool $libre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read'])]
     private ?\DateTimeInterface $dateDisponible = null;
 
-    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read'])]
+    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
     private $qrValue = null;
 
     public function getId(): ?int

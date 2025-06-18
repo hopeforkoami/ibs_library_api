@@ -15,11 +15,11 @@ class Livre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details','exemplaire_livre:read','reservation:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details','exemplaire_livre:read','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details','exemplaire_livre:read','reservation:read'])]
+    #[Groups(['livre:read', 'sous_categorie:read', 'livresimple:read', 'livre:details','exemplaire_livre:read','reservation:read','reservation:details'])]
     private ?string $libelle = null;
 
     #[ORM\ManyToOne(inversedBy: 'livres')]

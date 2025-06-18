@@ -15,11 +15,11 @@ class Reservation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups([ 'membre:details','reservation:read'])]
+    #[Groups([ 'membre:details','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: ExemplaireLivre::class, inversedBy: 'reservations')]
-    #[Groups(['membre:details','reservation:read'])]
+    #[Groups(['membre:details','reservation:read','reservation:details'])]
     private Collection $exemplaireId;
 
     #[ORM\ManyToMany(targetEntity: Livre::class, inversedBy: 'reservations')]
@@ -27,23 +27,23 @@ class Reservation
     private Collection $livre;
 
     #[ORM\ManyToOne(targetEntity: Membre::class, inversedBy: 'reservations')]
-    #[Groups(['reservation:read'])]
+    #[Groups(['reservation:read','reservation:details'])]
     private ?Membre $membre = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details','reservation:read'])]
+    #[Groups(['membre:details','reservation:read','reservation:details'])]
     private ?\DateTimeInterface $dateDebutPrevu = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details','reservation:read'])]
+    #[Groups(['membre:details','reservation:read','reservation:details'])]
     private ?\DateTimeInterface $dateFinPrevu = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
-    #[Groups(['reservation:read'])]
+    #[Groups(['reservation:read','reservation:details'])]
     private ?StatusReservation $statusReservation = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    #[Groups(['membre:details','reservation:read'])]
+    #[Groups(['membre:details','reservation:read','reservation:details'])]
     private ?\DateTimeInterface $dateReservation = null;
 
     public function __construct()

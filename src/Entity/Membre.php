@@ -15,15 +15,15 @@ class Membre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['membre:read', 'membre:details','reservation:read'])]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['membre:read', 'membre:details','reservation:read'])]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['membre:read', 'membre:details','reservation:read'])]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
