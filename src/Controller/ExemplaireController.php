@@ -472,6 +472,63 @@ class ExemplaireController extends AbstractController
         //return $this->json($response->getSystemResponse());
         return $response->getSystemHttpResponse();
     }
+     #[Route('/exemplaire/allorderbylibelle', name: 'app_exemplaire_all_by_libelle', methods: ['GET'])]
+     public function exemplaireListByLibelle(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch available exemplaires of the book
+            // $exemplaires = $em->getRepository(ExemplaireLivre::class)->findBy(array(), array('livre'.'libelle' => 'ASC'));
+            $exemplaires = $em->createQueryBuilder()
+                            ->select('e')
+                            ->from(ExemplaireLivre::class, 'e')
+                            ->join('e.livre', 'l')
+                            ->orderBy('l.libelle', 'ASC')
+                            ->getQuery()
+                            ->getResult();
+            //on supprime si le livre existe
+            if($exemplaires){
+                $retour = [];
+                // foreach($exemplaires as $exemplaire){
+                //     if($exemplaire->getId() > 1233){
+                //         $exemplaire->setQrValue($this->generateExemplaireCode($exemplaire));
+                //         $retour[] = $exemplaire;
+                //     }
+                    
+                // }
+                //return $this->json($retour);
+                $response->statut = 200;
+                $response->message = 'list of exemplaires';
+                $response->data = json_decode($serializer->serialize($exemplaires, 'json',['groups' => 'exemplaire_livre:read'])) ; 
+   
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                $response->statut = 404;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
 
     #[Route('/exemplaire/fromcode', name: 'app_exemplaire_fromcode', methods: ['GET'])]
      public function exemplaireFromCode(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response

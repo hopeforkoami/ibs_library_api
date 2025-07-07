@@ -21,6 +21,7 @@ return [
         '/exemplaire/details' => [[['_route' => 'app_exemplaire_details', '_controller' => 'App\\Controller\\ExemplaireController::exemplaireDetails'], null, ['GET' => 0], null, false, false, null]],
         '/exemplaire/getofbook' => [[['_route' => 'app_exemplaire_filter_book', '_controller' => 'App\\Controller\\ExemplaireController::bookExemplaires'], null, ['GET' => 0], null, false, false, null]],
         '/exemplaire/all' => [[['_route' => 'app_exemplaire_all', '_controller' => 'App\\Controller\\ExemplaireController::exemplaireListFull'], null, ['GET' => 0], null, false, false, null]],
+        '/exemplaire/allorderbylibelle' => [[['_route' => 'app_exemplaire_all_by_libelle', '_controller' => 'App\\Controller\\ExemplaireController::exemplaireListByLibelle'], null, ['GET' => 0], null, false, false, null]],
         '/exemplaire/fromcode' => [[['_route' => 'app_exemplaire_fromcode', '_controller' => 'App\\Controller\\ExemplaireController::exemplaireFromCode'], null, ['GET' => 0], null, false, false, null]],
         '/livre/add' => [[['_route' => 'app_livre_add', '_controller' => 'App\\Controller\\LivreController::addLivre'], null, ['POST' => 0], null, false, false, null]],
         '/livre/update' => [[['_route' => 'app_livre_update', '_controller' => 'App\\Controller\\LivreController::updateLivre'], null, ['PUT' => 0], null, false, false, null]],
