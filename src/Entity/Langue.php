@@ -15,11 +15,11 @@ class Langue
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['langue:read', 'livre:read'])]
+    #[Groups(['langue:read', 'livre:read','livre:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['langue:read', 'livre:read'])]
+    #[Groups(['langue:read', 'livre:read','livre:details'])]
     private ?string $libelle = null;
 
     #[ORM\Column(length: 255)]

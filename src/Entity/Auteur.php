@@ -15,11 +15,11 @@ class Auteur
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['auteur:read', 'livre:read','livresimple:read'])]
+    #[Groups(['auteur:read', 'livre:read','livresimple:read','livre:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['auteur:read', 'livre:read','livresimple:read'])]
+    #[Groups(['auteur:read', 'livre:read','livresimple:read','livre:details'])]
     private ?string $nomComplet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

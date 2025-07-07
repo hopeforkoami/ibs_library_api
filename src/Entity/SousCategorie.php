@@ -15,11 +15,11 @@ class SousCategorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read','exemplaire_livre:read'])]
+    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read','exemplaire_livre:read', 'livre:details'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read','exemplaire_livre:read'])]
+    #[Groups(['sous_categorie:read', 'livre:read','livresimple:read','exemplaire_livre:read', 'livre:details'])]
     private ?string $libelle = null;
 
      #[ORM\Column(length: 255)]
