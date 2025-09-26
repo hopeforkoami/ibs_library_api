@@ -319,5 +319,80 @@ class ReservationController extends AbstractController
         return $response->getSystemHttpResponse();
     }
 
+    #[Route('/reservation/process', name: 'app_reservation_process', methods: ['POST'])]
+    public function processReservation(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+
+        // Check if the request method is POST
+        if ($request->getMethod() != 'POST') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from POST parameters
+        $token = $request->request->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Process the reservation
+            $data = json_decode($request->getContent(), true);
+            $reservationId = $data['id'] ?? null;
+            $pickedExemplairesIds = $data['exemplaires'] ?? []; // Array of picked exemplaire IDs
+
+            if ($reservationId && $pickedExemplairesIds) {
+                $reservation = $em->getRepository(Reservation::class)->find($reservationId);
+
+                if ($reservation) {
+                    $reservationReservedExemplaires = $reservation->getExemplaireId();
+                    //verifier que le nombre d'exemplaire selectionner est egale au nombre d'exemplaire dans la reservation
+                    if (count($pickedExemplairesIds) != count($reservationReservedExemplaires)) {
+                        $response->statut = 400;
+                        $response->message = 'the number of picked exemplaires is not equal to the number of reserved exemplaires';
+                        return $this->json($response->getSystemResponse());
+                    }
+                    else{
+                        // Mark the picked exemplaires as not free
+                        $hasError = false;
+                        foreach ($reservationReservedExemplaires as $exemplaire) {
+                            if (in_array($exemplaire->getId(), $pickedExemplairesIds)) {
+                                $exemplaire->setLibre(false);
+                                $em->persist($exemplaire);
+                            }
+                        }
+
+                        // Update reservation status to 'processed' (assuming status ID 2 is 'processed')
+                        $processedStatus = $em->getRepository(StatusReservation::class)->find(2);
+                        if ($processedStatus) {
+                            $reservation->setStatusReservation($processedStatus);
+                            $em->persist($reservation);
+                            $em->flush();
+
+                            $response->statut = 200;
+                            $response->message = 'Reservation processed successfully';
+                            $response->data = json_decode($serializer->serialize($reservation, 'json', ['groups' => 'reservation:details']));
+                        } else {
+                            $response->statut = 500;
+                            $response->message = 'Processed status not found';
+                        }
+                    }
+
+                } else {
+                    $response->statut = 404;
+                    $response->message = 'Reservation not found';
+                }
+            } else {
+                $response->statut = 400;
+                $response->message = 'Invalid data';
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        return $response->getSystemHttpResponse();
+    }
 
 }

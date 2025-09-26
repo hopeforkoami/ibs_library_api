@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExemplaireLivreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,11 +15,11 @@ class ExemplaireLivre
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
+    #[Groups(['user:favoris','exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'exemplaireLivres')]
-    #[Groups(['exemplaire_livre:read','reservation:read','reservation:read','reservation:details'])]
+    #[Groups(['user:favoris','exemplaire_livre:read','reservation:read','reservation:read','reservation:details'])]
     private ?Livre $livre = null;
 
     #[ORM\ManyToOne(inversedBy: 'exemplaireLivres')]
@@ -38,6 +40,14 @@ class ExemplaireLivre
 
     #[Groups(['exemplaire_livre:read','livre:read', 'livre:details','reservation:read','reservation:details'])]
     private $qrValue = null;
+
+    #[ORM\OneToMany(mappedBy: 'exemplaire', targetEntity: Favoris::class)]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->favoris = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -110,6 +120,36 @@ class ExemplaireLivre
     public function setQrValue($qrValue)
     {
         $this->qrValue = $qrValue;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favoris>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favoris $favori): static
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setExemplaire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favoris $favori): static
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getExemplaire() === $this) {
+                $favori->setExemplaire(null);
+            }
+        }
 
         return $this;
     }
