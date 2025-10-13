@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\ExemplaireLivre;
+use App\Entity\Favoris;
 use App\Entity\Membre;
 use App\Entity\NsAuthorisation;
 use App\Entity\Role;
 use App\Modele\NogCustomedFunctions;
 use App\Modele\NogSystemResponse;
 use App\Repository\MembreRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -467,6 +470,133 @@ class MembreController extends AbstractController
             return $parts[2];
         }
         return null;
+    }
+
+    #[Route('/user/add/favoris', name: 'user_add_favoris', methods: ['POST', 'OPTIONS'])]
+    public function addUserFavoris(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'POST') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $response->getSystemHttpResponse();
+        }
+         $data = json_decode($request->getContent(), true);
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            /**
+             * les differents parametres de la requete
+             * auteur, langue, libelle, categorie, nbrePage, nreExemplaire, image, isbn, edition, resume, tags, themes
+             */
+           
+            if (!isset($data['userId']) || !isset($data['idExemplaire']) ) {
+                $response->statut = 400;
+                $response->message = 'Bad request';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            //on si un libre existe avec le meme libelle et isbn
+            $membre = $em->getRepository(Membre::class)->find($data['userId']);
+            $exemplaire = $em->getRepository(ExemplaireLivre::class)->find($data['idExemplaire']);
+            if(!$membre)
+            {
+                $response->statut = 409;
+                $response->message = 'member not found';
+                return $response->getSystemHttpResponse();
+            }
+            else if(!$exemplaire){
+                $response->statut = 409;
+                $response->message = 'exemplaire not found';
+                return $response->getSystemHttpResponse();
+            }
+            else{
+                
+                //on va charger l'image avec la fonction save_base64_image de la classe NogCustomedFunctions et on recupere le nom de l'image
+                $csts = new NogCustomedFunctions();
+                $profilName = $csts->save_base64_image($data['profil'], 'uploads/membres/', 'membre');
+
+                $favoris = new Favoris();
+                $favoris->setCreatedAt(new DateTime('now'));
+                $favoris->setMembre($membre);
+                $favoris->setExemplaire($exemplaire);
+                $em->persist($favoris);
+                $em->flush();
+                if($membre->getId()){
+                    $response->statut = 201;
+                    $response->message = 'exemplaire added';
+                    $response->data = [];
+                }
+                else{
+                    $response->statut = 500;
+                    $response->message = 'System error';
+                }
+            }
+            
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
+    }
+
+    #[Route('/user/favoris/list', name: 'app_user_favoris_list', methods: ['GET'])]
+    public function getFavoris(Request $request, EntityManagerInterface $em, SerializerInterface $serializer): Response
+    {
+        $response = new NogSystemResponse(500, 'system error', []);
+        
+        // Check if the request method is GET
+        if ($request->getMethod() != 'GET') {
+            $response->statut = 405;
+            $response->message = 'Method not allowed';
+            return $this->json($response->getSystemResponse());
+        }
+
+        // Retrieve the token from GET parameters
+        $token = $request->query->get('token', '');
+        $id = $request->query->get('id', '');
+        $auth = $em->getRepository(NsAuthorisation::class);
+
+        if ($auth->checkTokenValidity($token)) {
+            // Check if the user has the correct rights
+            // Fetch all programmes
+            $membre = $em->getRepository(Membre::class)->find($id);
+
+            if (!$membre) {
+                $response->statut = 404;
+                $response->message = 'member not found';
+                return $this->json($response->getSystemHttpResponse());
+            }
+            else{
+                
+                $response->statut = 200;
+                $response->message = 'member details';
+                $favoris = $em->getRepository(Favoris::class)->findBy(array(
+                    'membre'=>$membre
+                ));
+                if(!$favoris){
+                    $response->statut = 409;
+                    $response->message = 'favoris not found';
+                    return $this->json($response->getSystemHttpResponse());
+                }
+
+                //A circular reference has been detected when serializing the object of class \"App\\Entity\\NsSerie\" (configured limit: 1)
+                //return $this->json($series);
+                $response->data = json_decode($serializer->serialize($favoris, 'json',['groups' => 'user:favoris'])); 
+            }
+        } else {
+            $response->statut = 401;
+            $response->message = 'Token expired';
+        }
+
+        //return $this->json($response->getSystemResponse());
+        return $response->getSystemHttpResponse();
     }
 
 }

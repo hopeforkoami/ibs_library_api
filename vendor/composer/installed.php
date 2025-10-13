@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '95fb7d2e1a4daef590f7a834ccfcfe8430e478fe',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '95fb7d2e1a4daef590f7a834ccfcfe8430e478fe',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -196,6 +196,15 @@
             'reference' => '7353d4099ad5388e84737dd16994316a04f48dbf',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laminas/laminas-code',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nelmio/api-doc-bundle' => array(
+            'pretty_version' => 'v4.38.2',
+            'version' => '4.38.2.0',
+            'reference' => 'fdc1cf5bc57287787db59f205a8e77485bd22072',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../nelmio/api-doc-bundle',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -508,6 +517,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'symfony/options-resolver' => array(
+            'pretty_version' => 'v5.4.45',
+            'version' => '5.4.45.0',
+            'reference' => '74e5b6f0db3e8589e6cfd5efb317a1fc2bb52fb6',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/options-resolver',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'symfony/polyfill-ctype' => array(
             'dev_requirement' => false,
             'replaced' => array(
@@ -736,6 +754,15 @@
             'reference' => '11cb2199493b2f8a3b53e7f19068fc6aac760991',
             'type' => 'library',
             'install_path' => __DIR__ . '/../webmozart/assert',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'zircote/swagger-php' => array(
+            'pretty_version' => '5.4.2',
+            'version' => '5.4.2.0',
+            'reference' => '4f6bac8bdb9e762c6a4de12ef62160d4e5a17caa',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../zircote/swagger-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
