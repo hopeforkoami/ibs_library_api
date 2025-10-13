@@ -50,14 +50,27 @@ return [
         '/reservation/details' => [[['_route' => 'app_reservation_details', '_controller' => 'App\\Controller\\ReservationController::detailsReservation'], null, ['GET' => 0], null, false, false, null]],
         '/reservation/process' => [[['_route' => 'app_reservation_process', '_controller' => 'App\\Controller\\ReservationController::processReservation'], null, ['POST' => 0], null, false, false, null]],
         '/login' => [[['_route' => 'app_system', '_controller' => 'App\\Controller\\SystemController::login'], null, null, null, false, false, null]],
+        '/api/doc.json' => [[['_route' => 'app.swagger', '_controller' => 'nelmio_api_doc.controller.swagger'], null, ['GET' => 0], null, false, false, null]],
     ],
     [ // $regexpList
         0 => '{^(?'
-                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:35)'
+                .'|/api(?'
+                    .'|/\\.well\\-known/genid/([^/]++)(*:43)'
+                    .'|(?:/(index)(?:\\.([^/]++))?)?(*:78)'
+                    .'|/(?'
+                        .'|docs(?:\\.([^/]++))?(*:108)'
+                        .'|contexts/([^.]+)(?:\\.(jsonld))?(*:147)'
+                    .')'
+                .')'
+                .'|/_error/(\\d+)(?:\\.([^/]++))?(*:185)'
             .')/?$}sDu',
     ],
     [ // $dynamicRoutes
-        35 => [
+        43 => [[['_route' => 'api_genid', '_controller' => 'api_platform.action.not_exposed', '_api_respond' => 'true'], ['id'], null, null, false, true, null]],
+        78 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
+        108 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
+        147 => [[['_route' => 'api_jsonld_context', '_controller' => 'api_platform.jsonld.action.context', '_format' => 'jsonld', '_api_respond' => 'true'], ['shortName', '_format'], null, null, false, true, null]],
+        185 => [
             [['_route' => '_preview_error', '_controller' => 'error_controller::preview', '_format' => 'html'], ['code', '_format'], null, null, false, true, null],
             [null, null, null, null, false, false, 0],
         ],
