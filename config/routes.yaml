@@ -1,0 +1,4 @@
+# config/routes.yaml
+# app_programs_list:
+#   path: /programme/list
+#   controller: App\Controller\ProgrammeController::listFull

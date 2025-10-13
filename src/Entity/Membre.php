@@ -1,0 +1,255 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\MembreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+#[ORM\Entity(repositoryClass: MembreRepository::class)]
+class Membre
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['membre:read', 'membre:details','reservation:read','reservation:details'])]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['membre:details'])]
+    private ?string $login = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+
+    private ?string $password = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups(['membre:read', 'membre:details'])]
+    private ?string $contact = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    #[Groups(['membre:details'])]
+    private ?string $whatsapp = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['membre:read', 'membre:details','reservation:details'])]
+    private ?string $email = null;
+
+    #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['membre:details','reservation:details'])]
+    private ?string $profil = null;
+
+    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[Groups(['membre:read', 'membre:details'])]
+    private ?Role $roleId = null;
+
+    #[ORM\OneToMany(mappedBy: 'membre', targetEntity: Reservation::class)]
+    #[Groups(['membre:details'])]
+    private Collection $reservations;
+    
+    #[Groups(['membre:read', 'membre:details'])]
+    private ?string $code = null;
+
+    #[ORM\OneToMany(mappedBy: 'membre', targetEntity: Favoris::class)]
+    private Collection $favoris;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+        $this->favoris = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+
+        return $this;
+    }
+
+    public function getLogin(): ?string
+    {
+        return $this->login;
+    }
+
+    public function setLogin(string $login): static
+    {
+        $this->login = $login;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    public function getContact(): ?string
+    {
+        return $this->contact;
+    }
+
+    public function setContact(string $contact): static
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    public function getWhatsapp(): ?string
+    {
+        return $this->whatsapp;
+    }
+
+    public function setWhatsapp(?string $whatsapp): static
+    {
+        $this->whatsapp = $whatsapp;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getProfil(): ?string
+    {
+        return $this->profil;
+    }
+
+    public function setProfil(string $profil): static
+    {
+        $this->profil = $profil;
+
+        return $this;
+    }
+
+    public function getRoleId(): ?Role
+    {
+        return $this->roleId;
+    }
+
+    public function setRoleId(?Role $roleId): static
+    {
+        $this->roleId = $roleId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getMembre() === $this) {
+                $reservation->setMembre(null);
+            }
+        }
+
+        return $this;
+    }
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+    public function setCode(?string $code): static
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Favoris>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
+
+    public function addFavori(Favoris $favori): static
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setMembre($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavori(Favoris $favori): static
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getMembre() === $this) {
+                $favori->setMembre(null);
+            }
+        }
+
+        return $this;
+    }
+}
